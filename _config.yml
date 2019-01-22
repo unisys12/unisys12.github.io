@@ -1,0 +1,10 @@
+title: Unisys12's Blog
+author: unisys12
+email: unisys12@gmail.com
+description: Personal Blog
+twitter_username: unisys12
+github_username:  unisys12
+
+# Build settings
+markdown: kramdown
+theme: dbyll
