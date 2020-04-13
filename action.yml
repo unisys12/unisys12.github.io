@@ -1,0 +1,5 @@
+name: 'Personal Blog'
+description: 'My personal blog using 11ty'
+runs: 
+  using: 'node12'
+  main: 'npx @11ty/eleventy'
