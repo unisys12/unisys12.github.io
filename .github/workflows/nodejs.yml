@@ -33,5 +33,6 @@ jobs:
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          deploy_key: ${{ secrets.GH_PAGES }}
           # publish_branch: main
           publish_dir: ./_site
