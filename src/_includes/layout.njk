@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
     <title>{{ title }}</title>
 </head>
 <body class="container mx-auto bg-gradient-to-br from-blue-800 via-indigo-600 to-blue-800">
-    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch">
+    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch min-h-screen">
         {% include "components/site_header.njk" %}
-        <main class="sm:grid sm:grid-flow-row sm:gap-3">
+        <main class="sm:grid sm:grid-flow-row sm:gap-3 justify-center">
             {% block content %}
                 {{ content | safe }}
             {% endblock %}
