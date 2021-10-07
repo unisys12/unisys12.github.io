@@ -28,7 +28,7 @@ module.exports = {
             },
             blockquote: {
               "background-color": "rgb(239, 246, 255)",
-              "border-color": "#000",
+              "border-color": "#9bb7f5",
               "border-radius": "3px",
             },
           },
