@@ -1,8 +1,8 @@
 module.exports = {
   purge: [
-    // "./*.{html,njk,md}",
-    // "./_includes/*.{html,njk,md}",
-    // "./_includes/**/*.{html,njk,md}",
+    "./*.{html,njk,md}",
+    "./_includes/*.{html,njk,md}",
+    "./_includes/**/*.{html,njk,md}",
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -30,6 +30,7 @@ module.exports = {
               "background-color": "rgb(239, 246, 255)",
               "border-color": "#9bb7f5",
               "border-radius": "3px",
+              "border-left-width": "0.5rem",
             },
           },
         },
