@@ -720,8 +720,9 @@ video {
   margin-bottom: 1.6em;
   padding-left: 1em;
   background-color: rgb(239, 246, 255);
-  border-color: #000;
+  border-color: #9bb7f5;
   border-radius: 3px;
+  border-left-width: 0.5rem;
 }
 
 .prose blockquote p:first-of-type::before {
@@ -33351,8 +33352,9 @@ video {
     margin-bottom: 1.6em;
     padding-left: 1em;
     background-color: rgb(239, 246, 255);
-    border-color: #000;
+    border-color: #9bb7f5;
     border-radius: 3px;
+    border-left-width: 0.5rem;
   }
 
   .sm\:prose blockquote p:first-of-type::before {
@@ -65904,8 +65906,9 @@ video {
     margin-bottom: 1.6em;
     padding-left: 1em;
     background-color: rgb(239, 246, 255);
-    border-color: #000;
+    border-color: #9bb7f5;
     border-radius: 3px;
+    border-left-width: 0.5rem;
   }
 
   .md\:prose blockquote p:first-of-type::before {
@@ -98457,8 +98460,9 @@ video {
     margin-bottom: 1.6em;
     padding-left: 1em;
     background-color: rgb(239, 246, 255);
-    border-color: #000;
+    border-color: #9bb7f5;
     border-radius: 3px;
+    border-left-width: 0.5rem;
   }
 
   .lg\:prose blockquote p:first-of-type::before {
@@ -131010,8 +131014,9 @@ video {
     margin-bottom: 1.6em;
     padding-left: 1em;
     background-color: rgb(239, 246, 255);
-    border-color: #000;
+    border-color: #9bb7f5;
     border-radius: 3px;
+    border-left-width: 0.5rem;
   }
 
   .xl\:prose blockquote p:first-of-type::before {
@@ -163563,8 +163568,9 @@ video {
     margin-bottom: 1.6em;
     padding-left: 1em;
     background-color: rgb(239, 246, 255);
-    border-color: #000;
+    border-color: #9bb7f5;
     border-radius: 3px;
+    border-left-width: 0.5rem;
   }
 
   .\32xl\:prose blockquote p:first-of-type::before {

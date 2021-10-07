@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
     <title>Test Post</title>
 </head>
 <body class="container mx-auto bg-gradient-to-br from-blue-800 via-indigo-600 to-blue-800">
-    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch">
-        <header class="align-center sm:grid sm:grid-cols-2 pb-8 ">
+    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch min-h-screen">
+        <header class="align-center sm:grid sm:grid-cols-2 my-8">
+    <a href="/">
     <h1 class="font-semibold text-4xl text-gray-100 hover:text-gray-200 transition-colors">Unisys12</h1>
+    </a>
     <nav class="">
             <ul class="sm:grid grid-cols-3 gap-2 font-medium">
         <li>
-            <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">Home</a>
+            <a href="/" class="text-gray-100 hover:text-gray-200 transition-colors">Home</a>
         </li>
         <li>
             <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">Topics</a>
@@ -24,34 +27,15 @@
     </ul>
     </nav>
 </header>
-        <main class="sm:grid sm:grid-flow-row sm:gap-3">
+        <main class="sm:grid sm:grid-flow-row sm:gap-3 justify-center">
             
-        <div class="prose sm:prose lg:prose-lg xl:prose-xl text-left px-2 mx-auto antialiased">
-            <h1>Test Post</h1>
+    <div class="prose sm:prose lg:prose-lg xl:prose-xl text-left px-2 mx-auto antialiased">
+        <p><img src="https://via.placeholder.com/800x360/" alt="Placeholder Image"></p>
+<h1>Test Post</h1>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Et malesuada fames ac turpis egestas sed tempus. Dapibus ultrices in iaculis nunc sed augue. Morbi tristique senectus et netus et malesuada. Sed risus pretium quam vulputate dignissim suspendisse. Elementum eu facilisis sed odio. Est ultricies integer quis auctor elit sed. Gravida arcu ac tortor dignissim convallis aenean et tortor at. Tellus pellentesque eu tincidunt tortor. Ipsum nunc aliquet bibendum enim facilisis gravida neque. Vulputate ut pharetra sit amet aliquam id. Commodo viverra maecenas accumsan lacus vel facilisis volutpat. Interdum consectetur libero id faucibus nisl tincidunt eget. Ut tellus elementum sagittis vitae. Eget sit amet tellus cras adipiscing enim eu turpis egestas. Urna id volutpat lacus laoreet non curabitur gravida. Posuere morbi leo urna molestie at elementum eu facilisis sed. Non pulvinar neque laoreet suspendisse interdum consectetur libero. In pellentesque massa placerat duis.</p>
 <h2>Paragraph 1</h2>
 <p>Fringilla est ullamcorper eget nulla. Malesuada pellentesque elit eget gravida cum sociis. Enim ut tellus elementum sagittis vitae et leo duis ut. Dignissim diam quis enim lobortis scelerisque. Eu mi bibendum neque egestas congue quisque egestas diam in. Vitae sapien pellentesque habitant morbi tristique senectus et. Sed odio morbi quis commodo odio aenean. Nibh mauris cursus mattis molestie. Magna etiam tempor orci eu lobortis elementum. Rutrum tellus pellentesque eu tincidunt tortor aliquam nulla.</p>
-<pre><code>namespace Database\Factories;
-
-use App\Models\Canine;
-use Unisys12\FakeCanine\FakeCanineProvider;
-
-class CanineFactory extends Factory
-{
-    protected $model = Canine::class;
-
-    public function definition()
-    {
-        $fakeCanine = new FakeCanineProvider($this-&gt;faker);
-
-        return [
-            'name' =&gt; $fakeCanine-&gt;name(),
-            'breed' =&gt; $fakeCanine-&gt;breed(),
-            'gender' =&gt; $fakeCanine-&gt;gender
-         ]
-    }
-}
-</code></pre>
+<pre class="language-php"><code class="language-php"><span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Factories</span><span class="token punctuation">;</span><br><br><span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>Canine</span><span class="token punctuation">;</span><br><span class="token keyword">use</span> <span class="token package">Unisys12<span class="token punctuation">\</span>FakeCanine<span class="token punctuation">\</span>FakeCanineProvider</span><span class="token punctuation">;</span><br><br><span class="token keyword">class</span> <span class="token class-name-definition class-name">CanineFactory</span> <span class="token keyword">extends</span> <span class="token class-name">Factory</span><br><span class="token punctuation">{</span><br>    <span class="token keyword">protected</span> <span class="token variable">$model</span> <span class="token operator">=</span> <span class="token class-name static-context">Canine</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">;</span><br><br>    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">definition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><br>    <span class="token punctuation">{</span><br>        <span class="token variable">$fakeCanine</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FakeCanineProvider</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token punctuation">)</span><span class="token punctuation">;</span><br><br>        <span class="token keyword">return</span> <span class="token punctuation">[</span><br>            <span class="token string single-quoted-string">'name'</span> <span class="token operator">=></span> <span class="token variable">$fakeCanine</span><span class="token operator">-></span><span class="token function">name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>            <span class="token string single-quoted-string">'breed'</span> <span class="token operator">=></span> <span class="token variable">$fakeCanine</span><span class="token operator">-></span><span class="token function">breed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><br>            <span class="token string single-quoted-string">'gender'</span> <span class="token operator">=></span> <span class="token variable">$fakeCanine</span><span class="token operator">-></span><span class="token property">gender</span><br>         <span class="token punctuation">]</span><br>    <span class="token punctuation">}</span><br><span class="token punctuation">}</span></code></pre>
 <p>Eget lorem dolor sed viverra ipsum nunc. Nullam eget felis eget nunc lobortis mattis aliquam faucibus purus. Posuere urna nec tincidunt praesent. Elit sed vulputate mi sit amet mauris commodo quis. Amet nisl suscipit adipiscing bibendum est ultricies. Facilisis sed odio morbi quis commodo. Nam libero justo laoreet sit. Cras pulvinar mattis nunc sed blandit libero volutpat sed cras. Mattis molestie a iaculis at. Et netus et malesuada fames ac.</p>
 <h2>Paragraph 2</h2>
 <p>Vitae tempus quam pellentesque nec nam aliquam. Consectetur adipiscing elit duis tristique sollicitudin nibh. Diam sollicitudin tempor id eu. Iaculis at erat pellentesque adipiscing. Adipiscing tristique risus nec feugiat. Eu mi bibendum neque egestas congue quisque egestas diam. Amet consectetur <a href="'https://localhost'">adipiscing</a> elit duis tristique sollicitudin. Amet risus nullam eget felis. Amet luctus venenatis lectus magna fringilla urna porttitor rhoncus. Malesuada nunc vel risus commodo viverra maecenas accumsan lacus. Dolor purus non enim praesent elementum. Faucibus ornare suspendisse sed nisi. Dolor morbi non arcu risus quis varius quam quisque. Posuere morbi leo urna molestie at elementum eu facilisis. Vel orci porta non pulvinar neque. Sociis natoque penatibus et magnis. At imperdiet dui accumsan sit amet nulla facilisi. Neque ornare aenean euismod elementum.</p>
@@ -60,10 +44,10 @@ class CanineFactory extends Factory
 <h2>Paragraph 4</h2>
 <p>Laoreet suspendisse interdum consectetur libero id faucibus nisl. Vitae elementum curabitur vitae nunc sed velit. Purus gravida quis blandit turpis cursus in hac habitasse platea. Scelerisque varius morbi enim nunc faucibus a pellentesque sit amet. Metus aliquam eleifend mi in. Ac feugiat sed lectus vestibulum mattis ullamcorper velit sed ullamcorper. Parturient montes nascetur ridiculus mus mauris vitae. Aenean vel elit scelerisque mauris pellentesque pulvinar. Vel elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi. Egestas purus viverra accumsan in. Sed arcu non odio euismod lacinia. Ut etiam sit amet nisl purus. Nulla pharetra diam sit amet nisl suscipit adipiscing bibendum. Duis at consectetur lorem donec massa sapien. Enim nulla aliquet porttitor lacus luctus accumsan tortor posuere ac. Condimentum mattis pellentesque id nibh tortor id aliquet lectus. Ac auctor augue mauris augue neque gravida in. Orci eu lobortis elementum nibh tellus molestie nunc. Praesent tristique magna sit amet purus gravida quis. Tincidunt vitae semper quis lectus nulla at volutpat diam.</p>
 
-        </div>
+    </div>
 
         </main>
-        <footer class="text-gray-200">
+        <footer class="mb-0 text-gray-200">
     &COPY; 2021 Phillip Jackson
 </footer>
     </div>
