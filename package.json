@@ -1,0 +1,29 @@
+{
+  "name": "unisys12.github.io",
+  "version": "1.0.0",
+  "description": "Personal Blog for Myself",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "compile-css": "postcss ./assets/css/tailwind.css -o ./assets/css/styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unisys12/unisys12.github.io.git"
+  },
+  "author": "Phillip Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unisys12/unisys12.github.io/issues"
+  },
+  "homepage": "https://github.com/unisys12/unisys12.github.io#readme",
+  "devDependencies": {
+    "@11ty/eleventy": "^0.12.1",
+    "@tailwindcss/typography": "^0.4.1",
+    "autoprefixer": "^10.3.4",
+    "postcss": "^8.3.6",
+    "postcss-cli": "^8.3.1",
+    "tailwindcss": "^2.2.15"
+  }
+}
