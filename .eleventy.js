@@ -5,7 +5,11 @@ module.exports = function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("./src/assets/css/styles.css");
 
-  eleventyConfig.addPlugin(syntaxHighlight);
+  eleventyConfig.addPlugin(syntaxHighlight, {
+    templateFormats: ["*"],
+    trim: true,
+    lineSeparator: "\n",
+  });
 
   return {
     dir: {
