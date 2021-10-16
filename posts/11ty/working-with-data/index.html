@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <title>Static Data in 11ty</title>
+</head>
+<body class="container mx-auto bg-gradient-to-br from-blue-800 via-indigo-600 to-blue-800">
+    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch min-h-screen">
+        <header class="align-center sm:grid sm:grid-cols-2 my-8">
+    <a href="/">
+    <h1 class="font-semibold text-4xl text-gray-100 hover:text-gray-200 transition-colors">Unisys12</h1>
+    </a>
+    <nav class="">
+            <ul class="sm:grid grid-cols-3 gap-2 font-medium">
+        <li>
+            <a href="/" class="text-gray-100 hover:text-gray-200 transition-colors">Home</a>
+        </li>
+        <li>
+            <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">Topics</a>
+        </li>
+        <li>
+            <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">About</a>
+        </li>
+    </ul>
+    </nav>
+</header>
+        <main class="sm:grid sm:grid-flow-row sm:gap-3 justify-center">
+            
+    <div class="prose sm:prose lg:prose-lg xl:prose-xl text-left px-2 mx-auto antialiased">
+        <h1>Static Data in 11ty</h1>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_fit,q_auto,w_800/v1633697298/blog/stock/kevin-ku-w7ZyuGYNpRQ-unsplash_qsnklf.jpg" alt="Placeholder Image"></p>
+<p>When working in 11ty, it can sometimes be hard to figure out how to handle the data within your project. Sometimes it might be static data that you create yourself, using either JSON or YAML. Other times, it might be from an unfamiliar API. Either way, it has been one of my single weakest point when it comes to using a SSG to create web content.</p>
+<p>Funny thing though... Data has always been my thing. I love data in all forms. I love parsing it and extracting different things from it. Honestly, it's one of the most enjoyable aspects of development, for me. <em>I know I'm a sick bastard and love punishment.</em> But I ran into a interesting situation when working on a personal challenge site the other day and wanted to share what I learned.</p>
+<h2>Iterating Over Objects That's Not An Array</h2>
+<p>First off, in JavaScript, everything's an object! So what do I mean by Object? An Object in JavaScript can look like so,
+given the file <code>users.json</code> exists in your <code>_data</code> directory.</p>
+<p><code>/src/_data/users.json</code></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"1"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Phillip Jackson"</span><span class="token punctuation">,</span>
+    <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"unisy12@gmail.com"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"2"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Kim Jackson"</span><span class="token punctuation">,</span>
+    <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"ftpta@gmail.com"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Using <a href="https://mozilla.github.io/nunjucks/">Nunjucks</a>, we can see the data by writing the following:</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> users <span class="token operator">|</span> <span class="token function filter">dump</span> <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>The output will look like so:</p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"1"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Phillip Jackson"</span><span class="token punctuation">,</span> <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"unisy12@gmail.com"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"2"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Kim Jackson"</span><span class="token punctuation">,</span> <span class="token property">"email"</span><span class="token operator">:</span> <span class="token string">"ftpta@gmail.com"</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+<p>So, I was working with an API the other day that returned a JSON response that was formatted like the above example. Given this example, the typical JavaScript Array methods will not work since the Object is not an array. If you iterate over it as normal, nothing will be displayed:</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> person <span class="token keyword">in</span> test <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> person <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span></code></pre>
+<p>DOH! How in the hell will we deal with this using Nunjucks or any other template syntax? I played around with writing a custom shortcode that would parse the json response and convert into an array, but I figured there had to be a slightly better way.</p>
+<blockquote>
+<p>Data can be hard, but you sometimes have to try harder.</p>
+</blockquote>
+<h3>Maybe There is a Way</h3>
+<p>After a few hours of playing around and scratching my head, I thought about rendering the index from the for loop. Like you would for other languages, so I tried the following:</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> p<span class="token punctuation">,</span> person <span class="token keyword">in</span> test <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> p <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> person <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">></span></span>
+<span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span></code></pre>
+<p>Outputs the following:</p>
+<pre><code>1
+[object Object]
+
+2
+[object Object]
+</code></pre>
+<p>As you can see, <em>p</em> is our iterator index and <em>person</em> is our iterator value that we should be able to work with.</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> p<span class="token punctuation">,</span> person <span class="token keyword">in</span> test <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Name: <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> person<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Email: <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>code</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> person<span class="token punctuation">.</span>email <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>code</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>br</span><span class="token punctuation">></span></span>
+<span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span></code></pre>
+<pre class="language-text"><code class="language-text">// Iterate over each person
+Name: Phillip Jackson
+Email: unisy12@gmail.com
+
+Name: Kim Jackson
+Email: ftpta@gmail.com</code></pre>
+<p>Adding the index declaration to the <em>for</em> loop is not documented, in Nunjucks or Liquid, but I figured I would give it shot. What's the worst thing that would happen. And it worked!</p>
+
+    </div>
+
+        </main>
+        <footer class="mb-0 text-gray-200">
+    &COPY; 2021 Phillip Jackson
+</footer>
+    </div>
+</body>
+</html>

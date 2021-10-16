@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet">
+    <title>Learning Golang Part 1</title>
+</head>
+<body class="container mx-auto bg-gradient-to-br from-blue-800 via-indigo-600 to-blue-800">
+    <div class="grid grid-flow-row gap-4 justify-items-center text-center sm:text-left sm:justify-items-stretch min-h-screen">
+        <header class="align-center sm:grid sm:grid-cols-2 my-8">
+    <a href="/">
+    <h1 class="font-semibold text-4xl text-gray-100 hover:text-gray-200 transition-colors">Unisys12</h1>
+    </a>
+    <nav class="">
+            <ul class="sm:grid grid-cols-3 gap-2 font-medium">
+        <li>
+            <a href="/" class="text-gray-100 hover:text-gray-200 transition-colors">Home</a>
+        </li>
+        <li>
+            <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">Topics</a>
+        </li>
+        <li>
+            <a href="#" class="text-gray-100 hover:text-gray-200 transition-colors">About</a>
+        </li>
+    </ul>
+    </nav>
+</header>
+        <main class="sm:grid sm:grid-flow-row sm:gap-3 justify-center">
+            
+    <div class="prose sm:prose lg:prose-lg xl:prose-xl text-left px-2 mx-auto antialiased">
+        <h1>Learning Golang Part 1</h1>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_fit,q_auto,w_800/v1633697298/blog/stock/kevin-ku-w7ZyuGYNpRQ-unsplash_qsnklf.jpg" alt="Placeholder Image"></p>
+<p>For a few years now, I have been on the fence about learning either <a href="https://golang.org/">Go</a> or <a href="https://www.rust-lang.org/">Rust</a>. Both are very interesting and offer a whole new world of development that I've never experienced. It would also open me up to developing software, not just for the web, but for desktop. They are both languages that operate <em>very close to the metal</em>, as they say, which I am not overly familiar with. Other languages such as <a href="https://docs.microsoft.com/en-us/cpp/cpp/?view=msvc-160">C++</a>, <a href="https://kotlinlang.org/">Kotlin</a> and even <a href="https://crystal-lang.org/">Crystal</a> are fairly similar and offer similar promises. But why/how did I narrow my list to just two languages? It was pretty simply really. And although it was a simply process, it took awhile for me to settle on just one.</p>
+<p>What I tend to do the most though is create these small one-off type applications that either solve a single problem or help with a given task. Discord Bots, Chrome Extensions and every now and then, a full blown fullstack CMS. And I recently had an idea for a new cli project that I felt would be a perfect fit for either of the above mentioned languages.</p>
+<h2>Narrowing the field</h2>
+<p>This was the simple part. I just had to ask myself the question, &quot;How comfortable is the language and it's tooling to use?&quot;. Given that most of my experience is with web technologies, I would assume that the main portion of my time would be spent there. I had no real <em>need</em> to create desktop specific applications. And if we are being honest with ourselves, that <em>need</em> disappeared a long time ago. But comfort was key, at the end of the day. So let's go through the list real quick.</p>
+<h3>C++</h3>
+<p>I knew that I was not going to be comfortable with C++ due to the fact that it would be like buying a backhoe to plant a shrug in our front flower bed. C++ is a great language and serves many horizontals within the tech and game industry very well. But for a fairly simple to complex CLI app... nah. Pass!</p>
+<h3>Kotlin</h3>
+<p>Ok, I have zero experience with Kotlin itself. I do have some Java experience, but I know it would not be fair to just lump the two in one package. Java, like C++, would be massive overkill. Kotlin is not Java, per say. But the way I view Kotlin is - it's like saying, &quot;Python is not enough and I need just a little more. Java is overkill!&quot; Is that fair? Probably not, but it does seem to be a bit of more than what is required.</p>
+<h3>Crystal</h3>
+<p>I've been interested in Crystal for a while as well. Not as long as Go or Rust, but yeah. It's been on my radar. And really, Crystal would be a good fit for this project and actually closer to Rust and Go than the other two languages.</p>
+<h2>The Contenders</h2>
+<p>Now that I have a list of three languages, all of which are pretty similar on the surface, it's time to narrow it a bit further and start playing around with all three. Finally, pick the one I like the most. Or makes me comfortable.</p>
+<p>So, to get an idea of which one I will choose, I need to create a few exercises that cover the main working components of the project I am going to be creating. That will consist of the following actions:</p>
+<ul>
+<li>Making API requests</li>
+<li>Parse the returned JSON response from the API</li>
+<li>Format the parsed JSON into a displayable format</li>
+</ul>
+<p>For the sake of keeping these exercises simple, we will stick to parsing JSON and working with strings.</p>
+<h3>Crystal</h3>
+<p>Follow the <a href="https://crystal-lang.org/reference/getting_started/index.html">getting started</a> section on their website for your platform. I'm on Windows 10 and using Ubuntu through WSL2.</p>
+<pre class="language-shell"><code class="language-shell">unisys12@DESKTOP-3LSQHQ2:~/projects/crystal-strings$ crystal --version
+Crystal <span class="token number">1.1</span>.1 <span class="token punctuation">[</span>6d9a1d583<span class="token punctuation">]</span> <span class="token punctuation">(</span><span class="token number">2021</span>-07-26<span class="token punctuation">)</span>
+
+LLVM: <span class="token number">10.0</span>.1
+Default target: x86_64-unknown-linux-gnu</code></pre>
+<p>They even have a CLI example app that we can work through. Sweet! Let's follow along!</p>
+<p>helper.cr</p>
+<pre class="language-crystal"><code class="language-crystal"><span class="token keyword">require</span> <span class="token string">"option_parser"</span>
+
+<span class="token constant">OptionParser</span><span class="token punctuation">.</span>parse <span class="token keyword">do</span> <span class="token operator">|</span>parser<span class="token operator">|</span>
+  parser<span class="token punctuation">.</span>banner <span class="token operator">=</span> <span class="token string">"Welcome to our test CLI app!"</span>
+
+  parser<span class="token punctuation">.</span>on <span class="token string">"-v"</span><span class="token punctuation">,</span> <span class="token string">"--version"</span><span class="token punctuation">,</span> <span class="token string">"Show version"</span> <span class="token keyword">do</span>
+    puts <span class="token string">"version 0.0.1"</span>
+    exit
+  <span class="token keyword">end</span>
+
+  parser<span class="token punctuation">.</span>on <span class="token string">"-h"</span><span class="token punctuation">,</span> <span class="token string">"--help"</span><span class="token punctuation">,</span> <span class="token string">"Show help"</span> <span class="token keyword">do</span>
+    puts parser
+    exit
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span></code></pre>
+<pre class="language-shell"><code class="language-shell">unisys12@DESKTOP-3LSQHQ2:~/projects/crystal-strings$ crystal run ./help.cr -- -h
+Welcome to our <span class="token builtin class-name">test</span> CLI app<span class="token operator">!</span>
+    -v, --version                    Show version
+    -h, --help                       Show <span class="token builtin class-name">help</span>
+unisys12@DESKTOP-3LSQHQ2:~/projects/crystal-strings$ crystal run ./help.cr -- -v
+version <span class="token number">0.0</span>.1</code></pre>
+<p>Now, let's strike out on our own and parse some JSON! So, create another file and call it whatever you want.</p>
+<p>cli-parser.cr</p>
+<pre class="language-ruby"><code class="language-ruby"><span class="token keyword">require</span> <span class="token string">'option_parser'</span>
+
+people <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token string">"person_1"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">'Bradly'</span><span class="token punctuation">,</span> <span class="token string">"email"</span><span class="token punctuation">:</span> <span class="token string">'somethingspecial@nowhere.com'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"person_2"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span> <span class="token string">"name"</span><span class="token punctuation">:</span> <span class="token string">'Tammy'</span><span class="token punctuation">,</span> <span class="token string">"email"</span><span class="token punctuation">:</span> <span class="token string">'moreorlessbetter@nowhere.com'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token constant">OptionParser</span><span class="token punctuation">.</span>parse <span class="token keyword">do</span> <span class="token operator">|</span>parser<span class="token operator">|</span>
+  parser<span class="token punctuation">.</span>banner <span class="token operator">=</span> <span class="token string">'Welcome to our CLI Parser Application'</span>
+
+  parser<span class="token punctuation">.</span>on <span class="token string">'-n'</span><span class="token punctuation">,</span> <span class="token string">'--name'</span><span class="token punctuation">,</span> <span class="token string">'Display the persons name'</span> <span class="token keyword">do</span>
+  <span class="token keyword">end</span>
+<span class="token keyword">end</span></code></pre>
+
+    </div>
+
+        </main>
+        <footer class="mb-0 text-gray-200">
+    &COPY; 2021 Phillip Jackson
+</footer>
+    </div>
+</body>
+</html>
