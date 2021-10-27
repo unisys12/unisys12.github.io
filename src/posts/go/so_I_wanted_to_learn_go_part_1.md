@@ -1,8 +1,9 @@
 ---
 layout: 'templates/postTemplate.njk'
 title: 'Learning Golang Part 1'
-tags: posts, go
+tags: [post, go, crystal]
 excerpt: 'So, I wanted to learn Go!'
+eleventyExcludeFromCollections: true
 ---
 
 # {{ title }}

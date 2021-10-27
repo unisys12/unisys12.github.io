@@ -1,8 +1,9 @@
 ---
 layout: 'templates/postTemplate.njk'
 title: 'Static Data in 11ty'
-tags: posts, 11ty, nunjucks, tips
+tags: [post, 11ty, data]
 excerpt: 'Data can be hard, but you sometimes have to try harder.'
+eleventyExcludeFromCollections: true
 ---
 
 # {{ title }}

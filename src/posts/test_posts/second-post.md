@@ -3,6 +3,8 @@ layout: 'templates/postTemplate.njk'
 title: Test Post 2
 tags: posts
 excerpt: 'A simple line of text to explain a post'
+eleventyExcludeFromCollections: true
+date: Last Modified
 ---
 
 # {{ title }}
