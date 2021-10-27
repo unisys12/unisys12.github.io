@@ -7,7 +7,7 @@ title: Unisys12
     <h1 class="text-3xl text-green-100 font-medium">Recent Posts</h1>
 </header>
 
-{% for post in collections.posts %}
+{% for post in collections.post %}
 <section class="bg-gray-100 border rounded-md mb-8 p-4 max-w-4xl align-middle">
     <header>
         <img src="https://via.placeholder.com/800x180/Text=Image Placeholder" alt="Image Placeholder">
@@ -18,5 +18,7 @@ title: Unisys12
     <section>
         <p>{{ post.data.excerpt }}</p>
     </section>
+    <sub>{{ post.data.tags }}</sub>
+    <sub>{{ post.date.toString() }}</sub>
 </section>
 {% endfor %}

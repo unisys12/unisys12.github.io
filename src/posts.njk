@@ -7,6 +7,6 @@ layout: layout
 
 <p class="text-lg text-gray-100">Working on it... OK! I'm trying not to cheat!</p>
 
-{# {% for i, item in collections %}
-    <code>{{ i | log }}</code>
-{% endfor %} #}
+{% for item in collections.all %}
+    {{ item.data.tags }}
+{% endfor %}
