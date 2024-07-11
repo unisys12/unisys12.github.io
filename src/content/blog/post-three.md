@@ -1,6 +1,10 @@
 ---
 layout: "../../layouts/BaseLayout.astro"
 title: Post Three
+tags: ["blog", "11ty", "ssg", "jamstack"]
+description: "This is a short description of the topic I will cover in this post"
+image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/v1635373637/blog/stock/pexels-markus-spiske-2061168_coxasy.jpg"
+image_alt: "A simple header image"
 ---
 
 # Post Three
