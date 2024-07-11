@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+const blogPosts = await getCollection("blog");
+---
+
+<BaseLayout title="Blog" />
+{
+  blogPosts.map((p) => (
+    <article>
+      <header>
+        <h1>{p.data.title}</h1>
+      </header>
+      <img src={p.data.image} alt={p.data.image_alt} />
+      <ul>
+        {p.data.tags.map((tag) => (
+          <li>{tag}</li>
+        ))}
+      </ul>
+      <section>
+        <p>{p.data.description}</p>
+        <a href={`/blog/${p.slug}`}>Read More</a>
+      </section>
+    </article>
+  ))
+}
