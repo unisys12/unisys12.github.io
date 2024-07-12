@@ -13,7 +13,7 @@ image_alt: "A simple header image"
 
 ## Project Purpose
 
-8 years ago or so, I was heavily active within the lore community of a video game called Destiny. You might've heard of it! Anyway, after joining a few different social groups on Discord, I noticed a few patterns develop within the conversations.
+8 years ago or so, I was heavily active within the lore community of a video game called Destiny. You might've heard of it! I also had a previous project that saw some success called [Lorebot-ex](lorebot-ex). Anyway, after joining a few different social groups on Discord, I noticed a few patterns develop within the conversations.
 
 - Someone would pose a theory or question and wait on a response.
 - The conversation would start fairly slow, but would quickly gain pace, due to the main server I was on had several thousand active users daily.
@@ -35,7 +35,7 @@ function searchItems(input) {
 }
 ```
 
-And from there, it grew into a massive project that I continued to tinker with for about three yrs after. Up until 2021 I believe. This was before well before support for Async/Await was in Node or JS, so there are `callbacks` everywhere. But I feel that I keep the code base pretty clean for my first large project.
+And from there, it grew into a massive project that I continued to tinker with for about three yrs after. Up until 2021 I believe. This was before well before support for Async/Await was in Node or JS, so there are `callbacks` everywhere. But I feel that I keep the code base pretty clean for my first large NodeJS based project.
 
 ## Tech Used
 
