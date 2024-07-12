@@ -1,7 +1,7 @@
 ---
 layout: "../../layouts/BlogLayout.astro"
 title: "Destiny Seed Project"
-tags: ["blog", "php", "laravel", "seeding", "database"]
+tags: ["portfolio", "php", "laravel", "seeding", "database"]
 description: "Attempt at creating a package to seed a database, from Laravel, with data from Destiny the Game Manifest file"
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/v1635373637/blog/stock/pexels-markus-spiske-2061168_coxasy.jpg"
 image_alt: "A simple header image"

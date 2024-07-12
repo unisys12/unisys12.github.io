@@ -1,7 +1,7 @@
 ---
 layout: "../../layouts/BlogLayout.astro"
 title: "FTPTA Manager"
-tags: ["blog", "php", "laravel", "livewire", "self-employed"]
+tags: ["portfolio", "php", "laravel", "livewire", "self-employed"]
 description: "Building a project for my wife, without her permission."
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/v1635373637/blog/stock/pexels-markus-spiske-2061168_coxasy.jpg"
 image_alt: "A simple header image"
