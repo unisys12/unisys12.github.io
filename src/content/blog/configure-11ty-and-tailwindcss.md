@@ -89,6 +89,19 @@ module.exports = (config) => {
 
 For now, I think that's about it for the 11ty config. We will have a few other things to add later, but for now, let's move on.
 
+### Configure .gitignore
+
+Before we install anything, we need to get our `.gitignore` set-up!
+
+```ini
+node_modules
+_site
+localhost.cert
+localhost.key
+.cache
+.env
+```
+
 ### Add Tailwind CSS
 
 The workflow that I have settled on, over the last year or two, when it comes to TailwindCSS is like so:
