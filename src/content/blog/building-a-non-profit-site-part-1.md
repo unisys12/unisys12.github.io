@@ -3,7 +3,7 @@ layout: "../../layouts/BlogLayout.astro"
 title: Building an 11ty Site for Our Non-Profit
 tags: ["blog", "11ty", "ssg", "jamstack"]
 description: "Come along as I show you how I built a site for our non-profit"
-image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,f_auto/v1720813608/blog/stock/aldebaran-s-qtRF_RxCAo0-unsplash_bbmcd3.jpg"
+image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813608/blog/stock/aldebaran-s-qtRF_RxCAo0-unsplash_bbmcd3.jpg"
 image_alt: "A simple header image"
 ---
 
