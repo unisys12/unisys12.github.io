@@ -32,3 +32,13 @@ image_alt: "A simple header image"
 
 ## Lessons Learned
 ```
+
+## Break Points
+
+The media query break points I will be using are:
+| Breakpoint identifier | Media query | Minimum width breakpoint |
+|:--------------------------|:-----------------------------:|-------------------------:|
+| md | @media (min-width: 768px) | ≥ 768px |
+| lg | @media (min-width: 992px) | ≥ 992px |
+| xl | @media (min-width: 1200px) | ≥ 1200px |
+| xxl | @media (min-width: 1400px) | ≥ 1400px |

@@ -4,23 +4,26 @@ import { getCollection } from "astro:content";
 const blogPosts = await getCollection("blog");
 ---
 
-<BaseLayout title="Blog" />
-{
-  blogPosts.map((p) => (
-    <article>
-      <header>
-        <h1>{p.data.title}</h1>
-      </header>
-      <img src={p.data.image} alt={p.data.image_alt} />
-      <ul>
-        {p.data.tags.map((tag) => (
-          <li>{tag}</li>
-        ))}
-      </ul>
-      <section>
-        <p>{p.data.description}</p>
-        <a href={`/blog/${p.slug}`}>Read More</a>
-      </section>
-    </article>
-  ))
-}
+<BaseLayout title="Blog">
+  {
+    blogPosts.map((p) => (
+      <article class="card">
+        <header class="card-header">
+          <h1>{p.data.title}</h1>
+        </header>
+        <img src={p.data.image} alt={p.data.image_alt} />
+        <ul class="card-tags">
+          {p.data.tags.map((tag) => (
+            <li class="card-tag">{tag}</li>
+          ))}
+        </ul>
+        <section>
+          <p class="card-description">{p.data.description}</p>
+        </section>
+        <a href={`/blog/${p.slug}`} class="card-link-button">
+          Read More
+        </a>
+      </article>
+    ))
+  }
+</BaseLayout>

@@ -1,5 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const blogPosts = await getCollection("blog");
+const projects = await getCollection("portfolio");
+
+const postsCount = blogPosts.length;
+const projectsCount = projects.length;
 ---
 
-<BaseLayout title="Home" />
+<BaseLayout title="Home">
+  <article>
+    <p>
+      Hello! I have no idea how you ended up here, but otherwise, I will
+      appoligize for what seems like either a run of bad luck for you
+    </p>
+  </article>
+</BaseLayout>
