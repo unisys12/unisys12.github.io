@@ -23,7 +23,7 @@ I am using two different layouts for this simple site. And I will explain why.
 
 As you can see, the page is divided into two uneven columns. The division of these two columns are different depending on the page. So, let's take a look!
 
-_landing-layout.njk_
+_`src/_includes/landing_layout.njk`_
 
 ```liquid
 <body class="container mx-auto my-2">
@@ -39,7 +39,7 @@ _landing-layout.njk_
 </body>
 ```
 
-_base-layout.njk_
+_`src/_includes/base_layout.njk`_
 
 ```liquid
 <body class="container mx-auto my-2">
@@ -62,6 +62,8 @@ _base-layout.njk_
 Using `base_layout.njk` brings in [TailwindCSS Typography](https://github.com/tailwindlabs/tailwindcss-typography) to help with content layout and shifting. Where as the `landing_layout.njk` does not include that.
 
 Another thing that's different about the layouts is that one has several conditionals added to aid in loading assets that are not required on other pages. For a clearer picture, here are the other parts of the base_layout.
+
+_`src/_includes/base_layout.njk`_
 
 ```liquid
 ---
@@ -117,7 +119,7 @@ RESCUE_GROUPS_API_KEY=DXXRBHS8
 
 First, we need to add the [11ty Fetch](https://www.11ty.dev/docs/plugins/fetch/) library to our project. We don't technically have to use it, but it comes with built in caching, so why the heck not!
 
-_/\_data/dogs.js_
+_`src/_data/dogs.js`_
 
 ```js
 const Fetch = require("@11ty/eleventy-fetch");

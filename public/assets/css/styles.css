@@ -46,9 +46,25 @@ p > img {
     max-width:75dvw;
 }
 
+p > em {
+    font-weight: 600;
+}
+
+p > code {
+    font-weight: 500;
+    color: rgba(0,0,0, 0.925);
+    background: rgba(128, 128, 128, 0.397);
+    padding: 2px;
+    border-radius: 1px;
+}
+
 main > pre {
     min-width: min-content;
     text-wrap: balance;
+    margin-top: -10px;
+    padding: .5rem;
+    border: 1px solid gray;
+    border-radius: 5px;
 }
 
 /* Used when viewing a blog post */
