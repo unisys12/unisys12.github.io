@@ -44,8 +44,10 @@ Then running `npx @eleventy` from that directory you would end up with:
 
 Things can get a bit confusing like this, so the first thing I add to my `.eleventy.js` config file is:
 
+_`.eleventy.js`_
+
 ```js
-require('dotenv').config()
+require("dotenv").config();
 module.exports = (config) => {
   return {
     dir: {
@@ -53,13 +55,13 @@ module.exports = (config) => {
       ouput: "_site",
     },
   };
-})
+};
 ```
 
 ...and then create the `src` directory in the root of the project. This tells the `template-engine` to look for files in the `src` directory and output the build files to a new folder named `_site`. Now, after a build, your directory structure looks like the following:
 
 ```txt
-| _site
+| _site (built automagically!)
 | - index
 | - - index.html
 | src
