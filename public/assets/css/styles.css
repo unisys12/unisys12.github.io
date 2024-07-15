@@ -42,6 +42,23 @@ a {
     color: rgba(11, 2, 39, 0.95);
 }
 
+.summary {
+    display: grid;
+    margin: 0 1.25rem;
+}
+
+.summary-header {
+    text-align: center;
+}
+
+.summary-content > p {
+    text-wrap: balance;
+}
+
+.profile-image {
+    max-width: 100%;
+}
+
 p > img {
     max-width:75dvw;
 }
@@ -171,5 +188,13 @@ main > pre {
 
     .header-nav {
         justify-self: end;
+    }
+
+    .summary {
+        grid-template-columns: 1fr 33%;
+    }
+
+    .profile-image>figcaption {
+        padding: 0 1rem;
     }
 }

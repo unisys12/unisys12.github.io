@@ -1,5 +1,5 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import LandingLayout from "../layouts/LandingLayout.astro";
 import { getCollection } from "astro:content";
 
 const blogPosts = await getCollection("blog");
@@ -9,11 +9,50 @@ const postsCount = blogPosts.length;
 const projectsCount = projects.length;
 ---
 
-<BaseLayout title="Home">
-  <article>
+<LandingLayout title="Home">
+  <article class="summary-content">
+    <header class="summary-header">
+      <h1>Summary</h1>
+    </header>
     <p>
       Hello! I have no idea how you ended up here, but otherwise, I will
       appoligize for what seems like either a run of bad luck for you
     </p>
+    <p>
+      In February of 2020, my wife started her own business as a dog trainer. In
+      November of 2020, she was scheduled to have surgery which was going to
+      require a 3 to 4-week recovery time. We had planned for this, my employer
+      included, by me saving all my vacation time for this period. At around the
+      same time is when COVID-19 started having a greater impact locally. I
+      ended up being off work for 2 months straight. During this period, my wife
+      and I discussed me leaving my then current job and coming home to help
+      her. She had tried hiring several different people so they could assist
+      her and was unable to find someone with a drive and passion for animals,
+      coupled with a sense of responsibility. For various reasons, I was looking
+      for a change. Not so much in my carrier, per-say. But simply a chance to
+      do something more. After 16 years at Rayco, Inc, I felt like I had nowhere
+      else to go or anything else to offer. And learning how to train dogs was
+      going to be a whole new world that I was free to explore. Since I was
+      going to be self-employed, the only ladder I had to climb was the one I
+      propped up for myself. If I wanted to go higher, at any time, I could. And
+      I did! I have enjoyed this time tremendously and do not regret my decision
+      to leave my old job in the slightest. During these last few years, I have
+      grown so much and even at 50 years of age I feel as though I have matured.
+      Slightly. I have a new-found respect for business owners and the mental
+      capacity needed to maintain that business. I have never worked harder in
+      my life than I have since leaving my old job.
+    </p>
+
+    <p>
+      Technology, and science in general, is still one of my deepest passions
+      and I find ways to incorporate it whenever I can. Be it through my 25+ yrs
+      of web development experience or figuring out ways to utilize our Office
+      365 Grant to the fullest.
+    </p>
   </article>
-</BaseLayout>
+  <img
+    src="https://res.cloudinary.com/ftpta-com/image/upload/f_auto,q_auto/v1616786121/Boudreaux/20201026_201311_szrmhq.jpg"
+    alt="profile image"
+    class="profile-image"
+  />
+</LandingLayout>
