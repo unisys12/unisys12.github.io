@@ -74,7 +74,7 @@ enum DestinyEnergyType: int
 
 ## Lessons Learned
 
-I learned to walk away from _neat_ projects, like this. There comes a point where there is so much pain in pushing a project forward, that even the knowledge you **might** gain from it, is not worth it. That knowledge can be gained in far better ways. Way did I come to this conclusion?
+I learned to walk away from _neat_ projects, like this. There comes a point where there is so much pain in pushing a project forward, that even the knowledge you **might** gain from it, is not worth it. That knowledge can be gained in far better ways. Why did I come to this conclusion?
 
 _Seeding Relationships_
 
