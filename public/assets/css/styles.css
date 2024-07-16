@@ -171,6 +171,20 @@ main > pre {
     box-shadow: inset 0.5rem 0 0 #800;
 }
 
+footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+}
+
+.icon {
+    max-height: 4vh;
+}
+
+.codepen:hover {
+    color: greenyellow;
+}
+
 @media only screen and (min-width: 768px) {
 
     body {
@@ -196,5 +210,9 @@ main > pre {
 
     .profile-image>figcaption {
         padding: 0 1rem;
+    }
+
+    footer {
+        justify-content: space-between;
     }
 }
