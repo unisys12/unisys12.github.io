@@ -1,8 +1,18 @@
+---
+const { props } = Astro.props;
+const path = Astro.url.pathname;
+---
+
 <header class="content-header">
   <h1>Unisys12</h1>
+  <div>
+    <pre><code>{path}</code></pre>
+  </div>
   <nav class="header-nav">
-    <a href="/">Home</a>
-    <a href="/blog">Blog</a>
-    <a href="/portfolio">Portfolio</a>
+    <a href="/" class={path == "/" ? "active" : ""}>Home</a>
+    <a href="/blog" class={path == "/blog" ? "active" : ""}>Blog</a>
+    <a href="/portfolio" class={path == "/portfolio" ? "active" : ""}
+      >Portfolio</a
+    >
   </nav>
 </header>

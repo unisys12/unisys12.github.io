@@ -33,6 +33,19 @@
     margin-bottom: 1rem;
 }
 
+.header-nav > a {
+    font-weight: 500;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.active {
+    border-bottom: 1px solid rgba(25, 10, 75, 0.95);;
+}
+
+.header-nav>a:hover {
+    opacity: 50%;
+}
+
 a {
     text-decoration: none;
     color: rgba(25, 10, 75, 0.95);
@@ -213,7 +226,7 @@ footer {
     }
 
     .content-header {
-        grid-template-columns: minmax(150px, 25%) 1fr;
+        grid-template-columns: minmax(150px, 25%) 1fr 1fr;
         place-items: center;
     }
 
