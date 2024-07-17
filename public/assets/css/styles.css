@@ -226,7 +226,7 @@ footer {
     }
 
     .content-header {
-        grid-template-columns: minmax(150px, 25%) 1fr 1fr;
+        grid-template-columns: minmax(150px, 25%) 1fr;
         place-items: center;
     }
 
