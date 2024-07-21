@@ -1,8 +1,9 @@
 ---
 layout: "../../layouts/BlogLayout.astro"
 title: Building an 11ty Site for Our Non-Profit
-tags: ["blog", "11ty", "ssg", "jamstack"]
+publishDate: 2024-07-13
 description: "Come along as I show you how I built a site for our non-profit"
+tags: ["blog", "11ty", "ssg", "jamstack"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813608/blog/stock/aldebaran-s-qtRF_RxCAo0-unsplash_bbmcd3.jpg"
 image_alt: "A simple header image"
 ---
@@ -197,8 +198,8 @@ _`./.cache/11ty-fetch-6b2afcc92c4976f8a13d4541bf13d1`_
 
 ```json
 [
-  { "6b2afcc92c4976f8a13d4541bf13d1": "1" },
-  { "cachedAt": 1719191336440, "type": "2" },
+  {"6b2afcc92c4976f8a13d4541bf13d1": "1"},
+  {"cachedAt": 1719191336440, "type": "2"},
   "json"
 ]
 ```

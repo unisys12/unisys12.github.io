@@ -1,8 +1,9 @@
 ---
 layout: "../../layouts/BlogLayout.astro"
 title: Animated Card
-tags: ["blog", "11ty", "ssg", "jamstack", "open graph"]
 description: "Attempting to learn how an animated social media card works"
+publishDate: 2024-07-18
+tags: ["blog", "11ty", "ssg", "jamstack", "open graph"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813611/blog/stock/lucas-k-wQLAGv4_OYs-unsplash_c3nxua.webp"
 image_alt: "A simple header image"
 ---

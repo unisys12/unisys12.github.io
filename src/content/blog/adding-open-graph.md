@@ -1,8 +1,9 @@
 ---
 layout: "../../layouts/BlogLayout.astro"
 title: Adding Open Graph Protocol to Our Non-Profit Site
-tags: ["blog", "11ty", "ssg", "jamstack", "open graph"]
 description: "Adding Open Graph Protocol to our non-profit site"
+publishDate: 2024-07-18
+tags: ["blog", "11ty", "ssg", "jamstack", "open graph"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp"
 image_alt: "A simple header image"
 ---
