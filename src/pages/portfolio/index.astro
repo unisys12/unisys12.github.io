@@ -2,9 +2,13 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 const projects = await getCollection("portfolio");
+const img_url = "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_medium,f_auto,w_200/v1720813611/blog/stock/vincentiu-solomon-ln5drpv_ImI-unsplash_ihdhru.webp"
 ---
 
-<BaseLayout title="Portfolio">
+<BaseLayout 
+  title="Portfolio" 
+  description="A selection of projects I have worked on or created with discussion surrounding them."
+  image={img_url}>
   {
     projects.map((p) => (
       <article class="card">

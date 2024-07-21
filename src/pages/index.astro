@@ -7,9 +7,13 @@ const projects = await getCollection("portfolio");
 
 const postsCount = blogPosts.length;
 const projectsCount = projects.length;
+const img_url = "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_medium,f_auto,w_200/v1720813611/blog/stock/vincentiu-solomon-ln5drpv_ImI-unsplash_ihdhru.webp"
 ---
 
-<LandingLayout title="Home">
+<LandingLayout 
+  title="Home"  
+  description="A site I have put together, for myself, so that I can talk about and share on topics related mainly to web development."
+  image={img_url}>
   <article class="summary-content">
     <header class="summary-header">
       <h1>Summary</h1>
