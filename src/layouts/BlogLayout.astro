@@ -10,6 +10,7 @@ const { frontmatter } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={frontmatter.description}>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={ frontmatter.title } />
     <meta property="og:url" content={ Astro.url } />
