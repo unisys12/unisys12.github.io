@@ -11,6 +11,7 @@ const { frontmatter } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={frontmatter.description}>
+    <meta name="keywords" content={frontmatter.tags}>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={ frontmatter.title } />
     <meta property="og:url" content={ Astro.url } />
