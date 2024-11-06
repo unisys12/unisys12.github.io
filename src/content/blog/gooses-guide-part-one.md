@@ -10,6 +10,8 @@ image_alt: "A simple header image"
 
 # Goose's Guide
 
+![Space inspired background image](https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,f_auto/v1720813611/blog/stock/vincentiu-solomon-ln5drpv_ImI-unsplash_ihdhru.jpg)
+
 This will be a three part series on handling marginally complex data structures in an application environment. Part One will simply read the data from a flat file. Performing all queries directly on the flat file. No databases or ORMs will be used. Part Two will use a rudimentary database structure without the use of relationships. Finally, part three will utilize relationships and more advanced methods of data abstraction.
 
 Timing and analytics will attempt to be monitored, logged or tracked so that comparisons can be made between each of the methods.
@@ -28,9 +30,9 @@ Usage on the site, like I mentioned before, was very rudimentary. There is a bas
 
 Given all that, let's move on and first re-create the old app. From there, we will progressively add functionality to the app. The tech stack we will be using will be PHP v8.3 for the language, Laravel v11 for the framework, Tailwind v3 for the CSS. Later, we will add SQLite 3 as the database and Livewire v3 to the Laravel app for filtering and a bit of creativity... maybe. For each of these stages, I will add [Laravel Debug Bar](https://github.com/barryvdh/laravel-debugbar) just as a means of gathering some stats on the page loads from the server, query performance, etc. By no means is this going to be a detailed breakdown of performance metrics. Just a 10,000 view and only to see if our code architecture choices have an impact on performance.
 
-> ## Part One
->
-> Read data directly from flat file
+## Part One
+
+<sub>Read data directly from flat file</sub>
 
 The flat file we will be using is not going to be a CSV this time around. In previous attempts working with on this project, I found that CSV is not the best option here. So, I converted the spreadsheet to a TAB Delimited file. The file was littered with variously placed line-break (`\n`) and return (`\r`) characters. This was due to `word-wrap` being applied to the cells. It would have been impossible to remove these programmatically and maintain a usable format. The easiest solution was to simply select all the cells and remove `word-wrap`. I actually had to do this twice. Now, we have a much cleaner document to work with. Aside from the very last entry... haven't looked into that yet _(EDIT: It was a missing problem description)_. Don't worry! There are over 50k entries in the file. We have plenty to work with.
 
@@ -42,16 +44,9 @@ We know that we are going to be fully refactoring this, let's start out with the
 
 Checking the output of `file_get_contents` on our flat-file:
 
-> ```shell
-> A019/A045/A046
-> \t
-> "DEAD MACHINE, NO OPERATION"
-> \t
-> "[dead machine, no display or fans] - power supply"
-> \t
-> 4/4/2008
-> \n
-> ```
+```shell
+A019/A045/A046\t"DEAD MACHINE, NO OPERATION"\t"[dead machine, no display or fans] - power supply"\t4/4/2008\n
+```
 
 From the output above, we know that we can use `explode("\n", $file)` to gain access to each row. Explode returns an array so we will next loop through that and use explode again, this time passing `"\t"` as our separator. This will gain us access to each row and column.
 
@@ -177,7 +172,10 @@ Now, we can actually put this to use. Since all we need on the product selection
 Update our route to actually return the view, with the variable that holds our product codes.
 
 ```php
+$guide = new GoosesGuideHelper(asset('GG_2014_2.txt'));
 
+$codes = $guide->getCodes();
+return view('welcome')->with('codes', $codes);
 ```
 
 Then put to work in a that view
@@ -225,7 +223,7 @@ $problems = $guide->getProblems($code);
 dd(count($problems));
 ```
 
-We know it is working, since all unique problems originally totaled 2250 down to 13.
+We know it is working, since all unique problems originally totaled 2250 and that number is down to 13.
 
 This is new method `getProblems` that we added to our GoosesGuideHelper class.
 
@@ -314,3 +312,5 @@ Route::get('/solutions', function () {
   </div>
 </x-layout>
 ```
+
+Actually, this is not all that bad as far as performance goes.
