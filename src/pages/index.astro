@@ -4,9 +4,6 @@ import { getCollection } from "astro:content";
 
 const blogPosts = await getCollection("blog");
 const projects = await getCollection("portfolio");
-
-const postsCount = blogPosts.length;
-const projectsCount = projects.length;
 const img_url = "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_medium,f_auto,w_200/v1720813611/blog/stock/vincentiu-solomon-ln5drpv_ImI-unsplash_ihdhru.webp"
 ---
 
