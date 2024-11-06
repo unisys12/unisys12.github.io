@@ -147,16 +147,15 @@ main > pre {
 
 /* Used when viewing a blog post */
 .blog-display {
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: auto 5rem;
+  /* place-items: center; */
 }
 
-.blog-display > h2 {
-  place-content: start;
-}
-
-.blog-display > h1 {
-  place-content: center;
+.blog-display > h2,
+.blog-display > h3 {
+  margin-bottom: 0;
 }
 
 /* Portfolio & Blog Cards */
