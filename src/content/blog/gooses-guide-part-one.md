@@ -314,3 +314,9 @@ Route::get('/solutions', function () {
 ```
 
 Actually, this is not all that bad as far as performance goes.
+
+![Laravel Debug Bar with metrics](https://res.cloudinary.com/dtm8qhbwk/image/upload/v1730935048/blog/gg_part1_finish_cgrslu.jpg)
+
+That's 130ms boot time for the app, followed by 122ms for the application code to run. Total application time is 253ms using 17mb of memory. I gotta admit, I was really expecting far worse. This varies by a fairly wide margin though. I've got some results for total application time below 150ms. Just depends on the amount of returns really.
+
+All in all, even though my code could be cleaned up a bit more _(probably)_ this is very usable. Heck, it's how I should've done it before really. I would actually like to do this same example something like Slim. Uhm!
