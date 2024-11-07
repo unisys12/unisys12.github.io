@@ -320,3 +320,5 @@ Actually, this is not all that bad as far as performance goes.
 That's 130ms boot time for the app, followed by 122ms for the application code to run. Total application time is 253ms using 17mb of memory. I gotta admit, I was really expecting far worse. This varies by a fairly wide margin though. I've got some results for total application time below 150ms. Just depends on the amount of returns really.
 
 All in all, even though my code could be cleaned up a bit more _(probably)_ this is very usable. Heck, it's how I should've done it before really. I would actually like to do this same example something like Slim. Uhm!
+
+In part two, I will refactor this to use SQLite 3 and query the DB instead of just reading from a flat-file.
