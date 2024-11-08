@@ -15,3 +15,23 @@ const { Content } = await post.render();
 ---
 
 <Content />
+
+<style is:global>
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Open Sans", Arial, Helvetica;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+  }
+
+  p {
+    letter-spacing: 0.025em;
+  }
+}
