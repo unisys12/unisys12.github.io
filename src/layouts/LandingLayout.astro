@@ -67,4 +67,35 @@ const {title, description, image} = Astro.props;
   display: grid;
   margin: 0 1.25rem;
 }
+
+@media only screen and (min-width: 768px) {
+  body {
+    margin: 0 4rem;
+  }
+
+  .content-header {
+    grid-template-columns: minmax(150px, 25%) 1fr;
+    place-items: center;
+  }
+
+  .content-header > h1 {
+    justify-self: start;
+  }
+
+  .header-nav {
+    justify-self: end;
+  }
+
+  .summary {
+    grid-template-columns: 1fr 33% 33%;
+  }
+
+  .profile-image > figcaption {
+    padding: 0 1rem;
+  }
+
+  footer {
+    justify-content: space-between;
+  }
+}
 </style>
