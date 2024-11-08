@@ -20,10 +20,10 @@ const {title, description, image} = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
-      rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+    rel="stylesheet"
     />
-    <link rel="stylesheet" href="/public/assets/css/styles.css" />
+    <!-- <link rel="stylesheet" href="/public/assets/css/styles.css" /> -->
   </head>
   <body>
     <div class="container">
@@ -35,3 +35,32 @@ const {title, description, image} = Astro.props;
     </div>
   </body>
 </html>
+
+<style is:global>
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Open Sans", Arial, Helvetica;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+  }
+
+  p {
+    letter-spacing: 0.025em;
+  }
+}
+</style>
+
+<style>
+.cards-display {
+  display: grid;
+  row-gap: 2rem;
+  margin-bottom: 2rem;
+}
+</style>
