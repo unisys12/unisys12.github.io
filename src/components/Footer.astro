@@ -1,4 +1,10 @@
 ---
+import { Image } from "astro:assets";
+import FBImg from "../assets/imgs/facebook-svg.svg"
+import GHImg from "../assets/imgs/github-svg.svg"
+import TwImg from "../assets/imgs/twitter-svg.svg"
+import GLImg from "../assets/imgs/gitlab-svg.svg"
+import CpImg from "../assets/imgs/codepen-svg.svg"
 const date = new Date();
 const year = date.getFullYear();
 ---
@@ -22,45 +28,40 @@ footer {
   <div class="footer-nav">
     <nav class="">
       <a href="https://codepen.io/unisys12"
-        ><img
-          loading="lazy"
-          src="/assets/imgs/codepen-svg.svg"
+        ><Image
+          src={CpImg}
           class="icon"
           id="codepen"
           alt="codepen"
         /></a
       >
       <a href="https://twitter.com/unisys12">
-        <img
-          loading="lazy"
-          src="/assets/imgs/twitter-svg.svg"
+        <Image
+          src={TwImg}
           class="icon"
           id="twitter"
           alt="twitter"
         />
       </a>
       <a href="https://www.facebook.com/profile.php?id=100081839772235"
-        ><img
-          loading="lazy"
-          src="/assets/imgs/facebook-svg.svg"
+        ><Image
+          src={FBImg}
           class="icon"
           id="facebook"
           alt="facebook"
         /></a
       >
       <a href="https://github.com/unisys12"
-        ><img
-          loading="lazy"
-          src="/assets/imgs/github-svg.svg"
+        ><Image
+          src={GHImg}
           class="icon"
           id="github"
           alt="github"
         /></a
       >
       <a href="https://gitlab.com/unisys12"
-        ><img
-          loading="lazy"
-          src="/assets/imgs/gitlab-svg.svg"
+        ><Image
+          src={GLImg}
           class="icon"
           id="gitlab"
           alt="gitlab"
