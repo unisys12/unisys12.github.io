@@ -1,4 +1,5 @@
 ---
+import '../assets/css/styles.css';
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 const {title, description, image} = Astro.props;
@@ -23,7 +24,6 @@ const {title, description, image} = Astro.props;
       href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
       rel="stylesheet"
     />
-    <!-- <link rel="stylesheet" href="/public/assets/css/styles.css" /> -->
   </head>
   <body>
     <div class="container">
@@ -35,67 +35,3 @@ const {title, description, image} = Astro.props;
     </div>
   </body>
 </html>
-
-<style is:global>
-@layer reset {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  body {
-    margin: 0;
-    font-family: "Open Sans", Arial, Helvetica;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-  }
-
-  p {
-    letter-spacing: 0.025em;
-  }
-}
-</style>
-
-<style>
-.container {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
-
-.summary {
-  display: grid;
-  margin: 0 1.25rem;
-}
-
-@media only screen and (min-width: 768px) {
-  body {
-    margin: 0 4rem;
-  }
-
-  .content-header {
-    grid-template-columns: minmax(150px, 25%) 1fr;
-    place-items: center;
-  }
-
-  .content-header > h1 {
-    justify-self: start;
-  }
-
-  .header-nav {
-    justify-self: end;
-  }
-
-  .summary {
-    grid-template-columns: 1fr 33% 33%;
-  }
-
-  .profile-image > figcaption {
-    padding: 0 1rem;
-  }
-
-  footer {
-    justify-content: space-between;
-  }
-}
-</style>
