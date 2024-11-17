@@ -14,6 +14,9 @@ const img_url = "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_med
       <article class="card">
         <header class="card-header">
           <h1>{p.data.title}</h1>
+          <section>
+            <p class="card-description">{p.data.description}</p>
+          </section>
         </header>
         <img src={p.data.image} alt={p.data.image_alt} />
         <ul class="card-tags">
@@ -21,9 +24,6 @@ const img_url = "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_med
             <li class="card-tag">{tag}</li>
           ))}
         </ul>
-        <section>
-          <p class="card-description">{p.data.description}</p>
-        </section>
         <a href={`/portfolio/${p.slug}`} class="card-link-button">
           Read More
         </a>
