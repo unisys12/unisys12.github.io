@@ -149,6 +149,100 @@ footer {
   max-width: 50px;
 }
 
+/**
+ * Blog/Portfolio Pages
+ */
+
+blockquote {
+  background: rgba(25, 10, 75, 0.95);
+  text-align: center;
+  color: #fffccc;
+  font-style: italic;
+  padding: 0 0.75rem;
+  border-radius: 3px;
+  box-shadow: 5px 9px 6px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+blockquote:hover {
+  color: #fff;
+  box-shadow: 1px 5px 3px rgb(0, 0, 0, 0.25);
+}
+
+blockquote > p > a {
+  color: #fffccc;
+  text-decoration: underline;
+}
+
+p > img {
+  max-width: 75dvw;
+  margin: 0 auto;
+}
+
+p > em {
+  font-weight: 600;
+}
+
+p > code {
+  font-weight: 500;
+  color: rgba(245, 245, 245, 0.925);
+  background: rgba(128, 128, 128, 0.397);
+  padding: 2px;
+  border-radius: 1px;
+}
+
+main > pre {
+  min-width: min-content;
+  text-wrap: balance;
+  margin-top: -10px;
+  padding: 0.5rem;
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+/* Used when viewing a blog post */
+.blog-display {
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-display > h1 {
+  text-align: center;
+  margin-bottom: 0;
+}
+
+.blog-display > h2,
+.blog-display > h3 {
+  margin-bottom: 0;
+}
+
+/* Portfolio & Blog Cards */
+
+/* Syntax Highlight Code Diffs */
+.line.highlighted {
+  background: #65b10319;
+}
+
+.line.diff.add::before {
+  content: "+";
+  color: #fff;
+}
+
+.line.diff.remove::before {
+  content: "-";
+  color: #e2878780;
+}
+
+.line.diff.add {
+  background: #65b10319;
+  box-shadow: inset 0.5rem 0 0 #487e02;
+}
+
+.line.diff.remove {
+  background: #8004;
+  box-shadow: inset 0.5rem 0 0 #800;
+}
+
 @media only screen and (min-width: 768px) {
   .summary-header {
     text-align: left;
