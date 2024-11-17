@@ -2,42 +2,6 @@
 const path = Astro.url.pathname;
 ---
 
-<style>
-.content-header {
-  display: grid;
-  place-items: center;
-}
-
-.header-nav {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1rem;
-}
-
-.header-nav > a {
-  font-weight: 500;
-}
-
-.active {
-  border-bottom: 1px solid rgba(25, 10, 75, 0.95);
-}
-
-a {
-  text-decoration: none;
-  color: rgba(5, 1, 19, 0.95);
-  transition: text-shadow 0.3s;
-  font-weight: 500;
-}
-
-a:hover {
-  text-shadow: 0 0 0.65px #333, 0 0 0.65px #333;
-}
-
-.header-nav > a:hover {
-  color: rgba(11, 2, 39, 0.95);
-}
-</style>
-
 <header class="content-header">
   <h1>Unisys12</h1>
   <nav class="header-nav">
