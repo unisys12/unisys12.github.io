@@ -1,0 +1,109 @@
+:root {
+  --bg-color: hsl(60, 3%, 25%);
+}
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    font-family: "Open Sans", Arial, Helvetica;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+    background-color: hsl(60, 3%, 14%);
+    color: hsl(from var(--bg-color) h s 85%);
+  }
+
+  p {
+    letter-spacing: 0.025em;
+  }
+}
+
+.container {
+  display: grid;
+  grid-auto-rows: minmax(1fr, 33%);
+  gap: 1rem;
+  place-items: center;
+  padding: 0 2rem;
+  word-wrap: normal;
+}
+
+.content-header {
+  display: grid;
+  place-items: center;
+}
+
+.header-nav {
+  display: flex;
+  gap: 2rem;
+}
+
+.header-nav > a {
+  color: hsl(from var(--bg-color) h s 95%);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-header {
+  text-align: center;
+}
+
+.summary-content {
+  display: grid;
+  grid-auto-flow: rows;
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+.profile-image {
+  max-width: 75dvw;
+}
+
+figure > figcaption {
+  margin-top: -8px;
+  padding: 0.5rem 0;
+  text-align: center;
+  background-color: aliceblue;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  color: hsl(60, 3%, 14%);
+}
+
+footer {
+  display: grid;
+  grid-auto-flow: row;
+  place-items: center;
+  max-width: 90%;
+  flex-wrap: wrap;
+}
+
+.icon {
+  max-height: 50px;
+  max-width: 50px;
+}
+
+@media only screen and (min-width: 768px) {
+  .summary-header {
+    text-align: left;
+  }
+
+  /* Centers and aligns image to figcaption, stretches caption across image */
+  .profile {
+    display: flex;
+    align-items: stretch;
+    flex-direction: column;
+    margin: 0 auto;
+  }
+
+  .signature {
+    place-self: end;
+    padding-right: 4rem;
+  }
+}
