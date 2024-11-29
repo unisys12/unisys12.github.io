@@ -287,4 +287,25 @@ main > pre {
     place-self: end;
     padding-right: 4rem;
   }
+
+  .card {
+    grid-template-columns: minmax(150px, 1fr) 1fr;
+  }
+
+  .card > img {
+    margin-bottom: 1rem;
+    border-radius: 4px;
+  }
+
+  .card > section {
+    margin-top: 1rem;
+  }
+
+  .card-tags {
+    align-self: end;
+  }
+
+  .card-tag {
+    font-size: smaller;
+  }
 }
