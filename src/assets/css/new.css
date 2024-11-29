@@ -17,6 +17,7 @@
     text-rendering: optimizeLegibility;
     background-color: hsl(60, 3%, 14%);
     color: hsl(from var(--bg-color) h s 85%);
+    text-wrap: pretty;
   }
 
   p {
@@ -248,7 +249,33 @@ main > pre {
     text-align: left;
   }
 
-  /* Centers and aligns image to figcaption, stretches caption across image */
+  .content-header {
+    width: 100%;
+    grid-template-columns: 25% 1fr;
+  }
+
+  .content-header > h1 {
+    justify-self: start;
+  }
+
+  .header-nav {
+    justify-self: end;
+  }
+
+  .summary {
+    display: grid;
+    grid-template-columns: 33% 1fr 33%;
+    max-width: 100%;
+  }
+
+  .profile-image {
+    max-width: 25dvw;
+  }
+
+  .profile-image > figcaption {
+    padding: 0 1rem;
+  }
+
   .profile {
     display: flex;
     align-items: stretch;
