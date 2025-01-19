@@ -94,11 +94,11 @@ Next will will add our select element to the component.
 </form>
 ```
 
+Now that we know this works... I actually don't want to use this now. I will use it for other elements, just not this example. The reason is because the age groups are separated by the animals age. And the very next field that I will be adding to the form is a date-picker for the animals birthday. If I have the birthday, I can determine the animals age, and from that I can determine the age group automatically. Why not do that? This form is already very large, so if we can remove a few fields to make it even slightly smaller, I think that would be a good thing.
+
 ## Using Enumeration Methods
 
-Now that we know this works... I actually don't want to use this now. The reason is because the age groups are separated by the animals age. And the very next field that I will be adding to the form is a date-picker for the animals birthday. If I have the birthday, I can determine the animals age, and from that I can determine the age group automatically. Why not do that? This form is already very large, so if we can remove a few fields to make it even slightly smaller, I think that would be a good thing.
-
-To determine the dogs appropriate age group, I can add a method to the enum class. This allows all logic for an animals age group to live in one place.
+To determine the dogs appropriate age group, I can add a method to the enum class that will do just that. This allows all logic for an animals age group to live in one place.
 
 `app/Enums/AgeGroup.php`
 
@@ -136,7 +136,7 @@ enum AgeGroup: string
 }
 ```
 
-As you can see, in the example above, all we need to do is pass in the number of years for the animal and this enum method will return a string that represents the age group. Now, determining the animals age is not that difficult. We can utilize Carbon for that and pass the results to the new method above. This is perfect spot to utilize [Livewire Computed Properties](https://livewire.laravel.com/docs/computed-properties) within our component.
+As you can see, in the example above, all we need to do is pass in the number of years old the animal is and this enum method will return a string that represents the age group. Now, determining the animals age is not that difficult. We can utilize Carbon for that and pass the results to the new method above. This is perfect spot to utilize [Livewire Computed Properties](https://livewire.laravel.com/docs/computed-properties) within our component.
 
 `resources/views/livewire/create-animal.blade.php`
 
@@ -151,7 +151,7 @@ As you can see, in the example above, all we need to do is pass in the number of
 </div>
 ```
 
-Notice in the date element above, I am using `blur` on the binding of the model. This allows us to update the form property `birthdate` when we remove focus of the element, not on form submission.
+Notice in the date element above, I am using `blur` on the binding of the model. This allows us to update the form property `birthdate` when we remove focus of the element, not on form submission. In turn, this allows the age_group property to update, live.
 
 `app/Livewire/CreateAnimal.php`
 
@@ -165,7 +165,7 @@ public function getAgeGroup()
 }
 ```
 
-Now we just need some way to call this computed property above, and this took the most time to figure out. Technically, your supposed call this method within your Livewire component class. But this case, I need to call it when the form.birthdate property is updated. Thinking about it now, I could dispatch an event on change by adding a bit of javascript that ties it all together. But, this is what I came up with in the meantime.
+Now we just need some way to call this computed property above, and this took the most time to figure out. Technically, your supposed call this method within your Livewire component class. But in this case, I need to call it when the form.birthdate property is updated. Thinking about it now, I could dispatch an event on change by adding a bit of javascript that ties it all together. But, this is what I came up with in the meantime.
 
 ```html
 <div>
@@ -175,12 +175,17 @@ Now we just need some way to call this computed property above, and this took th
     placeholder="{{ $this->getAgeGroup }}"
     wire:model="form.age_group"
     disabled="true"
+    readonly="true"
   />
 </div>
 ```
 
-**Note**: Notice that I am calling the computed property method on the placeholder of a disabled element. _I don't this this is would be considered an approved way of doing this. Try it at your own risk!_ This is a This is more for testing purposes. Just to see if it works correctly and it does! Submitting the form passes the data along nicely. In practice though, I would use a hidden element so that I can actually remove it from the view completely. By the way, this is a [WireUI Input Component](https://wireui.dev/components/input), which I will be using throughout the project. By setting the `disabled` property to `true`, the placeholder attribute of the element itself is not rendered in the DOM that I can see.
+**Note**: Notice that I am calling the computed property method on the placeholder of a disabled element. _I don't this this is would be considered an approved way of doing this. Try it at your own risk!_ This is more for testing purposes, just to see if it works correctly and it does! Submitting the form passes the data along nicely. In practice though, I would use a hidden element so that I can actually remove it from the view completely. By the way, this is a [WireUI Input Component](https://wireui.dev/components/input), which I will be using throughout the project. By setting the `disabled` property to `true`, as well as the `readonly` property to `true`, we remove the possibility that the user might change this value to something unexpected. The placeholder attribute of the element itself is not rendered in the DOM that I can see.
 
 ## Summary
 
-This project currently has 19 enums for different animal attributes and I cannot wait to play with others. Most of them will not require such things as this, but that's fine.
+This project currently has 19 enums for different animal attributes, with more to added as I progress through the project, and I cannot wait to play with others. Most of them will not require such things as this, but that's fine.
+
+## Update
+
+I have to be honest here. This feels like some kind of super power! I used the above method on another element combo and it just works.

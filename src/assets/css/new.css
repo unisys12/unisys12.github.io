@@ -184,6 +184,14 @@ p > em {
   font-weight: 600;
 }
 
+p > a {
+  color: hsl(172, 89%, 90%);
+}
+
+p > a:hover {
+  color: hsl(172, 19%, 80%);
+}
+
 p > code {
   font-weight: 500;
   color: rgba(245, 245, 245, 0.925);
