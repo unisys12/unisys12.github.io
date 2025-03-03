@@ -177,7 +177,7 @@ blockquote > p > a {
 
 p > img {
   max-width: 75dvw;
-  margin: 0 auto;
+  margin: 0 10vw;
 }
 
 p > em {

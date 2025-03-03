@@ -14,10 +14,10 @@ const img_url="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_mediu
       <article class="card">
         <header class="card-header">
           <h1>{p.data.title}</h1>
+          <section>
+            <p class="card-description">{p.data.description}</p>
+          </section>
         </header>
-        <section>
-          <p class="card-description">{p.data.description}</p>
-        </section>
         <img src={p.data.image} alt={p.data.image_alt} />
         <ul class="card-tags">
           {p.data.tags.map((tag) => (
