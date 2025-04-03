@@ -16,7 +16,6 @@ image_alt: "A simple header image"
 
 Create a browser extension that, once enabled, will allow the user to play Destiny and get Grimoire as well as other game related lore delivered to their browser in real time. In short, try to get as close to giving the player "in-game lore" without our code actually being in the game.
 
-![Sample Image](https://camo.githubusercontent.com/754c1a8475f8cb656be7c09990a3ca66a96d1d27bc290e4395b887c8bcb32fed/68747470733a2f2f64726976652e676f6f676c652e636f6d2f75633f6578706f72743d766965772669643d30422d6b4b43496d3874573467515774425232737459304e305a4451)
 
 ## Tech Used
 
