@@ -1,6 +1,6 @@
 {
   "name": "blogv2",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Personal Blog",
   "main": "./src/index.html",
   "scripts": {
