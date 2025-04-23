@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Adding Open Graph Protocol to Our Non-Profit Site</h1>
+<p>If you are unfamiliar with the <a href="https://ogp.me/">Open Graph Protocol</a>, I would highly suggest you get yourself aquatinted. It's not anything very technical, like you might think, but it is going to be help out a ton when it comes how people view your site going forward.</p>
+<blockquote>
+<p>While many different technologies and schemas exist and could be combined together, there isn't a single technology which provides enough information to richly represent any web page within the social graph. The Open Graph protocol builds on these existing technologies and gives developers one thing to implement. Developer simplicity is a key goal of the Open Graph protocol which has informed many of the technical design decisions.</p>
+</blockquote>
+<p><em>copy from ogp.me</em></p>
+<p>First and foremost, when you share a link to your website on say a social media site, it can look pretty boring. By adding Open Graph meta properties to your site head, you can have <em>some</em> control in how that looks.</p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,g_face,f_auto/v1721184392/blog/facebook_post_examply_yddivj.webp" alt="Facebook Post w/o Open Graph Meta"></p>
+<p><em>Facebook Post w/o Open Graph Meta Tags</em></p>
+<p>The items that we are going to focus on, for now, are 5 properties:</p>
+<ul>
+<li>og:title : &quot;The title of the object as it should appear within the graph&quot; <em>Ex: &quot;For The Puppies Foundation, Inc&quot;</em></li>
+<li>og:type : &quot;The type of your object, <em>e.g., &quot;movie&quot;</em>. Depending on the type you specify, other properties may also be required.&quot;</li>
+<li>og:url : &quot;The canonical URL of your object that will be used as its permanent ID in the graph&quot; <em>Ex: &quot;https://www.forthepuppiesfoundation.org&quot;</em></li>
+<li>og:description : &quot;A one to two sentence description of your object.&quot; <em>Ex:&quot;Application for adoption through For The Puppies Foundation, Inc&quot;</em></li>
+<li>og:image : &quot;An image URL which should represent your object within the graph.&quot;</li>
+</ul>
+<p>The above list looks self explanatory. But I had some confusion over the <code>type</code> property and did a bit more research. There are six supported type objects that are supported for use as a value of the <code>type</code> property. Depending on the type you specify, other properties may also be required.</p>
+<ul>
+<li><strong>Music</strong>
+<ul>
+<li>music.song
+<ul>
+<li>music:duration - integer &gt;=1 - The song's length in seconds.</li>
+<li>music:album - music.album array - The album this song is from.</li>
+<li>music:album:disc - integer &gt;=1 - Which disc of the album this song is on.</li>
+<li>music:album:track - integer &gt;=1 - Which track this song is.</li>
+<li>music:musician - profile array - The musician that made this song.</li>
+</ul>
+</li>
+<li>music.album
+<ul>
+<li>music:song - music.song - The song on this album.</li>
+<li>music:song:disc - integer &gt;=1 - The same as music:album:disc but in reverse.</li>
+<li>music:song:track - integer &gt;=1 - The same as music:album:track but in reverse.</li>
+<li>music:musician - profile - The musician that made this song.</li>
+<li>music:release_date - datetime - The date the album was released.</li>
+</ul>
+</li>
+<li>music.playlist
+<ul>
+<li>music:song - Identical to the ones on music.album</li>
+</ul>
+</li>
+<li>music:song:disc
+<ul>
+<li>music:song:track</li>
+<li>music:creator - profile - The creator of this playlist.</li>
+</ul>
+</li>
+<li>music.radio_station
+<ul>
+<li>music:creator - profile - The creator of this station.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Video</strong>
+<ul>
+<li>video.movie
+<ul>
+<li>video:actor - profile array - Actors in the movie.</li>
+<li>video:actor:role - string - The role they played.</li>
+<li>video:director - profile array - Directors of the movie.</li>
+<li>video:writer - profile array - Writers of the movie.</li>
+<li>video:duration - integer &gt;=1 - The movie's length in seconds.</li>
+<li>video:release_date - datetime - The date the movie was released.</li>
+<li>video:tag - string array - Tag words associated with this movie.</li>
+</ul>
+</li>
+<li>video.episode
+<ul>
+<li>video:actor - Identical to video.movie</li>
+<li>video:actor:role</li>
+<li>video:director</li>
+<li>video:writer</li>
+<li>video:duration</li>
+<li>video:release_date</li>
+<li>video:tag</li>
+<li>video:series - video.tv_show - Which series this episode belongs to.</li>
+</ul>
+</li>
+<li>video.tv_show
+<ul>
+<li>A multi-episode TV show. The metadata is identical to video.movie.</li>
+</ul>
+</li>
+<li>video.other
+<ul>
+<li>A video that doesn't belong in any other category. The metadata is identical to video.movie.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Article</strong>
+<ul>
+<li>article:published_time - datetime - When the article was first published.</li>
+<li>article:modified_time - datetime - When the article was last changed.</li>
+<li>article:expiration_time - datetime - When the article is out of date after.</li>
+<li>article:author - profile array <em>(use the profile type below for this)</em> - Writers of the article.
+<ul>
+<li>Ex: <meta type="article" content="article:author:profile:first_name" content="Bobby Joe" /></li>
+</ul>
+</li>
+<li>article:section - string - A high-level section name. E.g. Technology</li>
+<li>article:tag - string array - Tag words associated with this article.</li>
+</ul>
+</li>
+<li><strong>Book</strong>
+<ul>
+<li>book:author - profile array <em>(use the profile type below for this)</em> - Who wrote this book.
+<ul>
+<li>Ex: <meta type="book" content="book:author:profile:first_name" content="Bobby Joe" /></li>
+</ul>
+</li>
+<li>book:isbn - string - The ISBN</li>
+<li>book:release_date - datetime - The date the book was released.</li>
+<li>book:tag - string array - Tag words associated with this book.</li>
+</ul>
+</li>
+<li><strong>Profile</strong>
+<ul>
+<li>profile:first_name - string - A name normally given to an individual by a parent or self-chosen.</li>
+<li>profile:last_name - string - A name inherited from a family or marriage and by which the individual is commonly known.</li>
+<li>profile:username - string - A short unique string to identify them.</li>
+<li>profile:gender - enum(male, female) - Their gender.</li>
+</ul>
+</li>
+<li><strong>Website</strong></li>
+</ul>
+<p>So! Given all this information, I added the following tags to our site's head section:</p>
+<pre class="language-liquid"><code class="language-liquid">---
+title: "Home Page"
+page_description: "Provide local rescue communities with reliable fosters, evaluation and training of rescue dogs and cats thereby enhancing their successful adoption rates."
+---
+
+<span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    {...}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:title<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> title <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:type<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>website<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:url<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://www.forthepuppiesfoundation.org<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">page</span><span class="token punctuation">.</span>url <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:description<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">page_description</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:image<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://www.forthepuppiesfoundation.org<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token string">'/assets/imgs/ftpf_logo_small.webp'</span> <span class="token operator">|</span> <span class="token function filter">url</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    {...}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span></code></pre>
+<p>Which render's out like so:
+<em><code>index.html</code></em></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+  {...}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:title<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Home Page<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:type<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>website<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:url<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://www.forthepuppiesfoundation.org/<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span>
+    <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:description<span class="token punctuation">"</span></span>
+    <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Provide local rescue communities with reliable fosters, evaluation and training of rescue dogs and cats thereby enhancing their successful adoption rates.<span class="token punctuation">"</span></span>
+  <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span>
+    <span class="token attr-name">property</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>og:image<span class="token punctuation">"</span></span>
+    <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://www.forthepuppiesfoundation.org/assets/imgs/ftpf_logo_small.webp<span class="token punctuation">"</span></span>
+  <span class="token punctuation">/></span></span>
+  {...}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span></code></pre>
+<blockquote>
+<h2>11ty Top Tip</h2>
+<p>If you are using <a href="https://www.11ty.dev/docs/pagination/">Pagination</a> in 11ty and have an issue where your editor is
+reformatting your text to the left <em>(removing your nested properties)</em>, make sure that you have your editors file
+association actually set to Nunjucks or the correct file type! I just lost an hr on this!!</p>
+</blockquote>
+<p>And with the above additions to our sites head, when sharing a link to our site now looks like this...</p>
+<p><em>Facebook</em></p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,g_face,f_auto/v1721313137/blog/facebook_post_example_2_c0amjd.jpg" alt="Facebook Post w/OG tags"></p>
+<p><em>Outlook</em></p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,g_face,f_auto/v1721313391/blog/outlook_share_example_ty7lzh.jpg" alt="Outlook Example"></p>
+<p>Based on the above examples, you kinda get the idea. You will notice that I need to update the sites home page title to something a bit more descriptive, but yeah! Very handy stuff to add value to your site in just a few minutes.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

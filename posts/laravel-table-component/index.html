@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Making a Laravel Table Component</h1>
+<p>It's not that I hate making tables or that tables are hard. But when I have several tables to make, I tend to become emotionally drained. Not sure why. But it dawned on me, &quot;That's what components are for!&quot;. If you have a lot of repeating mark-up across your site, place that into a component and pass it the data. So let's do that!</p>
+<h2>Table Component</h2>
+<p>There are few caveats that we need to keep in mind when doing this. Giving a bit of thought to this, dynamically generating a <code>table</code> element can be very simple or very complex. We need to be able to call our component, pass it some data and boom! How do we want this to look? Ideally, I would like for it to look similar to this:</p>
+<p><code>&lt;x-table :data='$data' /&gt;</code></p>
+<p>Seems doable and a decent starting point. By the way, we will <em>not</em> be using Livewire. Not because I don't like it, but to challenge myself to make a fairly complex native Laravel component.</p>
+<p>We need to remember that there are 9 primary parts to a table.</p>
+<ul>
+<li><code>&lt;caption&gt;</code> *</li>
+<li><code>&lt;thead&gt;</code> *</li>
+<li><code>&lt;colgroup&gt;</code></li>
+<li><code>&lt;col&gt;</code></li>
+<li><code>&lt;th&gt;</code> *</li>
+<li><code>&lt;tbody&gt;</code> *</li>
+<li><code>&lt;tr&gt;</code> *</li>
+<li><code>&lt;td&gt;</code> *</li>
+<li><code>&lt;tfoot&gt;</code></li>
+</ul>
+<p>To keep this components first iterations scope in check, I say we skip trying to implement <code>colgroup</code>, <code>col</code>, and <code>tfoot</code>. These could be a bit more difficult to implement and take more time to work-out all the details. So our new table component will only be able to support simple table layouts for now.</p>
+<h2>Creating the component</h2>
+<p><code>php artisan make:component TableComponent</code></p>
+<p>We now have two new files in:
+<code>app\View\Components\TableComponent.php</code>, which is our component class.
+<code>resources\views\components/table-component.blade.php</code> which is where our html will live.</p>
+<p>We know that we will be passing the data to the component class, so let's set that up and make sure that we can pass it to the view portion of the component.</p>
+<p><code>component class</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>View<span class="token punctuation">\</span>Components</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">Closure</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Contracts<span class="token punctuation">\</span>View<span class="token punctuation">\</span>View</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>View<span class="token punctuation">\</span>Component</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">TableComponent</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Create a new component instance.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span>
+        <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$cellData</span>
+    <span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Get the view / contents that represent the component.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token class-name">View</span><span class="token operator">|</span><span class="token class-name">Closure</span><span class="token operator">|</span><span class="token keyword type-declaration">string</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'components.table-component'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Next, let's call our component on a page and pass it some data.</p>
+<p><code>component view</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>thead</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        {{-- WORK IN PROGRESS --}}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>thead</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tbody</span><span class="token punctuation">></span></span>
+      @foreach ($cellData as $row)
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        @foreach (collect($row) as $cell)
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $cell }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        @endforeach
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+      @endforeach
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
+  {{ $cellData }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>Notice we have two <code>foreach</code> loops in play here. The first one to generate each of the needed rows, based on the number of items returned. And the second one is to generate each of the cells. Since the data is basically a string after the first loop, we pass the result to the next foreach using the <code>collect()</code> method, which turns it into a Collection object. This allows us to loop over this next level. The padding added the each cell is merely there to space out each cell on the page.</p>
+<p>And using the component in a view file would look like:</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layout</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-table-component</span> <span class="token attr-name">:cell-data</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$journals<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layout</span><span class="token punctuation">></span></span></code></pre>
+<p>In the above example, we are returning a Eloquent query, <code>$journals</code> from our JournalControllers index method. And the result looks like this.</p>
+<p><code>rendered html</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>thead</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>thead</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tbody</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>2024-11-25T23:03:04.000000Z<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>2024-11-25T23:03:04.000000Z<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span></code></pre>
+<p>In theory, it works. But what about the <code>thead</code>?</p>
+<h2>Tackling the Table Head</h2>
+<p>Since the collections returned from an Eloquent query are stripped of their keys. This means that we do not have access to them in our view. One thing we could do is send the keys in separately, as a new variable, and pass them to the component.</p>
+<p><code>&lt;x-table-component :cell-data=&quot;$journals&quot; :thead=&quot;$keys&quot; /&gt;</code></p>
+<p>We can do this, like so:</p>
+<pre class="language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$journals</span> <span class="token operator">=</span> <span class="token class-name static-context">Journal</span><span class="token operator">::</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$keys</span> <span class="token operator">=</span> <span class="token function">collect</span><span class="token punctuation">(</span><span class="token variable">$journals</span><span class="token operator">-></span><span class="token function">first</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">keys</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// [!code ++]</span>
+
+    <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'journal.index'</span><span class="token punctuation">,</span> <span class="token function">compact</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'journals'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'keys'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p><code>rendered output</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>thead</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uppercase<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>id<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uppercase<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>animal_id<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uppercase<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>created_at<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>uppercase<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>updated_at<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>thead</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tbody</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>12<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>2024-11-25T23:03:04.000000Z<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>2024-11-25T23:03:04.000000Z<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span></code></pre>
+<p>But this has one glaring problem! How would I handle relationships?</p>
+<ul>
+<li>What if the data we are displaying contains relationships? It currently has no way to know that.</li>
+<li>If I wanted to aggregate data from the relationship and display the results? I cannot currently do that.</li>
+</ul>
+<p>For plan tables, this method works just fine. But anything else... not gonna work. So, we have work to do.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Native PHP Enums &amp; Enumeration Methods</h1>
+<p>As I have mentioned in a few other posts of mine, I have this large project I am working on in my spare time. It's a CRM, of sorts, for our non-profit business that we will be using to track the animals in our rescue. Why I am building this and not relying on the countless other solutions available is a post for another day. And one of the many details that I have been spending a great deal of time on is trying to decide how I want to store the animal attributes. Details like - The breed of the animal, the color of it's coat and eyes, patterns, tail, etc. Currently, I have roughly 60 attributes I can track for each animal. Insane... I know!</p>
+<p>I have been thinking about this so much because of cost and performance. If I have a form, that is going to have 70 plus input fields, what is the most performant and cost effective way to handle this? My worst nightmare is, adding an animal being the most expensive and frustrating part of the using the app. No matter how small the tables are, 60+ database queries are still 60+ queries. And that will have an impact. I don't know about you, but I would hate to try and manage this. Not to mention that, I <em>might</em> want to turn this into a SaaS product down the road. I know that there are ways to mitigate this by using separate Read and Write Replica connections. But I personally feel that if I am running one instances of my app, I should not have to do that due to the poor performance of my queries being so bloated.</p>
+<p>My thought was, why not move all the attributes to native PHP Enums? But that has it's drawbacks as well. What I find, after launch, that I need to add more attribute types. It wouldn't be hard for me to simply add them, but if I do turn this into a SaaS... that would be a requirement. Clients would want to customize most of these to fit their rescue. And that was the moment it hit me. Most of these are not going to ever change or need to be different. Dogs and Cats only have so many types of tails. Or coat types, etc. Take the attributes, such as these, and move those to Enums and the others can stay in the DB as a table. But how would Enums work in a form? I had never used them like that. Just how flexible are they really? Come to find out, <em>very flexible</em>!</p>
+<h2>Setting Up Our Enum</h2>
+<p>The first enum I wanted to create, for reasons I will expand on in a few moments, was for Age Groups. An animals lifespan can be broken down into several age groups. Since these groups are split in a standard way, there is little need of someone needing to expand them latter. So let's tackle dogs first, since that's what we work with the most.</p>
+<p><code>app\Enums\AgeGroup.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Enums</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Puppy: Up to One year of age</span>
+<span class="token comment">// Adolescent: One to less than three years old</span>
+<span class="token comment">// Young adult: Three to less than seven years old</span>
+<span class="token comment">// Older adult: Seven to less than 11 years old</span>
+<span class="token comment">// Senior: 11 years or older</span>
+
+<span class="token keyword">enum</span> <span class="token class-name-definition class-name">AgeGroup</span><span class="token punctuation">:</span> <span class="token keyword type-declaration">string</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">Puppy</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Puppy"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Adolescent</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Adolescent"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Young_Adult</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Young Adult"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Older_Adult</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Older Adult"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Senior</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Senior"</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>I decided to use Backed Enums, since I will want to display the names without needing to perform any sort of string manipulation later. Now that we have our enum created, let's try to use it in our Livewire Component. All I want to do is populate a <code>select</code> element. That's it!</p>
+<h2>Populating a Select Element using a Enum</h2>
+<p>First we need to create our property, <code>age_groups</code> and associate it with the appropriate enum class.
+<code>app\Livewire\CreateAnimal.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Livewire</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Enums<span class="token punctuation">\</span>AgeGroup</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Livewire<span class="token punctuation">\</span>Forms<span class="token punctuation">\</span>AnimalForm</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Livewire<span class="token punctuation">\</span>Attributes<span class="token punctuation">\</span>Computed</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Livewire<span class="token punctuation">\</span>Component</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">CreateAnimal</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span>
+<span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token class-name type-declaration">AnimalForm</span> <span class="token variable">$form</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token variable">$age_groups</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">mount</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">age_groups</span> <span class="token operator">=</span> <span class="token class-name static-context">AgeGroup</span><span class="token operator">::</span><span class="token function">cases</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'livewire.create-animal'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Next will will add our select element to the component.</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name"><span class="token namespace">wire:</span>submit</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>store<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>age_group<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Age Group<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>age_group<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">wire:</span>model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>form.age_group<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span>
+      @foreach ($this->age_groups as $group)
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ $group->value }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $group->value }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span>
+      @endforeach
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+<p>Now that we know this works... I actually don't want to use this now. I will use it for other elements, just not this example. The reason is because the age groups are separated by the animals age. And the very next field that I will be adding to the form is a date-picker for the animals birthday. If I have the birthday, I can determine the animals age, and from that I can determine the age group automatically. Why not do that? This form is already very large, so if we can remove a few fields to make it even slightly smaller, I think that would be a good thing.</p>
+<h2>Using Enumeration Methods</h2>
+<p>To determine the dogs appropriate age group, I can add a method to the enum class that will do just that. This allows all logic for an animals age group to live in one place.</p>
+<p><code>app/Enums/AgeGroup.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Enums</span><span class="token punctuation">;</span>
+
+<span class="token keyword">enum</span> <span class="token class-name-definition class-name">AgeGroup</span><span class="token punctuation">:</span> <span class="token keyword type-declaration">string</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">Puppy</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Puppy"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Adolescent</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Adolescent"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Young_Adult</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Young Adult"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Older_Adult</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Older Adult"</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Senior</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"Senior"</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/**
+     * Determine the age group based on the age of the animal
+     * by passing the year of age.
+     *
+     * ex: `AgeGroup::getGroup(4) // Young `
+     */</span>
+    <span class="token comment">// [!code highlight:12]</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">function</span> <span class="token function-definition function">getGroup</span><span class="token punctuation">(</span><span class="token keyword type-hint">int</span> <span class="token variable">$age</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">match</span> <span class="token punctuation">(</span><span class="token constant boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$age</span> <span class="token operator">&lt;</span> <span class="token number">1</span> <span class="token operator">=></span> <span class="token keyword static-context">static</span><span class="token operator">::</span><span class="token constant">Puppy</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+            <span class="token variable">$age</span> <span class="token operator">>=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$age</span> <span class="token operator">&lt;</span> <span class="token number">3</span> <span class="token operator">=></span> <span class="token keyword static-context">static</span><span class="token operator">::</span><span class="token constant">Adolescent</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+            <span class="token variable">$age</span> <span class="token operator">>=</span> <span class="token number">3</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$age</span> <span class="token operator">&lt;</span> <span class="token number">7</span> <span class="token operator">=></span> <span class="token keyword static-context">static</span><span class="token operator">::</span><span class="token constant">Young_Adult</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+            <span class="token variable">$age</span> <span class="token operator">>=</span> <span class="token number">7</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$age</span> <span class="token operator">&lt;</span> <span class="token number">11</span> <span class="token operator">=></span> <span class="token keyword static-context">static</span><span class="token operator">::</span><span class="token constant">Older_Adult</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+            <span class="token variable">$age</span> <span class="token operator">>=</span> <span class="token number">11</span> <span class="token operator">=></span> <span class="token keyword static-context">static</span><span class="token operator">::</span><span class="token constant">Senior</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+            <span class="token keyword">default</span> <span class="token operator">=></span> <span class="token string double-quoted-string">"No Match Found!"</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>As you can see, in the example above, all we need to do is pass in the number of years old the animal is and this enum method will return a string that represents the age group. Now, determining the animals age is not that difficult. We can utilize Carbon for that and pass the results to the new method above. This is perfect spot to utilize <a href="https://livewire.laravel.com/docs/computed-properties">Livewire Computed Properties</a> within our component.</p>
+<p><code>resources/views/livewire/create-animal.blade.php</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span>
+    <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>date<span class="token punctuation">"</span></span>
+    <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>birthdate<span class="token punctuation">"</span></span>
+    <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>birthdate<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">wire:</span>model.blur</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>form.birthdate<span class="token punctuation">"</span></span>
+  <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>Notice in the date element above, I am using <code>blur</code> on the binding of the model. This allows us to update the form property <code>birthdate</code> when we remove focus of the element, not on form submission. In turn, this allows the age_group property to update, live.</p>
+<p><code>app/Livewire/CreateAnimal.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token attribute"><span class="token delimiter punctuation">#[</span><span class="token attribute-content"><span class="token attribute-class-name class-name">Computed</span></span><span class="token delimiter punctuation">]</span></span>
+<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getAgeGroup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$birth</span> <span class="token operator">=</span> <span class="token class-name static-context">Carbon</span><span class="token operator">::</span><span class="token function">createFromDate</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">form</span><span class="token operator">-></span><span class="token property">birthdate</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$age</span> <span class="token operator">=</span> <span class="token variable">$birth</span><span class="token operator">-></span><span class="token function">diffInYears</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">form</span><span class="token operator">-></span><span class="token property">age_group</span> <span class="token operator">=</span> <span class="token class-name static-context">AgeGroup</span><span class="token operator">::</span><span class="token function">getGroup</span><span class="token punctuation">(</span><span class="token variable">$age</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now we just need some way to call this computed property above, and this took the most time to figure out. Technically, your supposed call this method within your Livewire component class. But in this case, I need to call it when the form.birthdate property is updated. Thinking about it now, I could dispatch an event on change by adding a bit of javascript that ties it all together. But, this is what I came up with in the meantime.</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-input</span>
+    <span class="token attr-name">label</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Age Group<span class="token punctuation">"</span></span>
+    <span class="token attr-name">description</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Will be auto-populated by birthdate...<span class="token punctuation">"</span></span>
+    <span class="token attr-name">placeholder</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ $this->getAgeGroup }}<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">wire:</span>model</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>form.age_group<span class="token punctuation">"</span></span>
+    <span class="token attr-name">disabled</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
+    <span class="token attr-name">readonly</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span>
+  <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<blockquote>
+<p><strong>Note</strong>: Notice that I am calling the computed property method on the placeholder of a disabled element. <em>I don't think this would be considered an approved way of doing this. Try it at your own risk!</em></p>
+</blockquote>
+<p>This is more for testing purposes, just to see if it works correctly and it does! Submitting the form passes the data along nicely. In practice though, I would use a hidden element so that I can actually remove it from the view completely. By the way, this is a <a href="https://wireui.dev/components/input">WireUI Input Component</a>, which I will be using throughout the project. By setting the <code>disabled</code> property to <code>true</code>, as well as the <code>readonly</code> property to <code>true</code>, we remove the possibility that the user might change this value to something unexpected. The placeholder attribute of the element itself is not rendered in the DOM that I can see.</p>
+<h2>Summary</h2>
+<p>This project currently has 19 enums for different animal attributes, with more to added as I progress through the project, and I cannot wait to play with others. Most of them will not require such things as this, but that's fine.</p>
+<h2>Update</h2>
+<p>I have to be honest here. This feels like some kind of super power! I used the above method on another element combo and it just works.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

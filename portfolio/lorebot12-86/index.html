@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Lorebot12-86</h1>
+<p><a href="https://github.com/unisys12/lorebot12-86">Repo Link</a> <em>No Longer in Production</em></p>
+<h2>Project Purpose</h2>
+<p>8 years ago or so, I was heavily active within the lore community of a video game called Destiny. You might've heard of it! I also had a previous project that saw some success called <a href="lorebot-ex">Lorebot-ex</a>. Anyway, after joining a few different social groups on Discord, I noticed a few patterns develop within the conversations.</p>
+<ul>
+<li>Someone would pose a theory or question and wait on a response.</li>
+<li>The conversation would start fairly slow, but would quickly gain pace, due to the main server I was on had several thousand active users daily.</li>
+<li>When someone would respond, more often than not, they would want to reference a piece of game lore, website, etc to back-up their response.</li>
+<li>The responding user would fetch a link related to their statement, only to find that the conversation had moved so far ahead, their statement was no longer relevant and time was wasted.</li>
+</ul>
+<p>I wanted to solve this problem by offering the users a way to enter a quick cmd they could enter, that would link to the resource they wanted. Since the most commonly referenced site for the Destiny Lore Community was <a href="https://www.ishtar-collective.net">Ishtar Collective</a>, I figured I could just parse the users input and return a link to Ishtar based on their input. The very first command I made looked something like this:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">let</span> itemCmd <span class="token operator">=</span> input<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"!item"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>itemCmd<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  message<span class="token punctuation">.</span><span class="token function">reply</span><span class="token punctuation">(</span><span class="token function">searchItems</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">searchItems</span><span class="token punctuation">(</span><span class="token parameter">input</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> query <span class="token operator">=</span> scripts<span class="token punctuation">.</span><span class="token function">normalizeItemInput</span><span class="token punctuation">(</span>input<span class="token punctuation">.</span><span class="token function">substr</span><span class="token punctuation">(</span><span class="token string">"6"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token string">"https://www.ishtar-collective.net/items/"</span> <span class="token operator">+</span> query<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>And from there, it grew into a massive project that I continued to tinker with for about three yrs after. Up until 2021 I believe. This was before well before support for Async/Await was in Node or JS, so there are <code>callbacks</code> everywhere. But I feel that I keep the code base pretty clean for my first large NodeJS based project.</p>
+<h2>Tech Used</h2>
+<p><a href="https://nodejs.org/en">NodeJS v14</a>
+<a href="https://discord.js.org/">DiscordJS</a> primarily, but there where a few other things in there as well.
+<a href="https://mochajs.org/">MochaJS</a>
+<a href="https://istanbul.js.org/">IstanbulJS</a></p>
+<pre class="language-json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"axios"</span><span class="token operator">:</span> <span class="token string">"^0.21.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"discord.js"</span><span class="token operator">:</span> <span class="token string">"^12.5.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"mysql2"</span><span class="token operator">:</span> <span class="token string">"^1.1.2"</span><span class="token punctuation">,</span>
+    <span class="token property">"underscore"</span><span class="token operator">:</span> <span class="token string">"^1.13.1"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"@babel/cli"</span><span class="token operator">:</span> <span class="token string">"^7.14.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/core"</span><span class="token operator">:</span> <span class="token string">"^7.4.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/preset-env"</span><span class="token operator">:</span> <span class="token string">"^7.4.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/register"</span><span class="token operator">:</span> <span class="token string">"^7.4.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"babel-plugin-istanbul"</span><span class="token operator">:</span> <span class="token string">"^5.1.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"chai"</span><span class="token operator">:</span> <span class="token string">"^3.5.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"cross-env"</span><span class="token operator">:</span> <span class="token string">"^5.2.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"dotenv"</span><span class="token operator">:</span> <span class="token string">"^2.0.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"mocha"</span><span class="token operator">:</span> <span class="token string">"^6.1.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"nyc"</span><span class="token operator">:</span> <span class="token string">"^14.1.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"sinon"</span><span class="token operator">:</span> <span class="token string">"^1.17.7"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span></code></pre>
+<p>Yes! There was even a database added not too long after the project took off.</p>
+<h2>Proud Moments</h2>
+<p>The project overall is pretty simple. But! I became addicted to Halo lore as well. So I had to add something in there for that. It was <strong>Today in Halo</strong>. An online friend of mine worked with a team of other Halo addicts and put together a hugh Google Sheet that contained events, ordered chronologically. This sheet spans hundreds of years from the stories of Halo. So, as a surprise to this group, I decided to make a automated post happen each day in our Halo Lore channel that posted an event that happen on the current day within the story of Halo.</p>
+<p>This is how it worked:</p>
+<p>First, find all the <code>Guilds</code>/servers that was running the bot with a specific channel name and place them in an array for later iteration. Then, at a certain time each morning, get the current date info. Pass this to the sheet and filter the results based on the current month and day. If more than one event took place on a given day, pick one at random. Once an event is selected from the list, post a message with data provided by the sheet to each Discord server.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">// bot.js</span>
+<span class="token comment">// initialize the bot/client</span>
+<span class="token keyword">const</span> Discord <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"discord.js"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> bot <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Discord<span class="token punctuation">.</span>Client</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+bot<span class="token punctuation">.</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token string">"ready"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Gather all the servers/guilds and channels for each</span>
+  <span class="token keyword">let</span> channels <span class="token operator">=</span> bot<span class="token punctuation">.</span>channels<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> guilds <span class="token operator">=</span> bot<span class="token punctuation">.</span>guilds<span class="token punctuation">;</span>
+  <span class="token keyword">let</span> halo_channels <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  guilds<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+    <span class="token comment">// If a Guild/Server is running LoreBot has a '#lore__halo' channel, add it</span>
+    <span class="token keyword">let</span> halo_channel <span class="token operator">=</span> x<span class="token punctuation">.</span>channels<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">ch</span><span class="token punctuation">)</span> <span class="token operator">=></span> ch<span class="token punctuation">.</span>name <span class="token operator">===</span> <span class="token string">"lore__halo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>halo_channel<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      halo_channels<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>halo_channel<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">setInterval</span><span class="token punctuation">(</span>
+    <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> timestamp <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>timestamp<span class="token punctuation">.</span><span class="token function">getHours</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token number">14</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        halo<span class="token punctuation">.</span><span class="token function">haloRequest</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> motd</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+          halo_channels<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            x<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>motd<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">catch</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token number">1000</span> <span class="token operator">*</span> <span class="token number">60</span> <span class="token operator">*</span> <span class="token number">60</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>And to get the events from the Google Sheet, I did the following:</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">function</span> <span class="token function">haloRequest</span><span class="token punctuation">(</span><span class="token parameter">cb</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  sheet<span class="token punctuation">.</span>spreadsheets<span class="token punctuation">.</span>values<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>
+    <span class="token punctuation">{</span>
+      <span class="token literal-property property">key</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>googleSheetsKey<span class="token punctuation">,</span>
+      <span class="token literal-property property">spreadsheetId</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>googleSheetID<span class="token punctuation">,</span>
+      <span class="token literal-property property">range</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>googleSheetRange<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> response</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">cb</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"Error accessing spreadsheet"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> rows <span class="token operator">=</span> response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>values<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>rows<span class="token punctuation">.</span>length <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> <span class="token function">cb</span><span class="token punctuation">(</span>
+            <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"No rows found! Something happend to the spreadsheet!!"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+          <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+          <span class="token keyword">return</span> <span class="token function">cb</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token function">gatherMessage</span><span class="token punctuation">(</span>rows<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>To see the full process, head over to the projects <a href="https://github.com/unisys12/lorebot12-86/commit/3af05d167f34cf0209f0e25395ffc77deae49715">commit history</a> and check it out. Pretty gnarly process, but I learned so much through this, since I had to figure out how to do this by myself. Also of note, soon after I launched this, the ESO <em>(Elder Scrolls Online)</em> lore fans wanted something similar, so I did that as well. Works very similarly.</p>
+<h2>Lessons Learned</h2>
+<p>The most important thing I learned from this project was <code>structure</code> and <em>abstraction, just for the sake of abstraction, has no value.</em></p>
+<p>For me to maintain this project, as long as I did, it would not have been possible without a somewhat decent structure. Could it be improved upon? Heck ya! But that should always be the case when you go back to code you wrote 3-5 yrs ago. If not, you haven't grown as a developer.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Adding Givebutter widgets to a Static Website</h1>
+<p>Working with third-party components or custom elements is not a new thing in the web sphere. But it can seem as though working with Dynamic Custom Components would be a headache when working in a static-site. Each SSG <em>(static site generator)</em> deals with data a bit differently, so make sure to check the docs of your SSG to find the best path forward. Hopefully, this post will give you a good general idea of how to at least approach this minor hurtle in the JAMStack.</p>
+<h2>Task At Hand</h2>
+<p>What I set out to accomplish tonight was adding sponsorships to our non-profit site. What we want to do is offer a way for people to give donations to one of our animals and once a goal is reached, the adoption fee for that dog will be free. This is not a new practice in the animal rescue world. It's not uncommon to see shelters waving adoption fee's around holidays or offering discounted fee's on certain dogs from time to time. But we want to offer this on all our animals! All year round!! Also, as an added bonus, any remaining funds left over after the adoption fee is subtracted will be given to the adaptors account at their veterinarian to help with any future vet related expenses. What do we need to make this happen?</p>
+<ul>
+<li>We recently started using <a href="https://givebutter.com/">Givebutter</a> for our fundraiser marketing and donation collections. On our dashboard, we just create a new campaign for each dog. Yes, we have to do this manually and it's a real pain for 25+ animals! But I digress. After making a form, you can go to <em>Sharing</em> and select <em>Widgets</em>. They refer to them as Widgets, but they are basically custom components made with <a href="https://lit.dev">Lit</a>, which I think is cool as heck! To get started using their components, just add their js snippet to the head of your sites pages that need it. I use them on our <code>donate</code> page and all of the pages under the <code>dogs</code> uri.</li>
+</ul>
+<pre class="language-html"><code class="language-html">{% if '/donate/' or '/dogs/' in page.url %}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span>
+  <span class="token attr-name">async</span>
+  <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://widgets.givebutter.com/latest.umd.cjs?acct=7VuutvZqPuoDFArI&amp;p=other<span class="token punctuation">"</span></span>
+<span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+{% endif %}</code></pre>
+<ul>
+<li>If you want to customize the look or text of the components, just click the gear icon.</li>
+<li>When your ready, click the Embed button and copy the component html from the modal that pops up.</li>
+</ul>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>givebutter-widget</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>gJLN4o<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>givebutter-widget</span><span class="token punctuation">></span></span></code></pre>
+<p>You might notice the use of the <code>id</code> attribute on the component. This is it's identifier to Givebutter. Each component you create under your account is unique and will have a unique id associated with it. And this is where things could get tricky! How do you assign the correct id dynamically? Especially since will be dynamically creating 25 or more of them. Why have unique id's you ask?</p>
+<p>We will be using two different components per animal. A button, when clicked will open a donation modal, where they can choose their donation amount and submit it. And the other is goal component that will track the amount of donations received for a single animal and display that one the page of each animal. When the donation goal is meet, that animals adoption is now free! When a user clicks on the <strong>Sponsor</strong> button for any given animal, the donation window that opens needs to point to the form that we created for that animal. This way, we can track the donations properly for each animal. And the <strong>Goal</strong> should give a clear indication to anyone viewing our pets as to which ones have meet their goal and which have not. This will help donors and adopters equally with clear feedback of information.</p>
+<h2>Hurdles Are Not Meant to be Rabbit Holes</h2>
+<p>On a standard website, with a backend and frontend, this task would be very simple to handle. In our case, since we will be using two different components, we could easily create a table for the ids, associate them with each dog using a One-to-Many relationship and when we query the dogs data from the database, the ids will be available to us. But we don't have a database since we are using 11ty for our site.</p>
+<p>To accomplish this, I created a file in <code>src/_data/sponsor_ids.js</code>. <em>Naming things is hard, ok!</em> This file returns a JS Object that contains the dogs and their associated ids. The format looks like this:</p>
+<pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">"Peanut"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">goal</span><span class="token operator">:</span> <span class="token string">"jbR3Xj"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">button</span><span class="token operator">:</span> <span class="token string">"gJKN1p"</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span></code></pre>
+<p>So, we have an array of objects that each have a name, goal and button property with their respective values. I have a template that is used to generate &amp; view each of the animals pages at build time. We just need to add our logic there to display our new button and goal components. But most importantly, to only the animals that have a sponsorship and the correct sponsorship is displayed with the correct animal.</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my-4 mx-auto flex flex-wrap justify-center items-center gap-2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> id <span class="token keyword">in</span> sponsor_ids <span class="token delimiter punctuation">%}</span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">if</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token operator">==</span><span class="token operator">=</span> id<span class="token punctuation">.</span>name <span class="token delimiter punctuation">%}</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>givebutter-widget</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> id<span class="token punctuation">.</span>goal <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>givebutter-widget</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>givebutter-widget</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> id<span class="token punctuation">.</span>button <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>givebutter-widget</span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endif</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span>
+    <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/adoption<span class="token punctuation">"</span></span>
+    <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>h-12 w-full text-center rounded bg-green-600 px-6 py-2 sm:py-1 font-medium tracking-wide text-white shadow-md transition hover:bg-blue-800 focus:outline-none md:mr-4 md:mb-0 md:w-auto<span class="token punctuation">"</span></span>
+  <span class="token punctuation">></span></span>
+    Apply to Adopt <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>If your wondering where I am getting <code>dog.attributes.name</code> in the above snippet - I have another Global Data file in <em>src/_data</em> named <code>dogs.js</code> that fetches all our animals from an API. You can view the whole template in the projects <a href="https://github.com/unisys12/ftp-foundation/blob/main/src/dog-pages.njk#L6">Github Repo</a>.</p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto/v1721958186/blog/sponsorship-prototype_l0dgpp.jpg" alt="Finished Product"></p>
+<p>And that's that! We end up with the following on our page now!</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

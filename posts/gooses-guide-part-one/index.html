@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Goose's Guide</h1>
+<p>This will be a three part series on handling marginally complex data structures in an application environment. Part One will simply read the data from a flat file. Performing all queries directly on the flat file. No databases or ORMs will be used. Part Two will use a rudimentary database structure without the use of relationships. Finally, part three will utilize relationships and more advanced methods of data abstraction.</p>
+<p>Timing and analytics will attempt to be monitored, logged or tracked so that comparisons can be made between each of the methods.</p>
+<h2>A little about the data</h2>
+<p>Back when I serviced copiers for a local office equipment dealer, we were passed down a technical resource called the &quot;Gooses Guide&quot;. No, I don't know why it was called that. But it was a spreadsheet that contained 4 columns of information. &quot;Product Family&quot;, &quot;Problem Description&quot;, &quot;Solution Text&quot; &amp; &quot;Date&quot;. Each column had a <code>ComboBox</code> at the in the first row, which allowed you to filter the sheet based on your selection. For the technicians, it was a life saver. Well, if nothing else, it was time saver.</p>
+<p>After a few years at the local dealer, I decided that I would make a web based version of the tool and place on our company website. This way, would could easily access it from our phones <em>(Blackberries!)</em> while in the field. It was very rudimentary, but it worked! I always wanted to make it better or at the very least, make it easier to update, but I never got around to it. Also, there was no way for us to add information or solutions to it.</p>
+<blockquote>
+<p>A working example can be seen on the original site <a href="http://raycocopiers.com/goosesguide">here</a></p>
+</blockquote>
+<p>My old workflow for updating the data was: Each quarter, a new file was released. I would save this as a CSV and manually import it into our hosted MySQL database. It was a pain!</p>
+<p>Usage on the site, like I mentioned before, was very rudimentary. There is a basic form with a single <code>select</code> element that allows you to select the product family/code. The page refreshes to show a list of problems for that product, within a single select element. After choosing a problem, the page refreshes to show all solutions available.</p>
+<p>Given all that, let's move on and first re-create the old app. From there, we will progressively add functionality to the app. The tech stack we will be using will be PHP v8.3 for the language, Laravel v11 for the framework, Tailwind v3 for the CSS. Later, we will add SQLite 3 as the database and Livewire v3 to the Laravel app for filtering and a bit of creativity... maybe. For each of these stages, I will add <a href="https://github.com/barryvdh/laravel-debugbar">Laravel Debug Bar</a> just as a means of gathering some stats on the page loads from the server, query performance, etc. By no means is this going to be a detailed breakdown of performance metrics. Just a 10,000 view and only to see if our code architecture choices have an impact on performance.</p>
+<h2>Part One</h2>
+<p><sub>Read data directly from flat file</sub></p>
+<p>The flat file we will be using is not going to be a CSV this time around. In previous attempts working with on this project, I found that CSV is not the best option here. So, I converted the spreadsheet to a TAB Delimited file. The file was littered with variously placed line-break (<code>\n</code>) and return (<code>\r</code>) characters. This was due to <code>word-wrap</code> being applied to the cells. It would have been impossible to remove these programmatically and maintain a usable format. The easiest solution was to simply select all the cells and remove <code>word-wrap</code>. I actually had to do this twice. Now, we have a much cleaner document to work with. Aside from the very last entry... haven't looked into that yet <em>(EDIT: It was a missing problem description)</em>. Don't worry! There are over 50k entries in the file. We have plenty to work with.</p>
+<h3>Assembling the Product Codes</h3>
+<p>Since we will be reading a flat file here, it should be fairly straight forward for us to simply read the file and return it's contents. We use php's <code>file_get_contents</code> for that, which will return a single string for us to work with.</p>
+<p>We know that we are going to be fully refactoring this, let's start out with the simplest solution and perform most of our coding in the <code>routes\web.php</code> file. We will abstract any code that interacts with the flat-file into a helper class, to keep things a bit cleaner.</p>
+<p>Checking the output of <code>file_get_contents</code> on our flat-file:</p>
+<pre class="language-shell"><code class="language-shell">A019/A045/A046<span class="token punctuation">\</span>t<span class="token string">"DEAD MACHINE, NO OPERATION"</span><span class="token punctuation">\</span>t<span class="token string">"[dead machine, no display or fans] - power supply"</span><span class="token punctuation">\</span>t4/4/2008<span class="token punctuation">\</span>n</code></pre>
+<p>From the output above, we know that we can use <code>explode(&quot;\n&quot;, $file)</code> to gain access to each row. Explode returns an array so we will next loop through that and use explode again, this time passing <code>&quot;\t&quot;</code> as our separator. This will gain us access to each row and column.</p>
+<p>Here is our helper class to the get the results above.</p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Helpers</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">GoosesGuideHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">string</span> <span class="token variable">$path</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$path</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">path</span> <span class="token operator">=</span> <span class="token variable">$path</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$file</span> <span class="token operator">=</span> <span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">path</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\n"</span><span class="token punctuation">,</span> <span class="token variable">$file</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$rows</span> <span class="token keyword">as</span> <span class="token variable">$row</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$column</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\t"</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">array_push</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">guide</span><span class="token punctuation">,</span> <span class="token variable">$column</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">guide</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>... in our routes file, we have...</p>
+<pre class="language-php"><code class="language-php"><span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GoosesGuideHelper</span><span class="token punctuation">(</span><span class="token function">asset</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GG_2014_2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token function">dd</span><span class="token punctuation">(</span><span class="token variable">$guide</span><span class="token operator">-></span><span class="token function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'welcome'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<pre class="language-shell"><code class="language-shell">array:50315 <span class="token punctuation">[</span>▼ // routes<span class="token punctuation">\</span>web.php:9
+  <span class="token number">0</span> <span class="token operator">=</span><span class="token operator">></span> array:4 <span class="token punctuation">[</span>▼
+    <span class="token number">0</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"A019/A045/A046"</span>
+    <span class="token number">1</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">""</span>DEAD MACHINE, NO OPERATION<span class="token string">""</span>
+    <span class="token number">2</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">""</span><span class="token punctuation">[</span>dead machine, no display or fans<span class="token punctuation">]</span> - power supply<span class="token string">""</span>
+    <span class="token number">3</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">"4/4/2008"</span>
+  <span class="token punctuation">]</span>
+  <span class="token number">1</span> <span class="token operator">=</span><span class="token operator">></span> array:4 <span class="token punctuation">[</span>▶<span class="token punctuation">]</span></code></pre>
+<p>Before we start putting these results to work for us, we two problems to deal with.</p>
+<ul>
+<li>There is a lot of duplication in the results that need to remove.</li>
+<li>Some text is surrounded by two sets of double quotes.</li>
+</ul>
+<p>To tackle the first one, we will create a new method and refactor our method call to reflect the new method we create to solve this.</p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Helpers</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">GoosesGuideHelper</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">string</span> <span class="token variable">$path</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$codes</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$problems</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$solutions</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword type-declaration">array</span> <span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$path</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">path</span> <span class="token operator">=</span> <span class="token variable">$path</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">getRows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$rows</span> <span class="token keyword">as</span> <span class="token variable">$row</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$column</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\t"</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">array_push</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">guide</span><span class="token punctuation">,</span> <span class="token variable">$column</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">guide</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">function</span> <span class="token function-definition function">getRows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$file</span> <span class="token operator">=</span> <span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">path</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\n"</span><span class="token punctuation">,</span> <span class="token variable">$file</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getCodes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">getRows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$rows</span> <span class="token keyword">as</span> <span class="token variable">$row</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$column</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\t"</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">array_push</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">codes</span><span class="token punctuation">,</span> <span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token comment">// removes duplicates from the array</span>
+        <span class="token variable">$codes</span> <span class="token operator">=</span> <span class="token function">array_unique</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">codes</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// from &lt;50k to 220 entries</span>
+        <span class="token keyword">return</span> <span class="token variable">$codes</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Now, we can actually put this to use. Since all we need on the product selection code is the codes and nothing else, we will only return the codes.</p>
+<p>Update our route to actually return the view, with the variable that holds our product codes.</p>
+<pre class="language-php"><code class="language-php"><span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GoosesGuideHelper</span><span class="token punctuation">(</span><span class="token function">asset</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GG_2014_2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$codes</span> <span class="token operator">=</span> <span class="token variable">$guide</span><span class="token operator">-></span><span class="token function">getCodes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'welcome'</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'codes'</span><span class="token punctuation">,</span> <span class="token variable">$codes</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>Then put to work in a that view</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layout</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/problem<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>get<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>code<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>block<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      Select a Product Code:
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>product_code<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>product_code<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span>
+        @foreach ($codes as $code) {
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>option</span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ $code }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $code }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>option</span><span class="token punctuation">></span></span>
+        } @endforeach
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span>
+      <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>py-2 px-4 mt-2 bg-blue-500 hover:bg-blue-600 border border-cyan-950 hover:border-cyan-950/50 hover:text-slate-200 transition-colors duration-300 rounded-md<span class="token punctuation">"</span></span>
+      <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span>
+      Select Product Code
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layout</span><span class="token punctuation">></span></span></code></pre>
+<h3>Fetching the associated Problem Descriptions</h3>
+<p>We can't just copy and paste our previous code over to get all our problem descriptions, because we only need to fetch the problems that are associated with the product code selected in the previous view. Since we are sending a get request, we can use the Laravel <code>Request</code> support facade to help us grab that in our routes file.</p>
+<pre class="language-php"><code class="language-php"><span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/problem'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">dd</span><span class="token punctuation">(</span><span class="token class-name static-context">Request</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'product_code'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We can pass this to a new helper method that will filter everything for us. Like so.</p>
+<pre class="language-php"><code class="language-php"><span class="token variable">$code</span> <span class="token operator">=</span> <span class="token class-name static-context">Request</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'product_code'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GoosesGuideHelper</span><span class="token punctuation">(</span><span class="token function">asset</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GG_2014_2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$problems</span> <span class="token operator">=</span> <span class="token variable">$guide</span><span class="token operator">-></span><span class="token function">getProblems</span><span class="token punctuation">(</span><span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">dd</span><span class="token punctuation">(</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$problems</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>We know it is working, since all unique problems originally totaled 2250 and that number is down to 13.</p>
+<p>This is new method <code>getProblems</code> that we added to our GoosesGuideHelper class.</p>
+<pre class="language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getProblems</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">getRows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// remove the last row due to it is missing a problem description</span>
+    <span class="token function">array_pop</span><span class="token punctuation">(</span><span class="token variable">$rows</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$rows</span> <span class="token keyword">as</span> <span class="token variable">$row</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$column</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\t"</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token variable">$code</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">array_push</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">problems</span><span class="token punctuation">,</span> <span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token variable">$problems</span> <span class="token operator">=</span> <span class="token function">array_unique</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">problems</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sort</span><span class="token punctuation">(</span><span class="token variable">$problems</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token variable">$problems</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now, we just need to filter this down further to where we have only the solutions for a given product code and it's selected problem description. Doing so is pretty simple though...</p>
+<pre class="language-php"><code class="language-php"><span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">getSolutions</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$prob</span><span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$code</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$rows</span> <span class="token operator">=</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">getRows</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$rows</span> <span class="token keyword">as</span> <span class="token variable">$row</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token variable">$column</span> <span class="token operator">=</span> <span class="token function">explode</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"\t"</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token variable">$code</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token variable">$prob</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">array_push</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">solutions</span><span class="token punctuation">,</span> <span class="token variable">$column</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">solutions</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Our route looks like so...</p>
+<pre class="language-php"><code class="language-php"><span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/solutions'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   <span class="token variable">$prob</span> <span class="token operator">=</span> <span class="token class-name static-context">Request</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'problem'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$code</span> <span class="token operator">=</span> <span class="token class-name static-context">Request</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$guide</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">GoosesGuideHelper</span><span class="token punctuation">(</span><span class="token function">asset</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'GG_2014_2.txt'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token variable">$solutions</span> <span class="token operator">=</span> <span class="token variable">$guide</span><span class="token operator">-></span><span class="token function">getSolutions</span><span class="token punctuation">(</span><span class="token variable">$prob</span><span class="token punctuation">,</span> <span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'solutions'</span><span class="token punctuation">)</span>
+       <span class="token operator">-></span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'solutions'</span><span class="token punctuation">,</span> <span class="token variable">$solutions</span><span class="token punctuation">)</span>
+       <span class="token operator">-></span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'prob'</span><span class="token punctuation">,</span> <span class="token variable">$prob</span><span class="token punctuation">)</span>
+       <span class="token operator">-></span><span class="token function">with</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'code'</span><span class="token punctuation">,</span> <span class="token variable">$code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>...and finally, our view</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layout</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid place-items-center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Home<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-2xl<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $code }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>{{ $prob }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+    @if (count($solutions) > 1)
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid max-w-screen-lg mx-auto gap-10 mt-16 px-5<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      @foreach ($solutions as $text )
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>flex gap-4 items-start flex-row p-5 shadow-lg hover:shadow-md transition-all duration-300<span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+          <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mt-1 text-gray-500<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $text }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      @endforeach
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    @else
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>flex gap-2 p-4 shadow-lg hover:shadow-md<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>{{ $solutions[0] }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    @endif
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layout</span><span class="token punctuation">></span></span></code></pre>
+<p>Actually, this is not all that bad as far as performance goes.</p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/v1730935048/blog/gg_part1_finish_cgrslu.jpg" alt="Laravel Debug Bar with metrics"></p>
+<p>That's 130ms boot time for the app, followed by 122ms for the application code to run. Total application time is 253ms using 17mb of memory. I gotta admit, I was really expecting far worse. This varies by a fairly wide margin though. I've got some results for total application time below 150ms. Just depends on the amount of returns really.</p>
+<p>All in all, even though my code could be cleaned up a bit more <em>(probably)</em> this is very usable. Heck, it's how I should've done it before really. I would actually like to do this same example something like Slim. Uhm!</p>
+<p>In part two, I will refactor this to use SQLite 3 and query the DB instead of just reading from a flat-file.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

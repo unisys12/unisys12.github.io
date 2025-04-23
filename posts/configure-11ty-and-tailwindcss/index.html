@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>How I Configure 11ty and TailwindCSS</h1>
+<h2>Technologies</h2>
+<ul>
+<li><a href="https://www.11ty.dev/">11ty</a></li>
+<li><a href="https://tailwindcss.com/">TailwindCSS</a></li>
+<li><a href="https://www.npmjs.com/package/npm-run-all">npm-run-all</a></li>
+</ul>
+<h2>Project Setup</h2>
+<p>When setting up a new 11ty project, I have few defaults that I tend to put in place before diving into actually creating pages and such. They are as follows:</p>
+<h3>Setup 11ty Input/Output directories</h3>
+<p>By default, 11ty, takes any files in the root of your project and transforms them into static pages... in the root of you project. So, if you had an empty directory other than your <code>package.json</code> &amp; <code>package-lock.json</code>, followed creating a <code>index.md</code> file.</p>
+<pre class="language-txt"><code class="language-txt">| package.json
+| package-lock.json
+| index.md</code></pre>
+<p>Then running <code>npx @eleventy</code> from that directory you would end up with:</p>
+<pre class="language-txt"><code class="language-txt">| index
+| - index.html
+| eleventy.js
+| package.json
+| package-lock.json
+| index.md</code></pre>
+<p>Things can get a bit confusing like this, so the first thing I add to my <code>.eleventy.js</code> config file is:</p>
+<p><em><code>.eleventy.js</code></em></p>
+<pre class="language-js"><code class="language-js"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"dotenv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">ouput</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>...and then create the <code>src</code> directory in the root of the project. This tells the <code>template-engine</code> to look for files in the <code>src</code> directory and output the build files to a new folder named <code>_site</code>. Now, after a build, your directory structure looks like the following:</p>
+<pre class="language-txt"><code class="language-txt">| _site (built automagically!)
+| - index
+| - - index.html
+| src
+| - index.md
+| eleventy.js
+| package.json
+| package-lock.json</code></pre>
+<h3>Configure The Template Engine</h3>
+<p>By default 11ty uses <a href="https://shopify.github.io/liquid/">liquid</a> to render all content created. But for one reason or another, I have gotten used to <a href="https://mozilla.github.io/nunjucks/">Nunjucks</a> for static site templates. So I need to configure 11ty to use Nunjucks instead of Liquid. To do that, we add the following to our config.</p>
+<pre class="language-js"><code class="language-js"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'dotenv'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">htmlTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span> <span class="token comment">// [!code ++]</span>
+    <span class="token literal-property property">markdownTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span> <span class="token comment">// [!code ++]</span>
+    <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">ouput</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span></code></pre>
+<p>For now, I think that's about it for the 11ty config. We will have a few other things to add later, but for now, let's move on.</p>
+<h3>Configure .gitignore</h3>
+<p>Before we install anything, we need to get our <code>.gitignore</code> set-up!</p>
+<pre class="language-ini"><code class="language-ini">node_modules
+_site
+localhost.cert
+localhost.key
+.cache
+.env</code></pre>
+<h3>Add Tailwind CSS</h3>
+<p>The workflow that I have settled on, over the last year or two, when it comes to TailwindCSS is like so:</p>
+<p>Add TailwindCSS to the project</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> <span class="token function">install</span> <span class="token parameter variable">-D</span> tailwindcss</code></pre>
+<p>Then, generate your config for TailwindCSS</p>
+<pre class="language-bash"><code class="language-bash">npx tailwindcss init</code></pre>
+<p>Add TailwindCSS to your stylesheet used in your project
+<em>/src/assets/css/style.css</em></p>
+<pre class="language-css"><code class="language-css"><span class="token atrule"><span class="token rule">@tailwind</span> base<span class="token punctuation">;</span></span>
+<span class="token atrule"><span class="token rule">@tailwind</span> components<span class="token punctuation">;</span></span>
+<span class="token atrule"><span class="token rule">@tailwind</span> utilities<span class="token punctuation">;</span></span></code></pre>
+<p>Then, in <code>package.json</code> I add a <em>dev</em> and <em>build</em> cmd with the script property.</p>
+<pre class="language-js"><code class="language-js"><span class="token string-property property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string-property property">"11ty-dev"</span><span class="token operator">:</span> <span class="token string">"npx @11ty/eleventy --serve"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"11ty-build"</span><span class="token operator">:</span> <span class="token string">"npx @11ty/eleventy"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"tailwind-dev"</span><span class="token operator">:</span> <span class="token string">"npx tailwindcss -i ./src/assets/css/styles.css -o ./_site/assets/css/styles.css --watch"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"tailwind-build"</span><span class="token operator">:</span> <span class="token string">"npx tailwindcss -i ./src/assets/css/styles.css -o ./_site/assets/css/styles.css --minify"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"dev"</span><span class="token operator">:</span> <span class="token string">"run-p -l tailwind-dev 11ty-dev"</span><span class="token punctuation">,</span>
+    <span class="token string-property property">"build"</span><span class="token operator">:</span> <span class="token string">"run-p -l tailwind-build 11ty-build"</span>
+  <span class="token punctuation">}</span></code></pre>
+<p>Lastly, add <code>npm-run-all</code> to your project</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">npm</span> i npm-run-all</code></pre>
+<p>There's a lot going on here, so let's break it down.
+<strong>Working Locally</strong></p>
+<ul>
+<li><code>npm-p</code> is a parallel process runner for NPM. I use it to run both TailwindCSS CLI and 11ty at the same time. At the bottom of the script property, I have a <code>dev</code> and <code>build</code> cmd. Taking a closer look at the dev cmd, you will notice that I first call <code>npm-p</code> to start up a parallel process.</li>
+<li>Then I pass that process the tailwind-dev cmd, then the 11ty-dev cmd. Looking at each of those, tailwind-dev calls the tailwind cli and I pass it the input <code>(-i)</code> path for our css so tailwinds JIT compiler can process it. I then pass it the output <code>(-o)</code> directory for the compiled css file. In this case, since we are in working in dev, I am also passing the <code>--watch</code> flag, which enables... you got it! Watch Mode! The JIT compiler will watch files and recompile the CSS as we make changes to any files or directories we inform it about. We will do that in a sec.</li>
+<li>Lastly, we pass the <code>11ty-dev</code> cmd to <code>npm-p</code>, which builds the site and launches as web server that we can use locally with reloading, etc. We can even secure it, if we want.</li>
+<li>When you open the project in your terminal, just run <code>npm run dev</code> and your good to go!</li>
+</ul>
+<p><strong>Building for Production</strong>
+Same process applies, but instead of passing <code>--watch</code> flag to TailwindCSS, we pass <code>--minify</code>, which I really don't think needs much explanation. To build the site, we just call <code>npx @11ty/eleventy</code>. In your CI/CD or server config, just make sure you call <code>npm run build</code>.</p>
+<h3>Configure TailwindCSS</h3>
+<p>I like to add a depth of at least two directories to Tailwinds config. This way, if I add extra directories to the <code>_includes</code> dir, they will be picked up. And I main work in either, HTML, Markdown or Nunjucks files, so I pass those as file types to watch.</p>
+<pre class="language-js"><code class="language-js"><span class="token comment">/** @type {import('tailwindcss').Config} */</span>
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">content</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"./src/**/**/*.{html,md,njk}"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// [!code ++]</span>
+  <span class="token literal-property property">theme</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">extend</span><span class="token operator">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<h3>Further Configure 11ty</h3>
+<p>Typically, I don't use any plugins/libraries to manipulate images or anything else. So, I just use the 11ty <code>addPassthroughCopy()</code> method, within the config, to simply pass those things over to the build dir untouched.</p>
+<p><em>.eleventy.js</em></p>
+<pre class="language-js"><code class="language-js"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"dotenv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token comment">// [!code highlight:4]</span>
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets/imgs/*.jpg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets/imgs/*.png"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/favicon.ico"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">htmlTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">markdownTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">ouput</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>Next, I like to add a little snippet that makes page loads much smoother when working in dev. It simply reloads the section of the page that changed, instead of performing a full page reload. If possible!</p>
+<p><em>.eleventy.js</em></p>
+<pre class="language-js"><code class="language-js"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"dotenv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token comment">// [!code highlight:4]</span>
+  config<span class="token punctuation">.</span><span class="token function">setServerOptions</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+    <span class="token literal-property property">domDiff</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets/imgs/*.jpg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets/imgs/*.png"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  config<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/favicon.ico"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">htmlTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">markdownTemplateEngine</span><span class="token operator">:</span> <span class="token string">"njk"</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">ouput</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p>And that's about it! I think!</p>
+<p><em>looks around the room behind me just to make sure.</em></p>
+<p>This setup is not near as fancy or complex as some that I have seen, but it works for me. And although I have read through and studied many other <code>.eleventy.js</code> configs, I came up with this on my own. If I had a pain point, that seemed to pop-up over and over, I solved it and added it to my workflow. Bam! That simple.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Making a Laravel Seed Helper</h1>
+<p>I've been working a larger personal project a week or so now and after a few iterations, I am close to where I will be moving it into a production phase. One of the things that I would like to offer in this project is a sensible default options for a lot of the choices that need to be made.</p>
+<h2>Let me back up a little</h2>
+<p>I am making, what I hope to be, a SaaS product that can be used by animal rescues and shelters to help them manage their animals and day to day tasks. It is a hugh undertaking, but nothing that I am not overly unfamiliar with, since my wife and I have run a successful dog training business <em>(out of our home)</em> for the last 5 years. Add to that, in the last year <em>(2023)</em> we started a Non-Profit <em>(501c3)</em> with the goal of helping rescues and shelters. It turned out that we was suppose to be a rescue, I guess, since that is currently what we are operating as. TLDR <em>&quot;Plan all you want, but life has a way of making sure to do what your needed most for at that time.&quot;</em></p>
+<p>The project has several moving parts, but the most important is the Animal Model. Pretty much everything else links back to a animal through relationships. Medication schedules, feeding regimens, vet appointments and don't get me started on the all the different attributes that have to be assigned to each animal! Around 60... at the moment!! Each of these tables are very simple and contain only a <code>label</code> property.</p>
+<h2>Which Brings Us to Our Simple Need</h2>
+<p>A typical seeder would look like this</p>
+<p><code>database/seeders/ActivityLevelSeeder.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Seeders</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Helpers<span class="token punctuation">\</span>LabelHelper</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Console<span class="token punctuation">\</span>Seeds<span class="token punctuation">\</span>WithoutModelEvents</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Seeder</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">ActivityLevelSeeder</span> <span class="token keyword">extends</span> <span class="token class-name">Seeder</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Run the database seeds.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$levels</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'Not Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Slightly Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Moderately Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Highly Active'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$levels</span> <span class="token keyword">as</span> <span class="token variable">$level</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name static-context">DB</span><span class="token operator">::</span><span class="token function">table</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'activity_levels'</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+                <span class="token string single-quoted-string">'label'</span> <span class="token operator">=></span> <span class="token variable">$level</span>
+            <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Simple enough, right? Well, type that out 60+ times! After the second one, I thought this would be a great time to create a helper class to... <em>wait for it</em>... help me.</p>
+<p><code>app/Helpers/LabelHelper.php</code> <em>naming is hard!</em></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Helpers</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Support<span class="token punctuation">\</span>Facades<span class="token punctuation">\</span>DB</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">LabelHelper</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">function</span> <span class="token function-definition function">assign</span><span class="token punctuation">(</span><span class="token keyword type-hint">string</span> <span class="token variable">$table_name</span><span class="token punctuation">,</span> <span class="token keyword type-hint">array</span> <span class="token variable">$labels</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span> <span class="token punctuation">{</span>
+        <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$labels</span> <span class="token keyword">as</span> <span class="token variable">$label</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token class-name static-context">DB</span><span class="token operator">::</span><span class="token function">table</span><span class="token punctuation">(</span><span class="token variable">$table_name</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+                <span class="token string single-quoted-string">'label'</span> <span class="token operator">=></span> <span class="token variable">$label</span>
+            <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Putting it to use looks like this</p>
+<p><code>database/seeders/ActivityLevelSeeder.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Seeders</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Helpers<span class="token punctuation">\</span>LabelHelper</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Console<span class="token punctuation">\</span>Seeds<span class="token punctuation">\</span>WithoutModelEvents</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Seeder</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">ActivityLevelSeeder</span> <span class="token keyword">extends</span> <span class="token class-name">Seeder</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Run the database seeds.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name static-context">LabelHelper</span><span class="token operator">::</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'activity_levels'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'Not Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Slightly Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Moderately Active'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'Highly Active'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>Much easier! Enjoy!</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

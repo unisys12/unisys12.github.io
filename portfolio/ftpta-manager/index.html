@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>FTPTA Manager</h1>
+<p><a href="https://github.com/unisys12/ftpta-manager">Repo Link</a></p>
+<h2>Project Purpose</h2>
+<p>My wife and I started a dog training business back in late 2019. After a very short while, we needed software to help us keep track of everything, so I started this project to help solve that.</p>
+<h2>Tech Used</h2>
+<ul>
+<li><a href="https://laravel.com/docs/9.x">Laravel v9</a></li>
+<li><a href="https://splade.dev/docs">Splade v1.1.0</a>
+<ul>
+<li>Vue 3.2</li>
+<li>Filepond</li>
+<li>Choices</li>
+<li>Flatpicker</li>
+</ul>
+</li>
+</ul>
+<h2>Proud Moments</h2>
+<ul>
+<li>I had used VueJS before. I knew it was a great. But this really pushed me over the edge. Bring it into a project using Splade was very different, but it really paid off. Too bad the project is no longer maintained/abandoned. The creator is authoring his own framework, so... it might be a few minutes before it's really ready.</li>
+<li>I created a Factory that seeds the database with a ton of information about different dog breeds! I was super happy about how that worked out.</li>
+</ul>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Factories</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Support<span class="token punctuation">\</span>Facades<span class="token punctuation">\</span>DB</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Support<span class="token punctuation">\</span>Facades<span class="token punctuation">\</span>Http</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Eloquent<span class="token punctuation">\</span>Factories<span class="token punctuation">\</span>Factory</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory&lt;\App\Models\Breed>
+ */</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BreedFactory</span> <span class="token keyword">extends</span> <span class="token class-name">Factory</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Define the model's default state.
+     *
+     * @return array&lt;string, mixed>
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">definition</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$response</span> <span class="token operator">=</span> <span class="token class-name static-context">Http</span><span class="token operator">::</span><span class="token function">withHeaders</span><span class="token punctuation">(</span>
+            <span class="token punctuation">[</span>
+                <span class="token string single-quoted-string">'x-api-key'</span> <span class="token operator">=></span> <span class="token function">env</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'DOG_API_KEY'</span><span class="token punctuation">)</span>
+            <span class="token punctuation">]</span>
+        <span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'https://api.thedogapi.com/v1/breeds'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$response</span><span class="token operator">-></span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token variable">$body</span> <span class="token operator">=</span> <span class="token variable">$response</span><span class="token operator">-></span><span class="token function">collect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token variable">$breed_count</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">foreach</span> <span class="token punctuation">(</span><span class="token variable">$body</span> <span class="token keyword">as</span> <span class="token variable">$value</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token comment">// print_r($value);</span>
+                <span class="token class-name static-context">DB</span><span class="token operator">::</span><span class="token function">table</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'breeds'</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">insert</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+                    <span class="token string single-quoted-string">'name'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'bred_for'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'bred_for'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'breed_group'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'breed_group'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'height'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'height'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'imperial'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'image_url'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'image'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'url'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'life_span'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'life_span'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'origin'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'origin'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'temperament'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'temperament'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'weight'</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'weight'</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'imperial'</span><span class="token punctuation">]</span> <span class="token operator">??</span> <span class="token string double-quoted-string">""</span>
+                <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+                <span class="token variable">$breed_count</span><span class="token operator">++</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">echo</span> <span class="token string double-quoted-string">"Seeded <span class="token interpolation"><span class="token punctuation">{</span><span class="token variable">$breed_count</span><span class="token punctuation">}</span></span> breeds to the DB!"</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">exit</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<ul>
+<li>There's nothing here really to brag about, other than... Look! I made a thing! It's a pretty standard Laravel app. Why am I listing it? Keep reading.</li>
+</ul>
+<h2>Lessons Learned</h2>
+<p>Never start on a project like this until you know what the full list of client expectations. Once I got the project to the point in which the repo currently sites, I called my wife over and asked her to sit next me. <em>&quot;I got sumtin I want to show ya!&quot;</em> . I was so proud of myself. I showed her the dashboard and what the different boxes were. Even showed her the calendar and how she could add events to the calendar and they would just show up. Events couldn't over lap, etc. I even showed her how events would automatically be added based on training schedules or private lesson appointments. How easy it was to add a new dog, user, employee, etc.</p>
+<p>She flipped out and got so mad at me. I bet she was mad at me for a month over this project. And I didn't realize that what I had actually done was taken away some of her agency from the business. She wanted to be able to sit down and look over the different features that different software vendors provided and make decisions from there. She didn't really know what all she needed, at that time.</p>
+<p>So... I stopped working on it and learned a very valuable lesson.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

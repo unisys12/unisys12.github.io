@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>LoreBotExt</h1>
+<p><a href="https://github.com/unisys12/LoreBotExt">Repo Link</a></p>
+<p><img src="https://camo.githubusercontent.com/13eb5ef15386975d895f83a25a301bb4aadf0a45824681ee295e0d847f13a5b3/68747470733a2f2f64726976652e676f6f676c652e636f6d2f75633f6578706f72743d766965772669643d30422d6b4b43496d3874573467515774425232737459304e305a4451" alt="Screen Shot"></p>
+<h2>Project Purpose</h2>
+<p>Create a browser extension that, once enabled, will allow the user to play Destiny and get Grimoire as well as other game related lore delivered to their browser in real time. In short, try to get as close to giving the player &quot;in-game lore&quot; without our code actually being in the game.</p>
+<h2>Tech Used</h2>
+<p><a href="https://vuejs.org/">VueJS</a> - v2
+<a href="https://www.bulma.io">Bulma CSS</a> - v0.3.2</p>
+<h2>Proud Moments</h2>
+<ul>
+<li>This was, at the time, the largest JavaScript projects I had ever created and managed. It sadly didn't last very long, but it birthed what would become <a href="lorebot12-86">Lorebot12-86</a>. Quiet a few Twitch Streamers started using it during their streams and this happened around the same time as OBS and Twitch.tv was experimenting with custom overlay systems on Twitch, which would allow the a streamer to display information or custom objects over their existing stream. Due to this conversation, which I was not aware of at the time I created this project, I was offered positions <em>(not jobs)</em> on other much larger projects. One of which would become <a href="https://destinyitemmanager.com/en/">Destiny Item Manager</a> and what would become the very first officially support Twitch Game Overlay/Extension for Borderlands 3 Tiny Tina's Wonderland. I sadly turned down the latter, due to overwhelming <code> imposter syndrome</code> at the time. I did work, very little, but a little early work on the second version of DIM, using the new Angular 2 framework and hated every minute of it. I backed out of the project very quickly.</li>
+<li>One project offer I did take was to joined <a href="https://ie.linkedin.com/in/paulboxley">Baxter</a> as an <em>engineer(?)</em> on <a href="https://www.ishtar-collective.net">Ishtar Collective</a>, which was a hugh honor. I will never forget the day I got a DM from him on Twitter asking to have a chat with me about joining the project. I started shaking from the shear excitement. Several hours later I was part of the team, and he gave me access to the repo. It was then I found out Ishtar was a Rails project and I had very little experience with Ruby. Other than old Sass workflows and writing Vagrant configs for environments. Baxter <em>(Paul)</em> was a great sport and really took me under his wing. I learned so much from him, I cannot put into words. I will be forever great-ful for my time on the project.</li>
+<li>The amount of mental gymnastics that was needed to recreate a players emblem was insane! Working through that was a big leap for me, at the time.</li>
+</ul>
+<p>Ex: Character.vue <em>(component that gathered character info from the Bungie API, store that in a VueStore for other uses, and displayed the characters emblem in the upper left of the image above)</em></p>
+<pre class="language-js"><code class="language-js"><span class="token operator">&lt;</span>template<span class="token operator">></span>
+<span class="token operator">&lt;</span>section <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"section"</span> <span class="token operator">:</span>thisAccount<span class="token operator">=</span><span class="token string">"getActivity(fetchGamer)"</span><span class="token operator">></span>
+  <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"container"</span> v<span class="token operator">-</span><span class="token keyword">if</span><span class="token operator">=</span><span class="token string">"activeCharacter != ''"</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>span <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"title"</span><span class="token operator">></span>Active Character<span class="token operator">&lt;</span><span class="token operator">/</span>span<span class="token operator">></span>
+    <span class="token operator">&lt;</span>hr<span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"columns"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column emblem is-1"</span>
+          <span class="token operator">:</span>style<span class="token operator">=</span><span class="token string">"{ 'background': 'url(https://bungie.net' + activeCharacter.emblemPath + ') no-repeat' }"</span><span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column stats"</span>
+          <span class="token operator">:</span>style<span class="token operator">=</span><span class="token string">"{ 'background': 'url(https://bungie.net' + activeCharacter.backgroundPath + ') no-repeat' }"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"columns"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column class"</span><span class="token operator">></span>
+                <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> characterClass <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column blevel is-1"</span><span class="token operator">></span>
+                <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> activeCharacter<span class="token punctuation">.</span>characterLevel <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"columns"</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column race is-1"</span><span class="token operator">></span>
+              <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span>characterRace<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+          <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column gender"</span><span class="token operator">></span>
+              <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> characterGender<span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+          <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column plevel is-1"</span><span class="token operator">></span>
+              <span class="token operator">&lt;</span>p<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> activeCharacter<span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>powerLevel <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>p<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+      <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column"</span><span class="token operator">></span>
+        <span class="token operator">&lt;</span>section <span class="token keyword">if</span><span class="token operator">=</span><span class="token string">"activeCharacter != ''"</span> <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"activity"</span><span class="token operator">></span>
+          <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"activityImage"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>figure <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"activityBackground"</span><span class="token operator">></span>
+                <span class="token operator">&lt;</span>img <span class="token operator">:</span>src<span class="token operator">=</span><span class="token string">"'https://www.bungie.net' + characterActivity.pgcrImage"</span> alt<span class="token operator">=</span><span class="token string">"activityBackground"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>figure<span class="token operator">></span>
+            <span class="token operator">&lt;</span>figure <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"activityIcon"</span><span class="token operator">></span>
+                <span class="token operator">&lt;</span>img <span class="token operator">:</span>src<span class="token operator">=</span><span class="token string">"'https://www.bungie.net' + characterActivity.icon"</span> alt<span class="token operator">=</span><span class="token string">"activityIcon"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>figure<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+          <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"column content"</span><span class="token operator">></span>
+            <span class="token operator">&lt;</span>h2<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> characterActivity<span class="token punctuation">.</span>activityName <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>h2<span class="token operator">></span>
+            <span class="token operator">&lt;</span>h3<span class="token operator">></span><span class="token punctuation">{</span><span class="token punctuation">{</span> characterActivity<span class="token punctuation">.</span>activityDescription <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token operator">&lt;</span><span class="token operator">/</span>h3<span class="token operator">></span>
+          <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>section<span class="token operator">></span>
+      <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"container"</span> v<span class="token operator">-</span><span class="token keyword">else</span><span class="token operator">></span>
+    <span class="token operator">&lt;</span>div <span class="token keyword">class</span><span class="token operator">=</span><span class="token string">"notification is-primary"</span> v<span class="token operator">-</span>show<span class="token operator">=</span><span class="token string">"characterMessage"</span><span class="token operator">></span>
+      <span class="token punctuation">{</span><span class="token punctuation">{</span> characterMessage <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+  <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>section<span class="token operator">></span>
+
+<span class="token operator">&lt;</span><span class="token operator">/</span>template<span class="token operator">></span>
+
+<span class="token operator">&lt;</span>script<span class="token operator">></span>
+<span class="token keyword">const</span> _ <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'underscore'</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> Store <span class="token keyword">from</span> <span class="token string">'../store'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> searchDestinyPlayer<span class="token punctuation">,</span> getSummary<span class="token punctuation">,</span> getActivity<span class="token punctuation">,</span> getClass<span class="token punctuation">,</span> getGender<span class="token punctuation">,</span> getRace <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../Bungie/api.js'</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'Character'</span><span class="token punctuation">,</span>
+  Store<span class="token punctuation">,</span>
+  <span class="token function">data</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">gamer</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">characterMessage</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">activeCharacter</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">characterGender</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">characterRace</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">characterClass</span><span class="token operator">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">characterActivity</span><span class="token operator">:</span> <span class="token string">''</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">computed</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token function-variable function">fetchGamer</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> Store<span class="token punctuation">.</span>getters<span class="token punctuation">.</span>fetchGamer
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">fetchAccount</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> Store<span class="token punctuation">.</span>getters<span class="token punctuation">.</span>fetchAccount
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">fetchSummary</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> Store<span class="token punctuation">.</span>getters<span class="token punctuation">.</span>fetchSummary
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">fetchActiveCharacter</span><span class="token operator">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">return</span> Store<span class="token punctuation">.</span>getters<span class="token punctuation">.</span>fetchActive
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token literal-property property">methods</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token function-variable function">getPlayer</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">obj</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> res <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">searchDestinyPlayer</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">let</span> account <span class="token operator">=</span> res<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response
+      <span class="token keyword">if</span><span class="token punctuation">(</span>account<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>account<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeAccount'</span><span class="token punctuation">,</span> account<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+          <span class="token comment">// Display message that the account could not be found</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">No valid BNet account can be found with the name - </span><span class="token template-punctuation string">`</span></span>
+          <span class="token operator">+</span> obj <span class="token operator">+</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">. Make you are using a valid BNet account name and not a Twitch handle...</span><span class="token template-punctuation string">`</span></span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token string">'Seemed to have lost our network connection...'</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">getAccountSummary</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">obj</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>fetchGamer<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token comment">// Find the player on BNet and store their info</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getPlayer</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+        <span class="token comment">// Fetch that info from the Store and put into a var</span>
+        <span class="token keyword">let</span> account <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fetchAccount
+        <span class="token comment">// Use map to extract the data we need for the next API call and</span>
+        <span class="token comment">// place it in the Store for further use... later...</span>
+        account<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">{</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeMembershipId'</span><span class="token punctuation">,</span> x<span class="token punctuation">.</span>membershipId<span class="token punctuation">)</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeMembershipType'</span><span class="token punctuation">,</span> x<span class="token punctuation">.</span>membershipType<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token keyword">let</span> summary <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getSummary</span><span class="token punctuation">(</span>Store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>membershipType<span class="token punctuation">,</span> Store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>membershipId<span class="token punctuation">)</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>summary<span class="token punctuation">.</span>data<span class="token punctuation">.</span>ErrorCode <span class="token operator">!=</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token string">'Error fetching Summary: '</span> <span class="token operator">+</span> summary<span class="token punctuation">.</span>data<span class="token punctuation">.</span>ErrorStatus <span class="token operator">+</span> <span class="token string">' :'</span> <span class="token operator">+</span> summary<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Message
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeSummary'</span><span class="token punctuation">,</span> summary<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token comment">// Return message to display that no account was found</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token string">'No characters found using this account... '</span> <span class="token operator">+</span> obj
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">getActiveCharacter</span><span class="token operator">:</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">obj</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>fetchGamer<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getAccountSummary</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+        <span class="token keyword">let</span> characters <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fetchSummary
+        <span class="token keyword">let</span> chars <span class="token operator">=</span> characters<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>characters
+        <span class="token keyword">let</span> active <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> chars<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>chars<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>currentActivityHash <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            active<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>chars<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">if</span><span class="token punctuation">(</span>active<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeActiveCharacters'</span><span class="token punctuation">,</span> active<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+          <span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fetchActiveCharacter
+
+          <span class="token keyword">let</span> characterRace <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+          characterRace<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">getRace</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter<span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>raceHash<span class="token punctuation">)</span><span class="token punctuation">)</span>
+          characterRace<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>characterRace <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>race<span class="token punctuation">.</span>raceName
+          <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+          <span class="token keyword">let</span> characterClass <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+          characterClass<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">getClass</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter<span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>classHash<span class="token punctuation">)</span><span class="token punctuation">)</span>
+          characterClass<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>characterClass <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>classDefinition<span class="token punctuation">.</span>className
+          <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+          <span class="token keyword">let</span> characterGender <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+          characterGender<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">getGender</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter<span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>genderHash<span class="token punctuation">)</span><span class="token punctuation">)</span>
+          characterGender<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">x</span><span class="token punctuation">)</span><span class="token operator">=></span><span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>characterGender <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>gender<span class="token punctuation">.</span>genderName
+          <span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token string">'There are no active characters on '</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fetchGamer <span class="token operator">+</span> <span class="token string">"'s account at the moment..."</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">getActivity</span><span class="token operator">:</span> _<span class="token punctuation">.</span><span class="token function">throttle</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">obj</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> gamertag <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>fetchGamer
+      <span class="token keyword">if</span><span class="token punctuation">(</span>gamertag<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getActiveCharacter</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter <span class="token operator">!=</span> <span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+          <span class="token keyword">let</span> activity <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">getActivity</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>activeCharacter<span class="token punctuation">.</span>characterBase<span class="token punctuation">.</span>currentActivityHash<span class="token punctuation">)</span>
+          Store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'storeActivity'</span><span class="token punctuation">,</span> activity<span class="token punctuation">.</span>data<span class="token punctuation">.</span>Response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>activity<span class="token punctuation">)</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>characterActivity <span class="token operator">=</span> Store<span class="token punctuation">.</span>getters<span class="token punctuation">.</span>fetchActivity
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token keyword">else</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>characterMessage <span class="token operator">=</span> <span class="token string">'Please enter a valid Bungie.net Username or gamertag to get started...'</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">3000</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">></span></code></pre>
+<h2>Lessons Learned</h2>
+<ul>
+<li>Sometimes, those <em>&quot;Hey! It would be neat if...&quot;</em> projects can pay off!</li>
+<li>Allowed me to get my brain around using a inward facing storage solution, VueStore, on a project.</li>
+<li>Webpack really is hell.</li>
+<li>Learned how to distribute software through the Google Playstore.</li>
+<li>Although I got it working locally, I was never able to distribute this project as an extension on Firefox due to my use of Vue. Somewhere in the rendering process, <code>eval()</code> was used and Firefox strictly prohibited it's use. I would have to completely rewrite the project.</li>
+<li>When Destiny 2 was announced, this project really took off due to many players coming back and a lot of hype was surrounding me releasing a v1 of this project after D2 came out. A month before D2 was released, Bungie allowed access to the new API that would support the upcoming release, to several community members. I was one of them. I was shocked to learn that this project was not going to work with the new API. All the lore was now in game, so if you wanted to see it, you didn't need a app like this. So, I announced that I would no longer support the application and focus my efforts on Ishtar going forward.</li>
+</ul>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

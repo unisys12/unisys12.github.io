@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Periodic Table</h1>
+<p><a href="https://github.com/unisys12/periodic-table">Link to Repo</a></p>
+<h2>Project Purpose</h2>
+<p>This project was inspired by a Twitter post. Not from another developer or designer, but an artist friend of mine that was showing off some new enamel pin designs that she was thinking of selling. I don't don't know why, but I immediately wondered if I could make a Periodic Table using only CSS Grid. Look... I never said I was sain, ok!</p>
+<h2>Tech Used</h2>
+<ul>
+<li><a href="https://www.11ty.dev/" title="Eleventy Link">11ty</a> - 11ty is hands down the simplest solution to build this project. Yes! There are a thousand million Javascript frameworks out there that I could've used, but I wanted simple. And 11ty is just simple. It gives me a build process for Nunjucks as well as a hot reloading local server to run the project. Not to mention a really easy way to import the Periodic Table data into the project without overloading the load times of the page. I could've leveraged 11ty's config system a bit more with the CSS, such as combining and compressing the output, but...</li>
+<li><a href="https://mozilla.github.io/nunjucks/" title="Link to Nunjucks Project">Nunjucks</a> - I would need a templating language, due to the nature of the project. I was familiar with Nunjucks, so it only made sense to use it.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Grid_Layout" title="MDN Link">CSS Grid</a> - The whole purpose of the project. Grid is very powerful and is even more powerful when combined with <a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox" title="MDN Link">Flexbox</a>. None the less, this project was about learning Grid and not Flexbox.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties" title="MDN Link">CSS Custom Properties</a> - Due to the repetitive nature of this project, one of the challenges was going to be dynamically applying properties to elements. Alignment and background colors specifically. Using Custom Properties made this very simple, I really was not able to leverage them very well and it ended up costing me. More on that later.</li>
+<li><a href="https://atomiks.github.io/tippyjs/" title="TippyJS Link">TippyJS</a> - The Periodic Table is actually quit large, so I found out. And one of the first issues I had, after the layout was solved, was actually viewing the individual elements. I decided to use this library because it allowed me to quickly create the hover interactions with each element on the table. I mean, I guess I could've created my own solution to this, but since the project was to be centered around getting more familiar with CSS Grid and not creating custom hover effects, I chose this route.</li>
+<li>Vanilla Javascript - There are two or three JS files that I created to perform separate tasks, which will be covered later. None of them are built into the project, so there are never loaded on the page. They are utilities and have no effect on the project running locally.</li>
+</ul>
+<h2>Proud Moments</h2>
+<p>I created a freaking Periodic Table of Elements for Christs sake! I was so stoked when I was done with this!! Still am honestly.</p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>block-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">block</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> element <span class="token keyword">in</span> elements <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span>
+      <span class="token attr-name">data-template</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicNumber <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+      <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>period-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>period <span class="token delimiter punctuation">}}</span></span> group-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span><span class="token object">group</span> <span class="token delimiter punctuation">}}</span></span> <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>groupBlock <span class="token operator">|</span> <span class="token function filter">replace</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">"-"</span><span class="token punctuation">)</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+      <span class="token attr-name">data-block</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">block</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+      <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>symbol <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>subgrid<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicNumber <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>symbol<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>symbol <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mass<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicMass <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+<h2>Lessons Learned</h2>
+<ul>
+<li>With as many 11ty sites I have created, using Nunjucks as my template language of choice, you would think that I had used the <code>groupby()</code> method before. But no... I had not. But it can be really powerful!</li>
+</ul>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>table-element<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> set elements <span class="token operator">=</span> pte <span class="token delimiter punctuation">%}</span></span>
+
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> <span class="token object">group</span><span class="token punctuation">,</span> elements <span class="token keyword">in</span> elements <span class="token operator">|</span> <span class="token function filter">groupby</span><span class="token punctuation">(</span><span class="token string">"group"</span><span class="token punctuation">)</span> <span class="token delimiter punctuation">%}</span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> <span class="token object">block</span><span class="token punctuation">,</span> elements <span class="token keyword">in</span> elements <span class="token operator">|</span> <span class="token function filter">groupby</span><span class="token punctuation">(</span><span class="token string">"block"</span><span class="token punctuation">)</span> <span class="token delimiter punctuation">%}</span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">if</span> <span class="token object">block</span> <span class="token operator">!=</span> <span class="token string">'f'</span> <span class="token delimiter punctuation">%}</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>block-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">block</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+          <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> element <span class="token keyword">in</span> elements <span class="token delimiter punctuation">%}</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span>
+              <span class="token attr-name">data-template</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicNumber <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+              <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>period-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>period <span class="token delimiter punctuation">}}</span></span> group-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span><span class="token object">group</span> <span class="token delimiter punctuation">}}</span></span> <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>groupBlock <span class="token operator">|</span> <span class="token function filter">replace</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">,</span> <span class="token string">"-"</span><span class="token punctuation">)</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+              <span class="token attr-name">data-block</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token object">block</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+              <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>symbol <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+            <span class="token punctuation">></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>subgrid<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicNumber <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>symbol<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>symbol <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>name<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mass<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> element<span class="token punctuation">.</span>atomicMass <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+              <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+          <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endif</span> <span class="token delimiter punctuation">%}</span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span></code></pre>
+<ul>
+<li>The shear mental gymnastics I had to go through to make this, given the data I had, was a lot. Well, for me anyway. But that's when it seems we learn the most, right? Such as, I had to learn how to convert a HEX value into a RGB value. I think it turned out ok.</li>
+</ul>
+<pre class="language-js"><code class="language-js">module<span class="token punctuation">.</span>exports<span class="token punctuation">.</span><span class="token function-variable function">hexToRGB</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token parameter">hex<span class="token punctuation">,</span> alpha</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> r <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>hex<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    g <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>hex<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    b <span class="token operator">=</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>hex<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>alpha<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">"rgba("</span> <span class="token operator">+</span> r <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> g <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> b <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> alpha <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">"rgb("</span> <span class="token operator">+</span> r <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> g <span class="token operator">+</span> <span class="token string">", "</span> <span class="token operator">+</span> b <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<ul>
+<li>This was my deepest dive into CSS Grid to date. And this was one of those projects that tend to refer back to when I say to myself, <em>&quot;How did I do that?&quot;</em>. One of those things was configuring the layout of the elements, like we see them everywhere, by the elements Block and Period using <code>grid-template-rows</code> combined with <code>grid-row</code>. I heavily utilize <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">Attribute Selectors</a> for this.</li>
+</ul>
+<pre class="language-css"><code class="language-css"><span class="token comment">/* the overlay page layout/container **/</span>
+<span class="token selector">.table-element</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* margin: 0 auto; */</span>
+  <span class="token property">padding</span><span class="token punctuation">:</span> 0 1em<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100vw<span class="token punctuation">;</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>
+    <span class="token function">var</span><span class="token punctuation">(</span>--num-group-cols<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">minmax</span><span class="token punctuation">(</span>max-content<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">grid-auto-flow</span><span class="token punctuation">:</span> row<span class="token punctuation">;</span>
+  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--gap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 
+- Blocks indicate which electron sublevel is being filled. 
+- Blocks are used to group elements together
+*/</span>
+<span class="token selector">section[class*="block-"]</span> <span class="token punctuation">{</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span><span class="token function">var</span><span class="token punctuation">(</span>--num-period-rows<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span>max-content<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">justify-content</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+  <span class="token property">gap</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--gap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* 
+- A period is represented as a row in the table
+- The period number of an element indicates how many of its energy levels house electrons 
+- Moving down the table, periods are longer because it takes more electrons to fill the larger 
+    and more complex outer levels
+*/</span>
+<span class="token selector">.period-1</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 1 / 2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-2</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 2 / 3<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-3</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 3 / 4<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-4</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 4 / 5<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-5</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 5 / 6<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-6</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 6 / 7<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.period-7</span> <span class="token punctuation">{</span>
+  <span class="token property">grid-row</span><span class="token punctuation">:</span> 7 / 8<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>I even created my own, maybe not as functional, <code>subgrid</code> for the inside of each elements container.</p>
+<pre class="language-css"><code class="language-css"><span class="token selector">.subgrid</span> <span class="token punctuation">{</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>4<span class="token punctuation">,</span> <span class="token function">minmax</span><span class="token punctuation">(</span>min-content<span class="token punctuation">,</span> min-content<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">font-family</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--font-family<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">text-rendering</span><span class="token punctuation">:</span> optimizeLegibility<span class="token punctuation">;</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> <span class="token function">var</span><span class="token punctuation">(</span>--font-size<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.subgrid div:nth-child(n + 2)</span> <span class="token punctuation">{</span>
+  <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Overall, this was a fun project and I really enjoyed the challenge.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

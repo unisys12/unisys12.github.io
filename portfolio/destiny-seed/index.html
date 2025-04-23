@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Destiny Project</h1>
+<p><a href="https://github.com/unisys12/destiny-project/">Destiny Project</a></p>
+<h2>Project Purpose</h2>
+<p>In all honesty, this was one of those <em>&quot;Hey! Wouldn't this be neat?&quot;</em> type of projects.</p>
+<p>I wanted to create a PHP Package that you could add to a Laravel project, then run a few artisan commands and end up with a fully seeded database full of data. This data would come from the Manifest file that is released every two weeks or after each update to the game.</p>
+<h2>Tech Used</h2>
+<ul>
+<li>PHP 8.1 or greater required due to use of Enums <em>(which was new, natively, to PHP at the time)</em></li>
+<li>Laravel 8</li>
+</ul>
+<h2>Proud Moments</h2>
+<ul>
+<li>At the time, Laravel did not support the concept of a single action controller. I don't believe anyway. So I just put my single actions within <code>routes/web.php</code> and it was super clean.</li>
+</ul>
+<p>Ex: <code>/activity</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/activity'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$activity</span> <span class="token operator">=</span> <span class="token class-name static-context">DestinyActivityDefinition</span><span class="token operator">::</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'destiny.activity'</span><span class="token punctuation">,</span> <span class="token function">compact</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'activity'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></code></pre>
+<ul>
+<li>It was the first time I got to play with native <a href="https://www.php.net/manual/en/language.enumerations.basics.php">Enums</a> and liked it.</li>
+</ul>
+<p>Ex: <code>/energy_type/{id}</code> route</p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'/energy_type/{id}'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token variable">$energy</span> <span class="token operator">=</span> <span class="token class-name static-context">DestinyEnergyTypeDefinition</span><span class="token operator">::</span><span class="token function">find</span><span class="token punctuation">(</span><span class="token variable">$id</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$name</span> <span class="token operator">=</span> <span class="token class-name static-context">DestinyEnergyType</span><span class="token operator">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token variable">$energy</span><span class="token operator">-></span><span class="token property">enumValue</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token property">name</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'destiny.energy_type'</span><span class="token punctuation">,</span> <span class="token function">compact</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'energy'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></code></pre>
+<p>Ex: <code>app/Destiny/Enums</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Destiny<span class="token punctuation">\</span>Enums</span><span class="token punctuation">;</span>
+
+<span class="token keyword">enum</span> <span class="token class-name-definition class-name">DestinyEnergyType</span><span class="token punctuation">:</span> <span class="token keyword type-declaration">int</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">Any</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Arc</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Thermal</span> <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token keyword type-declaration">Void</span> <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Ghost</span> <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Subclass</span> <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Statis</span> <span class="token operator">=</span> <span class="token number">6</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<ul>
+<li>This project was the first time I had created my own Artisan commands for a Laravel app. I will go over them all and how they work. You can take a look at <a href="https://github.com/unisys12/destiny-project/tree/main/app/Console/Commands," title="Custom Artisan Commands">repo</a> and it's all there.</li>
+</ul>
+<h2>Lessons Learned</h2>
+<p>I learned to walk away from <em>neat</em> projects, like this. There comes a point where there is so much pain in pushing a project forward, that even the knowledge you <strong>might</strong> gain from it, is not worth it. That knowledge can be gained in far better ways. Why did I come to this conclusion?</p>
+<p><em>Seeding Relationships</em></p>
+<p>The Manifest file that Destiny ships is a zipped SQLite database. Each table only contains two columns: ID, BLOB. The ID column was of course pointless. But the blog column contained a JSON object with the information for an item, with a separate ID for that item or entry. This ID was referenced as a property called &quot;hash&quot;. And this hash value could be found in thousands of places throughout other tables or even the same table. Piecing those relationships together was going to bea nightmare! When I finally came to the conclusion that I could solve all this by using MongoDB <em>(or any other noSQL database)</em>, that's what I did. And MongoDB support for Laravel is just as big of a nightmare as the problem I was trying to solve. Back to NodeJS I went!</p>
+<p>If there was money involved here, I still would've taken a step back and looked everything over a second time. Depending on <em>how much money</em>: It might've been worth configuring MongoDB adapter for Laravel and pushing forward. Laravel easily supports multiple database connections, so it would not have been a big deal.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

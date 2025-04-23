@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Animated Card Part 1</h1>
+<p>I was browsing the web the other night, looking for a weekend get-away spot for the wife and I, and I ran across this site. <a href="https://landtrustnal.org/">Land Trust of North Alabama</a>. There are quit a few things happening on this site that I found very interesting, but what I want to focus on right now is near the bottom on their home page. There you will find a selection of images, displayed in a somewhat random way, all linking back to specific post from their Instagram account. As a self-proclaimed <em>back-end guy</em> myself, the posts being displayed is not what caught my eye. That's a simple API who's response gets aggregated and then consumed on the frontend. What made stop and play with whole section was the animations on each image block <em>(we will call them cards, or a card, from here on)</em>.</p>
+<p>Let me break down whats happening in the animation:</p>
+<ul>
+<li>Initial state of the card has an image as the background with a small Instagram SVG icon the lower right.</li>
+<li>When hovering over the card, the background image fades to white</li>
+<li>The actual post text appears over the white background</li>
+<li>The Instagram SVG is replaced by a curved arrow SVG that allows you to share the post to Facebook or Instagram</li>
+<li>The Instagram SVG is moved to the top center</li>
+<li>Lower left is a logo of the Land Trust</li>
+</ul>
+<p>Last night, I hopped on <a href="https://codepen.io/unisys12/pen/RwzrgPX">CodePen</a> and threw together a first attempt. Just to see if I could figure out how it was done. But I think this can be done a slightly better way. Maybe.</p>
+<p>Here's what we are starting with:</p>
+<p><em><code>html</code></em></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>card<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>figure</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>card_bg_img<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span>
+        <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://res.cloudinary.com/ftpta-com/image/upload/q_auto,g_face,f_auto,c_thumb,w_200/v1667322860/training/20220930_finn_jack_crystal_ewgzde.jpg<span class="token punctuation">"</span></span>
+        <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>card image<span class="token punctuation">"</span></span>
+      <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>figure</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>figcaption</span><span class="token punctuation">></span></span>
+      Arbitrary wall of text that should explain the image. More often than not,
+      the text will come from a social media API.
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>figcaption</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>Instead of using a bunch of random divs, spans and such, I opted to use actual elements. One div for the container, which most sites use in some form or another. A div for the card itself. A figure element to hold the image element, followed by a figcaption that will hold the text. If I were to add the other logo and two SVG's, there would have to be a few more elements, but we will start with this for now. Again, this is just an exercise to learn how this works and not to complete recreate the card as it stands.</p>
+<p><em><code>css</code></em></p>
+<pre class="language-css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">{</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">minmax</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card</span> <span class="token punctuation">{</span>
+  <span class="token property">max-width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img</span> <span class="token punctuation">{</span>
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -7px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img > img</span> <span class="token punctuation">{</span>
+  <span class="token property">transition</span><span class="token punctuation">:</span>
+    opacity 0.3s ease-in-out<span class="token punctuation">,</span>
+    transform 0.3s ease-in-out<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img:hover > img</span> <span class="token punctuation">{</span>
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 0.2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">figcaption</span> <span class="token punctuation">{</span>
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img:hover + figcaption</span> <span class="token punctuation">{</span>
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+  <span class="token property">transform</span><span class="token punctuation">:</span> <span class="token function">translateY</span><span class="token punctuation">(</span>-250px<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>There are a few things in the above prototype that will not work in the real world, but since I did this on CodePen, it is what it is. Things like using px in the transform of figcaption on hover and having to set a negative margin on the img container just to properly align the image with the figcaption text. There are also some things I need to fix/solve, such as an issue when hovering over the displayed text. It causes stuttering.</p>
+<p>We will be starting off by keeping the initial html and basically wiping all the css, since we will be working in the browser with VSCode. I tested it before hand and it all works perfectly. But I just feel like I could do a better job of execution. So, let's see what I ended up with!</p>
+<p><em>css</em> <em>final code</em></p>
+<pre class="language-css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">{</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">minmax</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span> // [!code --]
+  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>2<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span> // [!code ++]
+  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card</span> <span class="token punctuation">{</span>
+  <span class="token property">max-width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> // [!code --]
+  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span> <span class="token comment">/* set display to style contents */</span> // [!code ++]
+  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span> <span class="token comment">/* centers vertically and horizontally, but it can't */</span> // [!code ++]
+  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> subgrid<span class="token punctuation">;</span> <span class="token comment">/* setting to subgrid allows us to center text perfectly within the parent */</span> // [!code ++]
+<span class="token punctuation">}</span>
+
+<span class="token selector">figcaption</span> <span class="token punctuation">{</span>
+  <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> <span class="token comment">/* makes the text fit within the image */</span> // [!code ++]
+  <span class="token property">text-wrap</span><span class="token punctuation">:</span> justify<span class="token punctuation">;</span> <span class="token comment">/* balance leaves space on the edges */</span> // [!code ++]
+  <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment">/* hides figcation until hover. very sus! */</span> // [!code ++]
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> <span class="token comment">/* set default opacity to 0 to hide text */</span>
+  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.4s linear<span class="token punctuation">;</span> // [!code ++]
+<span class="token punctuation">}</span>
+
+<span class="token comment">/* show the text in the figcaption */</span>
+<span class="token selector">.card_bg_img:hover + figcaption</span> <span class="token punctuation">{</span>
+  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span> // [!code ++]
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img > img</span> <span class="token punctuation">{</span>
+  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">,</span> transform 2s 0.2s<span class="token punctuation">;</span> // [!code --]
+  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">;</span> // [!code ++]
+<span class="token punctuation">}</span>
+
+<span class="token selector">.card_bg_img:hover > img</span> <span class="token punctuation">{</span>
+  <span class="token property">opacity</span><span class="token punctuation">:</span> 0.2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>.container</h2>
+<p>Breaking this down a bit, we can see that I actually declared the template columns in this one. I believe cause of using <code>minmax</code> in my previous attempt was from me <em>keyboard thrashing</em>. This happens you just change values with little thought behind them, just to see what sticks as fast as possible. Although the code did work, just looking at it you could see it was not ideal. This time around, I actually set my container columns with <code>grid-template-columns: repeat(2, 1fr);</code>. I did experiment with adding more cards to the container and then adjusting the track list count <em>(first param of the repeat method)</em> accordingly and it worked just as expected. Bear in mind, this is not mobile ready, so... shame on me!</p>
+<h2>.card</h2>
+<p>I could remove the <code>max-width</code> property due to the fact that I was properly setting my grid now. But I also, set this class to be a grid as well. Then used subgrid, so that everything would reference the parent container. Followed by centering everything inside the card vertically and horizontally.</p>
+<h2>.card_bg_img</h2>
+<p>Removed this wackiness all together.</p>
+<h2>.figcaption</h2>
+<p>The changes to <code>.card</code> placed the <code>figcaption</code> directly on top of the image, whereas before, I left it below the image an used <code>transform</code> to move it up on hover of the image container <em>(figure element)</em>. Now, since the text I needed was already where I wanted it to be, I just simply have to set the opacity to zero on the <code>figcaption</code> and then transition that on hover, like before.</p>
+<p>I added <code>text-wrap: balance</code> here as well. This does add a slight bit of padding/space between the edge of the image and the text. If this is not of your liking, just remove it and the text will run right the edge of the image. Setting this to <code>pretty</code> has a similar effect as <code>balance</code>, but that might change with the amount of text or other constraints you might have.</p>
+<p>The astute might notice that I added <code>display: none</code> to the <code>figcaption</code> and on hover of the image, I can it to <code>block</code>. The reason? It's a <em>hack</em> and I know that's not good. This will mess up with screen readers and the like, so it is not a good solution. Why did I do this then? When hovering over the image, if your cursor entered any area occupied by the figcaption element, the nullify the transition declared on the img with <code>.card_bg_img &gt; img</code>. Which means that if your cursor traveled through the image, from either the right-center or left-center, you were not actually hovering over the image. Instead, you would be hovering over the figcaption, which is in the middle of the image now. To solve this, for now, I just hide it. Then on hover I set it block, just to show it again. We still transition the opacity so that we can hide any jank or flicker when changing from display:none to display:block.</p>
+<p>To resolve this, we could put it back to how it was before and still have to same issues as before.</p>
+<h2>Summary</h2>
+<p>I learned a lot from this exercise! And let me be honest... it's been a long time since I have written CSS. I've been using <a href="https://tailwindcss.com/">TailwindCSS</a> for years now and I had almost forgotten how to write it! I had to look-up so many things, because I forgot them due to Tailwinds naming conventions are not exactly one-to-one with the CSS API. I mean, it can't be! If it were, we would just write in-line styles all the time. But as far as not having written CSS in a long time, it feels good to write it again. This exercise actually made me feel creative, which I haven't felt in forever. I still can't design worth a crap and that will never change. But! Making a design in an effective and efficient way can still be creative.</p>
+<p>Something that's quit obvious from this exercise is that I have some research to do. I remember a few years ago reading about how to handle these situations with <code>display:none</code>, but it has slipped right past me. That will be added to my <em>things to search`</em> list for sure.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

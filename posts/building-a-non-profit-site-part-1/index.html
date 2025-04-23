@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Building an 11ty Site for Our Non-Profit</h1>
+<p>First of all, the set-up and config for this project can be found in this <a href="configure-11ty-and-tailwindcss">post</a>. If you have not read it or you have your own config or workflow, you can still follow along. The full repo can be found <a href="https://github.com/unisys12/ftp-foundation">here</a>.</p>
+<p>There are still some aspects of this site that are in flux and there are aspects of the site not even finished. Things such as proper page descriptions, Open Graph meta-data, etc. Hosting and Domain residency is not one of them and I will not go over that in this post. That's a <em>&quot;Another post for another time!&quot;</em> situation!</p>
+<h2>Layouts <em>(?)</em></h2>
+<p>I am using two different layouts for this simple site. And I will explain why.</p>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,f_auto/v1720908399/ftpf_screenshot_d2mj6e.jpg" alt="For The Puppies Foundation Home Page"></p>
+<p>As you can see, the page is divided into two uneven columns. The division of these two columns are different depending on the page. So, let's take a look!</p>
+<p><em><code>src/_includes/landing_layout.njk</code></em></p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container mx-auto my-2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/header.html'</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid grid-flow-row sm:grid-cols-3 text-center mt-8 gap-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> content <span class="token operator">|</span> <span class="token function filter">safe</span> <span class="token delimiter punctuation">}}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mx-auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span>
+        <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token string">'/assets/imgs/ftpf_logo.jpg'</span> <span class="token operator">|</span> <span class="token function filter">url</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span>
+        <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Foundation Logo<span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/donate_qr.html'</span> <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/footer.html'</span> <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></code></pre>
+<p><em><code>src/_includes/base_layout.njk</code></em></p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container mx-auto my-2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/header.html'</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid grid-flow-row sm:grid-cols-3 text-center mt-8 gap-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sm:col-span-2 flex flex-row flex-wrap justify-center gap-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      // [!code highlight]
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>prose mx-4 lg:prose-xl text-left<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        // [!code highlight]
+        <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> content <span class="token operator">|</span> <span class="token function filter">safe</span> <span class="token delimiter punctuation">}}</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+      // [!code highlight]
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    // [!code highlight]
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mx-auto print:hidden<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span>
+        <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> <span class="token string">'/assets/imgs/ftpf_logo.jpg'</span> <span class="token operator">|</span> <span class="token function filter">url</span> <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span>
+        <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Foundation Logo<span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/donate_qr.html'</span> <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>
+  <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">include</span> <span class="token string">'components/footer.html'</span> <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span></code></pre>
+<p>Using <code>base_layout.njk</code> brings in <a href="https://github.com/tailwindlabs/tailwindcss-typography">TailwindCSS Typography</a> to help with content layout and shifting. Where as the <code>landing_layout.njk</code> does not include that.</p>
+<p>Another thing that's different about the layouts is that one has several conditionals added to aid in loading assets that are not required on other pages. For a clearer picture, here are the other parts of the base_layout.</p>
+<p><em><code>src/_includes/base_layout.njk</code></em></p>
+<pre class="language-html"><code class="language-html">---
+title: "FTP Foundation"
+page_description: "Test description"
+---
+
+<span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">doctype</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>width=device-width, initial-scale=1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>description<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ page_description }}<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>{{ title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>shortcut icon<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ '/favicon.ico' | url }}<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ '/assets/css/styles.css' | url }}<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+    {{ ...POSTHOG CONFIG OMITTED... }} {% if '/dogs/' in page.url %}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span>
+      <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span>
+      <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/themes/light.css<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span>
+      <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span>
+      <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/shoelace-autoloader.js<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    {% endif %} {% if '/donate/' in page.url %}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span>
+      <span class="token attr-name">async</span>
+      <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://widgets.givebutter.com/latest.umd.cjs?acct=8VuptvZqPuoDFArI&amp;p=other<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    {% endif %}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container mx-auto my-2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    {{ ... }} {% if '/dogs/' in page.url %}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span>
+      <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>module<span class="token punctuation">"</span></span>
+      <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.15.0/cdn/components/carousel-item/carousel-item.js<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+    {% endif %}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span></code></pre>
+<p>Notice that I am bringing in Shoelace if the current url contains <code>/dogs/</code> and a GiveButter widget if the url contains <code>/donate/</code>. Nowhere else on the site or page will these remote assets be loaded.</p>
+<p>With layout out of the way, let's get to the interesting bits!</p>
+<h2>Dog Listings</h2>
+<p>If you navigate to <code>/dogs/</code> you will two columns of dogs that we currently have available for adoption. Each of our animals is currently stored in a backend service provided by <a href="https://www.rescuegroups.org">RescueGroups.org</a>. They have a very nice JSON API that I am using to fetch all the dogs for our organization. To do that, we are assigned a <code>ORG_ID</code> after submitting all required documentation. So, we add this to our <code>.env</code> file, like so:</p>
+<pre class="language-txt"><code class="language-txt">ORG_ID=01556
+RESCUE_GROUPS_API_KEY=DXXRBHS8</code></pre>
+<p>11ty has several ways to share data throughout your site, but for the initial fetching of all the animals I decided to use the <a href="https://www.11ty.dev/docs/data-global/">Global Data Directory</a>, which is simply the <code>_data</code> dir. Inside that directory, I make a new file called, <code>dog.js</code> and place the code to fetch all the animals.</p>
+<p>First, we need to add the <a href="https://www.11ty.dev/docs/plugins/fetch/">11ty Fetch</a> library to our project. We don't technically have to use it, but it comes with built in caching, so why the heck not!</p>
+<p><em><code>src/_data/dogs.js</code></em></p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">const</span> Fetch <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"@11ty/eleventy-fetch"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"dotenv"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">config</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+module<span class="token punctuation">.</span><span class="token function-variable function">exports</span> <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> url <span class="token operator">=</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">https://api.rescuegroups.org/v5/public/orgs/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">ORG_ID</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/animals/search/available/</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> body <span class="token operator">=</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">filterRadius</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">miles</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">postalcode</span><span class="token operator">:</span> <span class="token number">38834</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">await</span> <span class="token function">Fetch</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">duration</span><span class="token operator">:</span> <span class="token string">"5m"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">"json"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">fetchOptions</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">method</span><span class="token operator">:</span> <span class="token string">"POST"</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">headers</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token literal-property property">Authorization</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">RESCUE_GROUPS_API_KEY</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+          <span class="token string-property property">"Content-Type"</span><span class="token operator">:</span> <span class="token string">"application/vnd.api+json"</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">body</span><span class="token operator">:</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>body<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>
+      <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">There was an error fetching your dogs from RescueGroups.org: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>error<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span></code></pre>
+<p><em><strong>NOTE</strong> that we are sending a POST request here. The reason is because we are actually sending a data object that contains params to filter the results before being sent back to us</em>.</p>
+<p>To use the newly acquired response we iterate through the now available <code>dogs</code> _(it's named dogs because we named the file dogs and we are exporting an anonymous function) object.</p>
+<p>In the src dir, we create a new folder called <em>&quot;dogs&quot;</em>, since we want our uri to be <em>&quot;/dogs/&quot;</em> and create a <code>index.njk</code> page with the following:</p>
+<p><em><code>src/dogs/index.njk</code></em></p>
+<pre class="language-liquid"><code class="language-liquid">---
+layout: 'base_layout.njk'
+page_description: 'Dogs available for adoption through For The Puppies Foundation, Inc'
+---
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>not-prose grid sm:grid-cols-2 place-content-center gap-4 pb-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">for</span> dog <span class="token keyword">in</span> dogs<span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">]</span> <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span>
+    <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>border border-solid  shadow-sm shadow-blue-500/50 hover:cursor-help hover:shadow-md<span class="token punctuation">"</span></span>
+    <span class="token attr-name">#id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>card-<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> loop<span class="token punctuation">.</span>index <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-2xl font-bold text-center<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/dogs/<span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>id <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>pictureThumbnailUrl <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>80px<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mx-auto max-h-20<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+        <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">if</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>isSpecialNeeds <span class="token delimiter punctuation">%}</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mt-1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sl-tooltip</span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>specialNeedsDetails <span class="token delimiter punctuation">}}</span></span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sl-badge</span> <span class="token attr-name">variant</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>primary<span class="token punctuation">"</span></span> <span class="token attr-name">pulse</span><span class="token punctuation">></span></span>Special Needs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sl-badge</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sl-tooltip</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+        <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endif</span> <span class="token delimiter punctuation">%}</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-sm font-medium<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>breedString <span class="token delimiter punctuation">}}</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%-</span> <span class="token keyword">endfor</span> <span class="token delimiter punctuation">%}</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span></code></pre>
+<p>Notice in <code>{% for dog in dogs['data'] %}</code>, we are looping through the network response, which is now cached. If your confused at this point, I understand. The actual fetch request does not take place on page load. We never added any JavaScript to the page to do that. No! The fetch happens at build, then cached in a new dir that 11ty created for us in <code>./.cache</code> in the root of our project. That's what we are actually iterating over. If you open that directory, you will find two files:</p>
+<p><em><code>./.cache/11ty-fetch-6b2afcc92c4976f8a13d4541bf13d1</code></em></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> <span class="token property">"6b2afcc92c4976f8a13d4541bf13d1"</span><span class="token operator">:</span> <span class="token string">"1"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> <span class="token property">"cachedAt"</span><span class="token operator">:</span> <span class="token number">1719191336440</span><span class="token punctuation">,</span> <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"2"</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"json"</span>
+<span class="token punctuation">]</span></code></pre>
+<p>and a sample of the cached data looks like
+<em><code>./.cache/11ty-fetch-6b2afcc92c4976f8a13d4541bf13d1.json</code></em></p>
+<pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"meta"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"count"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"countReturned"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"pageReturned"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"limit"</span><span class="token operator">:</span> <span class="token number">25</span><span class="token punctuation">,</span>
+    <span class="token property">"pages"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"transactionId"</span><span class="token operator">:</span> <span class="token string">"VLGLBjVcDFmg"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"animals"</span><span class="token punctuation">,</span>
+      <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"20516874"</span><span class="token punctuation">,</span>
+      <span class="token property">"attributes"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token property">"activityLevel"</span><span class="token operator">:</span> <span class="token string">"Slightly Active"</span><span class="token punctuation">,</span>
+        <span class="token property">"adoptionFeeString"</span><span class="token operator">:</span> <span class="token string">"550"</span><span class="token punctuation">,</span>
+        <span class="token property">"isAdoptionPending"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token property">"adultSexesOk"</span><span class="token operator">:</span> <span class="token string">"All"</span><span class="token punctuation">,</span>
+        <span class="token property">"ageGroup"</span><span class="token operator">:</span> <span class="token string">"Young"</span><span class="token punctuation">,</span>
+        <span class="token property">"ageString"</span><span class="token operator">:</span> <span class="token string">"1 Year"</span><span class="token punctuation">,</span>
+        <span class="token property">"availableDate"</span><span class="token operator">:</span> <span class="token string">"2024-05-30T00:00:00Z"</span><span class="token punctuation">,</span>
+        <span class="token property">"birthDate"</span><span class="token operator">:</span> <span class="token string">"2023-05-30T00:00:00Z"</span><span class="token punctuation">,</span>
+        <span class="token property">"isBirthDateExact"</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+        <span class="token property">"breedString"</span><span class="token operator">:</span> <span class="token string">"Labrador Retriever (short coat)"</span><span class="token punctuation">,</span>
+        <span class="token property">"breedPrimary"</span><span class="token operator">:</span> <span class="token string">"Labrador Retriever"</span><span class="token punctuation">,</span>
+        <span class="token property">"breedPrimaryId"</span><span class="token operator">:</span> <span class="token number">162</span><span class="token punctuation">,</span>
+        <span class="token property">"isBreedMixed"</span><span class="token operator">:</span> <span class="token boolean">false</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span></code></pre>
+<h2>Viewing a single animal</h2>
+<p>It would be a pain to do this manually! Thankfully, 11ty can do the heavy lifting for us by utilizing it's built-in <a href="https://www.11ty.dev/docs/pagination/">pagination</a> feature _(by the way, I hate the naming convention of this feature!) to auto-generate a page for each dog from the cached data. We will also utilize <a href="https://www.11ty.dev/docs/permalinks/">permalinks</a> to generate the uri's for each page.</p>
+<p>Let's look at the front-matter first:</p>
+<p><em><code>src/dog-pages.njk Front Matter Only</code></em></p>
+<pre class="language-yml"><code class="language-yml"><span class="token punctuation">---</span>
+<span class="token key atrule">layout</span><span class="token punctuation">:</span> base_layout.njk
+<span class="token key atrule">pagination</span><span class="token punctuation">:</span>
+  <span class="token key atrule">data</span><span class="token punctuation">:</span> dogs.data
+  <span class="token key atrule">size</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  <span class="token key atrule">alias</span><span class="token punctuation">:</span> dog
+  <span class="token key atrule">resolve</span><span class="token punctuation">:</span> values
+<span class="token key atrule">permalink</span><span class="token punctuation">:</span> <span class="token string">"dogs/{{ dog.id }}/"</span>
+<span class="token key atrule">description</span><span class="token punctuation">:</span> Adoption information for <span class="token punctuation">{</span><span class="token punctuation">{</span> dog.attributes.name <span class="token punctuation">}</span><span class="token punctuation">}</span>
+<span class="token punctuation">---</span></code></pre>
+<p>To set-up the pagination, we need to pass it some params.</p>
+<ul>
+<li>data: This tells the pagination method what data it will iterate over to generate the pages.</li>
+<li>size: We pass through a size of 1, since we only want 1 page returned.</li>
+<li>alias: How do we want to reference the data on our page. We will call our data object, dog.</li>
+<li>resolve: Objects are resolved to pagination arrays using either the Object.keys or Object.values JavaScript functions. We want the values so that's what we pass.</li>
+</ul>
+<p>For the permalink, we use the dogs id, so the urls will look like <code>https://forthepuppiesfoundation.org/dogs/20244138</code>. Description is pretty obvious. Now, for the displaying a single dog...</p>
+<p><em><code>src/dog-pages.njk</code></em></p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>not-prose<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid grid-rows<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span>
+      <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>bg-orange-100 mx-auto w-fit overflow-hidden rounded-md hover:bg-orange-50 transition-colors ease-in-out duration-300<span class="token punctuation">"</span></span>
+    <span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span>
+        <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>pictureThumbnailUrl <span class="token delimiter punctuation">}}</span></span> max-w-fit<span class="token punctuation">"</span></span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>rounded-md shadow-md shadow-zinc-500 hover:shadow-sm transition-shadow ease-in-out duration-500<span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-center py-2 text-xl font-bold text-gray-900 sm:text-3xl<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">if</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>isSpecialNeeds <span class="token delimiter punctuation">%}</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mt-1 mx-auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sl-badge</span> <span class="token attr-name">variant</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>primary<span class="token punctuation">"</span></span> <span class="token attr-name">pulse</span><span class="token punctuation">></span></span>Special Needs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sl-badge</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endif</span> <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mx-auto mt-4 max-w-xl<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-gray-700 leading-tight<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>descriptionText <span class="token operator">|</span> <span class="token function filter">safe</span> <span class="token delimiter punctuation">}}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mt-4 flex flex-wrap items-center justify-center gap-4<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sl-carousel</span>
+      <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>aspect-ratio<span class="token punctuation">"</span></span>
+      <span class="token attr-name">autoplay</span>
+      <span class="token attr-name">loop</span>
+      <span class="token attr-name">navigation</span>
+      <span class="token attr-name">pagination</span>
+      <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">--aspect-ratio</span><span class="token punctuation">:</span> 1/1<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span></span>
+    <span class="token punctuation">></span></span>
+      <span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> currentDog dog<span class="token punctuation">.</span>id <span class="token delimiter punctuation">%}</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sl-carousel</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>my-4 mx-auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span>
+        <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/adoption<span class="token punctuation">"</span></span>
+        <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>h-12 w-full text-center rounded bg-green-600 px-6 py-3 font-medium tracking-wide text-white shadow-md transition hover:bg-blue-800 focus:outline-none md:mr-4 md:mb-0 md:w-auto<span class="token punctuation">"</span></span>
+      <span class="token punctuation">></span></span>
+        Apply to Adopt <span class="token liquid language-liquid"><span class="token delimiter punctuation">{{</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>name <span class="token delimiter punctuation">}}</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span></code></pre>
+<h2>Shoelaces</h2>
+<p>The last thing I do want to touch on briefly is my use of <a href="https://shoelace.style/">Shoelaces</a>. I brought it in for one thing that I was trouble solving. We currently have a dog in our care that has special needs and that should be clearly displayed to people that viewing our dogs. So I wanted a small div, with a background that would stand out from the rest of the page and a pop-over that would display what the special need was. This is the snippet that creates what I described.</p>
+<p><em><code>src/dog-pages.njk Special Needs Element</code></em></p>
+<pre class="language-liquid"><code class="language-liquid"><span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">if</span> dog<span class="token punctuation">.</span>attributes<span class="token punctuation">.</span>isSpecialNeeds <span class="token delimiter punctuation">%}</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>mt-1 mx-auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>sl-badge</span> <span class="token attr-name">variant</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>primary<span class="token punctuation">"</span></span> <span class="token attr-name">pulse</span><span class="token punctuation">></span></span>Special Needs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>sl-badge</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token liquid language-liquid"><span class="token delimiter punctuation">{%</span> <span class="token keyword">endif</span> <span class="token delimiter punctuation">%}</span></span></code></pre>
+<p>And it looks like this:
+<img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/q_auto,f_auto/v1720925448/blog/pop-over_cxbfny.jpg" alt="Special Needs w/ Pop-over"></p>
+<p>I struggled with this for about two hours. About 1hr and 45min longer than I should have. Maybe I'm being a little hard on myself, but here's what's sad - I guess it's not sad - It's nature of web development. A few days later, the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Popover_API">Pop-Over API</a> was released to the public and I had no idea it was coming!</p>
+<p>I will write up a Part 2 about some other aspects of the site and resolving some of the issues I named at the beginning of this post.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>
