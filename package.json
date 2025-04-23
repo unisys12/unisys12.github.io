@@ -4,7 +4,8 @@
   "description": "Personal Blog",
   "main": "./src/index.html",
   "scripts": {
-    "dev": "npx @11ty/eleventy --serve"
+    "dev": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy"
   },
   "repository": {
     "type": "git",
