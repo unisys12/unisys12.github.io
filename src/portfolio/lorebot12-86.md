@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Lorebot12-86
 description: "This is my most popular project. For some reason, it really caught on!"

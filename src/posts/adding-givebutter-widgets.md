@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "Adding Givebutter widgets to a Static Website"
 description: "Working with Dynamic Custom/Third-Party Components in a Static Site"

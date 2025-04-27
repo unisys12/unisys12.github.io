@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Making a Laravel Table Component
 description: "Working on a project and have a need for several tables. So I wanted to see if I could make a component, using Laravel Blade only, to generate the table for me after passing it the results of a Eloquent query."

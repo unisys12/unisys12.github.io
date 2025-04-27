@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Adding Open Graph Protocol to Our Non-Profit Site
 description: "Adding Open Graph Protocol to our non-profit site"

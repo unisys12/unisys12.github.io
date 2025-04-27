@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "Gooses Guide - Part One"
 description: "Recreating and improving a really old project."

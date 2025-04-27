@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Periodic Table
 description: "This is short description of the project"
@@ -12,6 +12,8 @@ image_alt: "A simple header image"
 # Periodic Table
 
 [Link to Repo](https://github.com/unisys12/periodic-table)
+
+![Finished Project](/assets/imgs/periodic-table-v2.jpg)
 
 ## Project Purpose
 

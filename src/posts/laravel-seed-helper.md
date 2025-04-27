@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Making a Laravel Seed Helper
 description: "Working on a project and having to seed just over 15 tables with info and I wanted to see if I could make a helper class to simplify the process a bit."

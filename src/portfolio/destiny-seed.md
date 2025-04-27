@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "Destiny Seed Project"
 description: "Attempt at creating a package to seed a database, from Laravel, with data from Destiny the Game Manifest file"

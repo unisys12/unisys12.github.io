@@ -1,11 +1,12 @@
 {
   "name": "blogv2",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Personal Blog",
   "main": "./src/index.html",
   "scripts": {
     "dev": "npx @11ty/eleventy --serve",
-    "build": "npx @11ty/eleventy"
+    "build": "npx @11ty/eleventy",
+    "debug": "set DEBUG=Eleventy* & npx @11ty/eleventy"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0"
   },
   "devDependencies": {
-    "@shopify/prettier-plugin-liquid": "^1.9.2",
-    "prettier": "3.5.3"
+    "prettier": "3.5.3",
+    "prettier-plugin-jinja-template": "^2.1.0"
   }
 }

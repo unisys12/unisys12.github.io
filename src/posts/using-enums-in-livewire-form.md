@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Usage of Enums in Livewire Form
 description: "Wanted to test the usability of using native PHP Enums, over database relationships or enums, in forms."

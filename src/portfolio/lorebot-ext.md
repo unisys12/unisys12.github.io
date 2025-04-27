@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "LoreBotExt"
 description: "A Chrome browser extension to display in-game lore in your browser while playing Destiny 1."

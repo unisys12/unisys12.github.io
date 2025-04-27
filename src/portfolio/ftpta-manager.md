@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "FTPTA Manager"
 description: "Building a project for my wife, without her permission."

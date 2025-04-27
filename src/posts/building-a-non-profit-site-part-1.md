@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: Building an 11ty Site for Our Non-Profit
 publishDate: 2024-07-13

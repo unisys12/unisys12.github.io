@@ -3,17 +3,18 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% include "components/seo.njk" %}
     <title>Uniy's Blog</title>
     <link rel="stylesheet" href="/assets/css/pico.min.css">
     <link rel="stylesheet" href="/assets/css/style.css">
-    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet"/>
   </head>
   <body class="container">
-    {% render 'site-header.html' %}
+    {% include 'site-header.html' %}
     <main>
       <div class="grid">
         <article>
-          {{ content }}
+          {{ content | safe }}
           {% if page.url != '/posts/' and page.url != '/portfolio/' %}
             <figure>
               <img src="/assets/imgs/signature.svg" alt="sig">
@@ -22,6 +23,6 @@
         </article>
       </div>
     </main>
-    {% render 'site-footer.html' %}
+    {% include 'site-footer.html' %}
   </body>
 </html>

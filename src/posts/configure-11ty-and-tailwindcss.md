@@ -1,5 +1,5 @@
 ---
-layout: "layouts/blog.liquid"
+layout: "layouts/blog.njk"
 status: "draft"
 title: "How I Configure 11ty and TailwindCSS"
 description: "Come along as I share with you my 11ty project setup config!"

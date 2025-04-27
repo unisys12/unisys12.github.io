@@ -1,0 +1,25 @@
+---
+layout: "layouts/blog.njk"
+---
+
+{% for project in collections.portfolio %}
+  <section class="grid">
+    <hgroup>
+      <h2>
+        <a href="{{ project.url }}">{{ project.data.title }}</a>
+      </h2>
+      <p>{{ project.data.description }}</p>
+      <p>{{ project.data.publishDate | formatDate }}</p>
+    </h2>
+  </hgroup>
+  <div>
+    <ul style="place-items: center">
+      {% for tag in project.data.tags %}
+        {% if tag != 'portfolio' %}
+          <li>{{tag}}</li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endfor %}
