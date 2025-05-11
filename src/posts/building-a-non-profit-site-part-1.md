@@ -260,7 +260,7 @@ _`./.cache/11ty-fetch-6b2afcc92c4976f8a13d4541bf13d1.json`_
 
 ## Viewing a single animal
 
-It would be a pain to do this manually! Thankfully, 11ty can do the heavy lifting for us by utilizing it's built-in [pagination](https://www.11ty.dev/docs/pagination/) feature \_(by the way, I hate the naming convention of this feature!) to auto-generate a page for each dog from the cached data. We will also utilize [permalinks](https://www.11ty.dev/docs/permalinks/) to generate the uri's for each page.
+It would be a pain to do this manually! Thankfully, 11ty can do the heavy lifting for us by utilizing it's built-in [pagination](https://www.11ty.dev/docs/pagination/) feature _(by the way, I hate the naming convention of this feature!)_ to auto-generate a page for each dog from the cached data. We will also utilize [permalinks](https://www.11ty.dev/docs/permalinks/) to generate the uri's for each page.
 
 Let's look at the front-matter first:
 
