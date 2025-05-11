@@ -32,6 +32,20 @@ export default function (eleventyConfig) {
     return collection.getFilteredByGlob("src/portfolio/*.md");
   });
 
+  // Add a collection for related posts
+  eleventyConfig.addCollection("getAllTags", (collection) => {
+    const allTags = new Set();
+    collection.getAll().forEach((item) => {
+      let tags = item.data.tags;
+      if (tags) {
+        tags.forEach((tag) => {
+          allTags.add(tag);
+        });
+      }
+    });
+    return Array.from(allTags);
+  });
+
   // Passthrough copy for static assets
   eleventyConfig.addPassthroughCopy("src/assets");
 

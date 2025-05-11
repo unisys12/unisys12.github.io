@@ -1,8 +1,18 @@
 ---
+title: Collections
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+permalink: /collections/{{ tag | slug }}/
 layout: "layouts/blog.njk"
 ---
 
-{% for post in collections.blogPosts %}
+{% set taglist = collections[tag] %}
+
+<h1>Found {{ taglist.length }} Articles Related to “{{ tag }}”</h1>
+
+{% for post in taglist | reverse %}
   <article class="grid">
     <section class="container">
       <hgroup>

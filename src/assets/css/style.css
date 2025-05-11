@@ -4,11 +4,43 @@
   display: inline-block;
   border-radius: 50%;
   box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.15s ease-in-out;
   filter: invert(52%);
 }
 
 .icon:hover {
   filter: invert(75%);
-  transition: filter 0.3s ease-in-out;
+  transition: filter 0.15s ease-in-out;
+}
+
+.cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition:
+    background-color 0.15s ease-in-out,
+    color 0.15s ease-in-out;
+}
+
+.tag:hover {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #666;
+}
+
+.tag > a {
+  color: inherit;
+  text-decoration: none;
 }

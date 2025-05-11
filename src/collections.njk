@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    {% include "components/seo.njk" %}
+  </head>
+  <body class="container">
+    {% include 'site-header.html' %}
+    <main class="grid">
+      <article>
+        <header>
+          <h2>Tags</h2>
+        </header>
+        <article class="cloud">
+          {% for tag in collections.getAllTags %}
+            <div class="">
+              <a href="/collections/{{tag | slug}}">
+                <button class="outline secondary">{{ tag }}</button>
+              </a>
+            </div>
+          {% endfor %}
+        </article>
+      </article>
+
+    </main>
+    {% include 'site-footer.html' %}
+  </body>
+</html>
