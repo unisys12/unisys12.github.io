@@ -2,7 +2,7 @@
 layout: "layouts/blog.njk"
 ---
 
-{% for post in collections.blogPosts %}
+{% for post in collections.blogPosts reversed %}
   <article class="grid">
     <section class="container">
       <hgroup>
