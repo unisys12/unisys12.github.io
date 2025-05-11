@@ -14,7 +14,7 @@ layout: "layouts/blog.njk"
       </hgroup>
       <section class="cloud">
         {% for tag in post.data.tags %}
-          <span class="tag">
+          <span class="tags">
             <a href="/collections/{{ tag | slug }}">{{ tag }}</a>
           </span>
         {% endfor %}
