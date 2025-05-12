@@ -19,7 +19,7 @@
         <article class="cloud">
           {% for tag in collections.getAllTags %}
             <div class="">
-              <a href="/collections/{{tag | slug}}">
+              <a href="/collections/{{tag | slugify }}">
                 <button class="outline secondary">{{ tag }}</button>
               </a>
             </div>
