@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Moving my personal blog back to Eleventy">
+<meta name="generator" content="Eleventy v3.0.0">
+<meta property="og:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp">
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://unisys12.github.io/posts/moving-back-to-eleventy/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Back to 11ty">
+<meta property="og:description" content="Moving my personal blog back to Eleventy">
+<meta property="og:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="unisys12.github.io">
+<meta property="twitter:url" content="https://unisys12.github.io/posts/moving-back-to-eleventy/">
+<meta name="twitter:title" content="Back to 11ty">
+<meta name="twitter:description" content="Moving my personal blog back to Eleventy">
+<meta name="twitter:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <script>
+    !function (t, e) { var o, n, p, r; e.__SV || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+    posthog.init('phc_vMb0FsDlT2sjY1S2zCNmAss54cpFx7CYtKHx9YqJUc0', {
+        api_host: 'https://us.i.posthog.com',
+        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+    })
+</script>
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Back to 11ty</h1>
+<p>Moving my personal blog back to Eleventy. The reasons, bumps and lumps along the way.</p>
+<h2>Reasoning</h2>
+<p>First of all, let me say that I have nothing against <a href="%22https://www.astro.build%22">Astro</a>! It's a great SSG and offers a dump truck load of features, not to mention flexibility. But the reason I decided to move back to <a href="%22https://www.11ty.dev%22">11ty</a> was because, quite simply, it's what I was most comfortable with. I don't know if I misused <a href="%22https://docs.astro.build/en/guides/content-collections/%22">Content Collections</a> in v4 of Astro, but upgrading my old blog to v5 was going to take a complete rewrite. Not that I am apposed to a rewrite, but there was just enough frustrations with Astro that it got to the point of where I was not having fun with it anymore.</p>
+<ul>
+<li>Scoped styles just did not work... ever</li>
+<li>Image optimizations where sorta meh. I ended up putting all my images on <a href="%22https://www.cloudinary.com%22">Cloudinary</a> to work around it.</li>
+<li>I was not happy with the overly complex Front Matter story. Being forced into JS for that felt weird, although it did offer a lot of flexibility.</li>
+</ul>
+<p>Even though I am not a professional developer, when I get into situations like this I still tend to ask myself, &quot;If I was being paid to work on this project, would I be willing to take the time and construct my thoughts into a well crafted email to my manager?&quot;. If the answer was yes, I will stop using a piece of tech. I had a similar rule at my previous job. If a particular piece of equipment was having an issue and a pattern began to emerge with the issues it was having, I would sit down with our company owner and let him know. From this, he began to trust my point as the years went on. To keep that trust, I could not come into his office and just say to him, &quot;Stop selling this model because servicing it is hard!&quot;. So when I found out that due to the changes in Content Collections was going to cause me to rewrite my blog, I decided I would take that as an opportunity to start getting more enjoyment out of my blog.</p>
+<blockquote>
+<h4>We do this not because it's easy, but because of the enjoyment we get out of doing it!</h4>
+</blockquote>
+<h2>Game Plan</h2>
+<p>The game plan was going to be pretty simple. All my previous posts and portfolio items were already in Markdown, so that was no big deal. And moving my templates over from Astro syntax to Nunjucks or Liquid would not be the end of the world. But for one reason or another, I did not want to keep my previously written CSS. I am not particularly fond of the design I had or currently have, but that is a stroy for another day. Mainly because I don't even know what that story looks like yet.</p>
+<p>Game plan was as follows:</p>
+<ul>
+<li>Create new repo</li>
+<li>Install 11ty</li>
+<li>Use <a href="%22https://picocss.com/docs%22">PicoCSS</a></li>
+<li>Copy over my posts &amp; portfolio folders with their content</li>
+<li>Fill in the blanks till it works</li>
+</ul>
+<h2>Execution</h2>
+<p>Since my wife and I run a business and non-profit out of our home, I knew I wouldn't exactly have a ton of free time to spend doing this. But after 30 mins here, 10 mins there, spread over a few days, it was done. Well, at least functioning much like the first version.</p>
+<h3>Base Install &amp; Config</h3>
+<p>Install 11ty and add my typical config. I like to use a <code>./src</code> folder as my root working directory and that's pretty much the only thing I change from default. Although I do declare that I want to use <code>./_site</code> as my build directory, this is not required since that is already the default. But I like to declare it anyway. Other than that, I start out with a very basic asset workflow. Anything is <code>./src/assets</code> gets copied to <code>./_site/assets</code>. I used to have some dev server config items I always changed, but after v3 of 11ty, they tend to be more reliable than in previous releases.</p>
+<pre class="language-js"><code class="language-js"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">eleventyConfig</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// Passthrough copy for static assets</span>
+  eleventyConfig<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<h3>Custom Collections &amp; Filters</h3>
+<p>One feature I wanted to add to this version of my blog was the ability to display posts grouped by tags. So, you might have noticed that each blog has a list of tags associated with it. When viewing <code>/posts/</code>, you will see a list of all posts. Under the title and description of each post, are a few small pills. These are the posts tags. Tags are simply another way to associate posts with each other. Although these existed in the previous version, they did not really serve a purpose. A goal I had for this version was to make each tag into a link that would take you to a page that displayed each post for that tag/topic. For example, if you go to <code>/jamstack/</code>, you should see a list of posts that have a tag of <code>jamstack</code> associated with it.</p>
+<p>Eleventy makes this simple as can be by adding a <code>tags</code> property to the FrontMatter of each post. I then add whatever tags I would like to associate with that post and Eleventy automagically creates a new collection for each of the tags.</p>
+<pre class="language-diff-yaml"><code class="language-diff-yaml"><span class="token coord">---</span>
+title: Boring Title Not Great for SEO
+description: An even more boring and lack luster description of this post
+<span class="token inserted-sign inserted language-yaml"><span class="token prefix inserted">+</span> <span class="token key atrule">tags</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"blog"</span><span class="token punctuation">,</span> <span class="token string">"11ty"</span><span class="token punctuation">,</span> <span class="token string">"ssg"</span><span class="token punctuation">,</span> <span class="token string">"jamstack"</span><span class="token punctuation">,</span> <span class="token string">"astro"</span><span class="token punctuation">]</span>
+</span><span class="token coord">---</span></code></pre>
+<p>To capitalize on this, I just need to gather all those collection names together and display them somehow. Here's how I went about it:</p>
+<ul>
+<li>First I create a collections folder inside <code>src</code>. I could've called it anything. Tags probably would've been better.</li>
+<li>Inside that, create a <code>index.njk</code> file to display all the tags or collections.</li>
+<li>In the FrontMatter of this file, I used Eleventy's Pagination and Permalinks properties to basically do all the hard work for me.</li>
+</ul>
+<p><code>src/collections/index.njk</code></p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token punctuation">---</span>
+<span class="token key atrule">title</span><span class="token punctuation">:</span> Collections
+<span class="token key atrule">pagination</span><span class="token punctuation">:</span>
+  <span class="token key atrule">data</span><span class="token punctuation">:</span> collections
+  <span class="token key atrule">size</span><span class="token punctuation">:</span> <span class="token number">1</span>
+  <span class="token key atrule">alias</span><span class="token punctuation">:</span> tag
+<span class="token key atrule">permalink</span><span class="token punctuation">:</span> /collections/<span class="token punctuation">{</span><span class="token punctuation">{</span> tag <span class="token punctuation">|</span> slugify <span class="token punctuation">}</span><span class="token punctuation">}</span>/
+<span class="token key atrule">layout</span><span class="token punctuation">:</span> <span class="token string">"layouts/blog.njk"</span>
+<span class="token punctuation">---</span></code></pre>
+<ul>
+<li>Under the <em>pagination</em> property, the data that we are passing to it is all the collections within our current build. We only want 1 of each per iteration, hence the size value of 1. This is also commonly referred to as a <em>chunk size</em>. Finally, we alias that data to <em>tag</em> since that is the verbiage we decided on.</li>
+</ul>
+<blockquote>
+<p>Think of 11ty's Pagination as a builtin iterator tucked away in your FrontMatter.</p>
+</blockquote>
+<ul>
+<li>Finally, I use the <em>permalink</em> property in the FrontMatter to construct a new URL for each collection, making sure to pass the tag to a builtin filter to <code>slugify</code> the name of the tag or collection.</li>
+</ul>
+<p>The output of the new build looks like so:</p>
+<pre class="language-shell"><code class="language-shell"><span class="token punctuation">{</span><span class="token punctuation">..</span>.<span class="token punctuation">}</span>
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/blog/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/ssg/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/jamstack/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/components/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/givebutter/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/open-graph/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/flat-files/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/sqlite/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/helper-classes/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/tables/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/seeders/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/html/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/astro/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/forms/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/enums/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Writing ./_site/collections/getalltags/index.html from ./src/collections/index.njk
+<span class="token punctuation">[</span>11ty<span class="token punctuation">]</span> Copied <span class="token number">10</span> Wrote <span class="token number">60</span> files <span class="token keyword">in</span> <span class="token number">0.67</span> seconds <span class="token punctuation">(</span>v3.0.0<span class="token punctuation">)</span></code></pre>
+<p>Now we need to create a way to view each set of the collections. To do that, I needed to write a custom Collection. It's a little gnarly at the moment, but it works!</p>
+<p><code>eleventy.config.js</code></p>
+<pre class="language-diff-js"><code class="language-diff-js">export default function (eleventyConfig) {
+
+<span class="token unchanged language-js"><span class="token prefix unchanged"> </span>  <span class="token comment">// Add a collection for related posts</span>
+</span><span class="token inserted-sign inserted language-js"><span class="token prefix inserted">+</span>  eleventyConfig<span class="token punctuation">.</span><span class="token function">addCollection</span><span class="token punctuation">(</span><span class="token string">"getAllTags"</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">collection</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>    <span class="token keyword">const</span> allTags <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Set</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>    collection<span class="token punctuation">.</span><span class="token function">getAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>      <span class="token keyword">let</span> tags <span class="token operator">=</span> item<span class="token punctuation">.</span>data<span class="token punctuation">.</span>tags<span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>      <span class="token keyword">if</span> <span class="token punctuation">(</span>tags<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>        tags<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">tag</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>          allTags<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>tag<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>      <span class="token punctuation">}</span>
+<span class="token prefix inserted">+</span>    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>    <span class="token keyword">return</span> allTags<span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span>
+<span class="token unchanged language-js"><span class="token prefix unchanged"> </span> <span class="token comment">// Passthrough copy for static assets</span>
+<span class="token prefix unchanged"> </span> eleventyConfig<span class="token punctuation">.</span><span class="token function">addPassthroughCopy</span><span class="token punctuation">(</span><span class="token string">"src/assets"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span>
+<span class="token unchanged language-js"><span class="token prefix unchanged"> </span> <span class="token keyword">return</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>   <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>     <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>     <span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>   <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span>}</code></pre>
+<p>The <code>getAllTags</code> collection basically grabs all the tags from every post and then returns a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set">Set</a> that contains those tags as collection names.</p>
+<p>Next I create a file in the root directory <em>(./src)</em> called <code>collections.njk</code> and add the following code -</p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>cloud<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  {% for tag in collections.getAllTags %}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/collections/{{ tag | slugify }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>outline secondary<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ tag }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  {% endfor %}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span></code></pre>
+<p>which iterates through the Set of collections and generates a link with a button that takes you to that collections page, where all the posts related to a given tag are displayed.</p>
+<p><code>src/collections/index.njk</code></p>
+<pre class="language-html"><code class="language-html">---
+title: Collections
+pagination:
+  data: collections
+  size: 1
+  alias: tag
+permalink: /collections/{{ tag | slugify }}/
+layout: "layouts/blog.njk"
+---
+
+{% set taglist = collections[tag] %}
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>header</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Found {{ taglist.length }} Articles Related to “{{ tag }}”<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>header</span><span class="token punctuation">></span></span>
+
+{% for post in taglist | reverse %}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>grid<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>hgroup</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ post.url }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ post.data.title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>{{ post.data.description }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>small</span><span class="token punctuation">></span></span>{{ post.data.publishDate | formatDate }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>small</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>hgroup</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>cloud<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      {% for tag in post.data.tags %}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>tags<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>/collections/{{ tag | slug }}<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ tag }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+      {% endfor %}
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span>
+    <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{post.data.image}}<span class="token punctuation">"</span></span>
+    <span class="token attr-name">alt</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ post.data.image_alt }}<span class="token punctuation">"</span></span>
+    <span class="token special-attr"><span class="token attr-name">style</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token value css language-css"><span class="token property">place-self</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span></span><span class="token punctuation">"</span></span></span>
+  <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
+{% endfor %}</code></pre>
+<h2>Hurdles</h2>
+<h3>Hurdle 1</h3>
+<p><strong>Hosting</strong> - Believe it or not, deploying a site is still confusing. Even on Github Pages! But I digress. How I finally got it working was using the follow Github Action</p>
+<p><code>.github/workflows/deploy.yml</code></p>
+<pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to GitHub Pages
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main
+  <span class="token key atrule">pull_request</span><span class="token punctuation">:</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span><span class="token number">22.04</span>
+    <span class="token key atrule">permissions</span><span class="token punctuation">:</span>
+      <span class="token key atrule">contents</span><span class="token punctuation">:</span> write
+    <span class="token key atrule">concurrency</span><span class="token punctuation">:</span>
+      <span class="token key atrule">group</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> github.workflow <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">-</span>$<span class="token punctuation">{</span><span class="token punctuation">{</span> github.ref <span class="token punctuation">}</span><span class="token punctuation">}</span>
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Setup Node
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>node@v4
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">node-version</span><span class="token punctuation">:</span> <span class="token string">"20"</span>
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Persist npm cache
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/cache@v4
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">path</span><span class="token punctuation">:</span> ~/.npm
+          <span class="token key atrule">key</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> runner.os <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">-</span>node<span class="token punctuation">-</span>$<span class="token punctuation">{</span><span class="token punctuation">{</span> hashFiles('<span class="token important">**/package.json')</span> <span class="token punctuation">}</span><span class="token punctuation">}</span>
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Persist Eleventy .cache
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/cache@v4
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">path</span><span class="token punctuation">:</span> ./.cache
+          <span class="token key atrule">key</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> runner.os <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">-</span>eleventy<span class="token punctuation">-</span>fetch<span class="token punctuation">-</span>cache
+
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> npm install
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> npm run build
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> peaceiris/actions<span class="token punctuation">-</span>gh<span class="token punctuation">-</span>pages@v4
+        <span class="token key atrule">if</span><span class="token punctuation">:</span> github.ref == 'refs/heads/main'
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">github_token</span><span class="token punctuation">:</span> $<span class="token punctuation">{</span><span class="token punctuation">{</span> secrets.GITHUB_TOKEN <span class="token punctuation">}</span><span class="token punctuation">}</span>
+          <span class="token key atrule">publish_dir</span><span class="token punctuation">:</span> ./_site</code></pre>
+<p>combined with making the following changes to the repo settings:</p>
+<ul>
+<li>Once the above yaml file in located in <code>.github/workflows/deploy.yml</code>, push the change up to your repo on origin/main. Your build is going to fail!</li>
+<li>Under Settings on the repo, go to Pages.</li>
+<li>Change Build and Deployment to <em>Deploy from Branch</em></li>
+<li>Make sure that <strong>github_pages</strong> is selected as the branch to deploy from and the default <strong>root</strong> folder is selected.</li>
+<li>Click Save and push up some changes or go into actions and force a rebuild. Everything should work now.</li>
+</ul>
+<p>The reason this was so confusing was because after reading through three different blog posts about deploying an 11ty site to Github Pages, none of them tell you &quot;not to create a gh-pages branch&quot;. This actually happens automatically after the first build fails... I think. Either way, I really was starting to think I was a complete idiot! Then I completely wiped the repo, deleted all Git history. I went full nuclear! After the first build failure, I noticed that the github_pages option was already there and decided to leave everything alone. Forced another build and it worked. Since I created a gh_pages branch and pushed it, the build would not work.</p>
+<p>Another thing to point out here is that the caching does not work. I don't why... :(</p>
+<h3>Hurdle 2</h3>
+<ul>
+<li><strong>Rendering Code Blocks</strong> - One would think that rendering a code block inside a markdown file would be... well, no one today really thinks about it. Well, in 11ty land you might want to think about it. The problem is that 11ty uses Liquid to render all pages by default. Unless you create a template in using a different language, such as Nunjucks, which you may have noticed I use a lot. You can of course override this behavior though. Liquid and Nunjucks are very similar though. So if you have a lot of pages with code blocks that contain Nunjucks, instead of rendering the code block, it tries to render the Nunjucks inside the code block. Ugh!</li>
+</ul>
+<p>To solve this, all you have to do is go into your <code>eleventy.config.js</code> file and set a default template engine for Markdown files. I only do this for Markdown files, since these are the only pages that will use or have syntax highlighting.</p>
+<pre class="language-diff-js"><code class="language-diff-js">return {
+<span class="token unchanged language-js"><span class="token prefix unchanged"> </span> <span class="token literal-property property">dir</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>   <span class="token literal-property property">input</span><span class="token operator">:</span> <span class="token string">"src"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>   <span class="token literal-property property">output</span><span class="token operator">:</span> <span class="token string">"_site"</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</span><span class="token inserted-sign inserted language-js"><span class="token prefix inserted">+</span>  <span class="token literal-property property">markdownTemplateEngine</span><span class="token operator">:</span> <span class="token string">"html"</span><span class="token punctuation">,</span>
+</span>};</code></pre>
+<h2>That's a Wrap!</h2>
+<p>And that's about it. I hope that some of my ramblings eventually help someone and you are able to get back to having fun at web development.</p>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>

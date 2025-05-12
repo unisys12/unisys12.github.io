@@ -19,7 +19,7 @@
   gap: 1rem;
 }
 
-.tag {
+.tags {
   display: inline-block;
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
@@ -34,13 +34,64 @@
     color 0.15s ease-in-out;
 }
 
-.tag:hover {
+.tags:hover {
   background-color: #333;
   color: #fff;
   border: 1px solid #666;
 }
 
-.tag > a {
+.tags > a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Syntax Highlighting Diff Support */
+.token.deleted {
+  background-color: hsl(350 100% 88% / 47%);
+}
+.token.inserted {
+  background-color: hsla(120, 48%, 26%, 0.35);
+}
+
+/* Make the + and - characters unselectable for copy/paste */
+.token.prefix.unchanged,
+.token.prefix.inserted,
+.token.prefix.deleted {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Optional: full-width background color */
+.token.inserted:not(.prefix),
+.token.deleted:not(.prefix) {
+  display: block;
+}
+/* End Syntax Highlighting Diff Support */
+
+blockquote {
+  background: rgba(25, 10, 75, 0.95);
+  text-align: center;
+  color: #fffccc;
+  font-style: italic;
+  padding: 0.75rem;
+  border-radius: 3px;
+  border-left: solid 2px rgb(162, 162, 226);
+  box-shadow: 5px 9px 6px rgba(0, 0, 0, 0.5);
+  transition:
+    box-shadow 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    border-left 0.25s ease-in-out,
+    padding-right 0.25s ease-in-out;
+}
+
+blockquote:hover {
+  color: #fff;
+  box-shadow: 1px 5px 3px rgb(0, 0, 0, 0.25);
+  border-left: ridge 0.45rem rgb(136, 136, 189);
+  padding-right: 0.98rem;
+}
+
+blockquote > p > a {
+  color: #fffccc;
+  text-decoration: underline;
 }
