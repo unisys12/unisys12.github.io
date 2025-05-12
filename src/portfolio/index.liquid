@@ -1,0 +1,29 @@
+---
+layout: "layouts/blog.njk"
+---
+
+{% for project in collections.portfolio reversed %}
+  <section class="grid">
+    <hgroup>
+      <h2>
+        <a href="{{ project.url }}">{{ project.data.title }}</a>
+      </h2>
+      <p>{{ project.data.description }}</p>
+      <p>{{ project.data.publishDate | formatDate }}</p>
+    </h2>
+  </hgroup>
+  <section style="place-items: center">
+    <figure>
+      <img src="{{ project.data.image }}" alt="{{ project.data.title }}">
+    </figure>
+  </section>
+  <section class="cloud">
+    {% for tag in project.data.tags %}
+      <span class="tags">
+        <a href="/collections/{{ tag | slugify }}">{{ tag }}</a>
+      </span>
+    {% endfor %}
+  </section>
+  </section>
+  <hr>
+{% endfor %}
