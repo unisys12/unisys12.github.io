@@ -43,7 +43,7 @@ export default function (eleventyConfig) {
         });
       }
     });
-    return Array.from(allTags);
+    return allTags;
   });
 
   // Passthrough copy for static assets
