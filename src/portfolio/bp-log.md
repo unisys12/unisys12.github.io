@@ -150,8 +150,10 @@ const bpchart = new Chart(bpctx, {
 
 In the above example, I have removed a lot code for sake of keeping the sample as simple as possible. For a full look, check out the repo that I have linked above.
 
-But, you can see that we assign the data that we queried from the database within the mount function of the component earlier to `const bpdata = $wire.bloodPressureData;` using `$wire.bloodPressureData`. Now, all of the queries data is available to the frontend.
+But, you can see that we assign the data that we queried from the database within the mount function of the component earlier to `const bpdata = $wire.bloodPressureData;` using `$wire.bloodPressureData`. Now, all of the queried data is available to the frontend.
 
 > _$wire is so freaking powerful!_
 
 I will be writing a blog post on the making of this app very soon and will update this page to point it as soon as it is published. There is a lot to cover!
+
+> Part 1 of the post is available [here](/posts/bp-log).
