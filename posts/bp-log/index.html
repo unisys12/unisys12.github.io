@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- HTML Meta Tags -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Found out my blood pressure is high, so I have to start tracking it. So I built an app to do that.">
+<meta name="generator" content="Eleventy v3.0.0">
+<meta property="og:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,w_200,g_face/v1747072485/blog/dashboard_qclhvg.webp">
+
+<!-- Facebook Meta Tags -->
+<meta property="og:url" content="https://unisys12.github.io/posts/bp-log/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blood Pressure Log Part 1">
+<meta property="og:description" content="Found out my blood pressure is high, so I have to start tracking it. So I built an app to do that.">
+<meta property="og:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,w_200,g_face/v1747072485/blog/dashboard_qclhvg.webp">
+
+<!-- Twitter Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="unisys12.github.io">
+<meta property="twitter:url" content="https://unisys12.github.io/posts/bp-log/">
+<meta name="twitter:title" content="Blood Pressure Log Part 1">
+<meta name="twitter:description" content="Found out my blood pressure is high, so I have to start tracking it. So I built an app to do that.">
+<meta name="twitter:image" content="https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,w_200,g_face/v1747072485/blog/dashboard_qclhvg.webp">
+    <title>Uniy's Blog</title>
+    <link rel="stylesheet" href="/assets/css/pico.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <link href="https://unpkg.com/prismjs@1.20.0/themes/prism-okaidia.css" rel="stylesheet" />
+    <script>
+    !function (t, e) { var o, n, p, r; e.__SV || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init me ws ys ps bs capture je Di ks register register_once register_for_session unregister unregister_for_session Ps getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty Es $s createPersonProfile Is opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing Ss debug xs getPageViewId captureTraceFeedback captureTraceMetric".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+    posthog.init('phc_vMb0FsDlT2sjY1S2zCNmAss54cpFx7CYtKHx9YqJUc0', {
+        api_host: 'https://us.i.posthog.com',
+        person_profiles: 'identified_only', // or 'always' to create profiles for anonymous users as well
+    })
+</script>
+  </head>
+  <body class="container">
+    <header>
+    <nav>
+        <ul>
+            <li>
+                <strong>
+                    <a href="/">
+                        <h1>Uniy's Blog</h1>
+                    </a>
+                </strong>
+            </li>
+        </ul>
+        <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/portfolio">Portfolio</a></li>
+        </ul>
+    </nav>
+</header>
+    <main>
+      <div class="grid">
+        <article>
+          <h1>Blood Pressure Log</h1>
+<p>I visited my local doctor, at the advice of wife <em>(which means she told me to go)</em>, last week due to a cold that I just could not break free of. It literally had me in chains for about 3 weeks. And during that visit, I was notified that my blood pressure was <em>high</em>. I shrugged it off and gave a few reasons why it might be, but the nurse was not convinced. A few moments later, the doctor comes in and has this worried look on her face.</p>
+<p><em>&quot;Your blood pressure has always been spot on, even when you were sick. We need to watch this closely!&quot;</em> . I thought to myself, <strong>128/92</strong> is not that bad. I shrugged it off, again. I'm 51 years old, as of 2025 and will turn 52 later this year. I work like a dog <em>(dog trainer, rescue operator)</em> and eat like a slave from the time of the pharaohs. <em>&quot;Yeah, it's gonna be a bit off. No big deal!&quot;</em>, I said. I'm in better physical condition that I have ever been in my life, weighing in at 193 at 5'9&quot;. Where as I weighed 230 when I left my previous job just over 4 years ago. Nevertheless, she gave me a sheet of paper that contained a table to track my blood pressure over time.</p>
+<p>Given all that, I did take a few moments to ponder one thing that has bugged me for a few years now. I feel like garbage most of the time. Even when I feel <em>good</em>, it's not nearly the same <em>good</em> feeling I had 5 years ago. Maybe there is something to this after all. One way to find out. And if I am going to do this, I'm not going to write this crap on a piece of paper just so I can loose it later. I'll make something!</p>
+<h2>Goals</h2>
+<p>I had been reading a lot about <a href="https://data-star.dev/">Datastar</a> recently and have really wanted to play around with it. It's a hypermedia framework and makes it super simple to pass data <em>(wrapped in HTML components or fragments)</em> to HTML templates or fragments. But I thought to myself, that the quickest way to get this project off the ground was going to be using a Laravel Starter Kit w/Livewire. Mainly because I wanted to be able to just see the data for a single person at a time. Since the Livewire Starter kit already has authentication built right in, all I needed to worry about was the input of records, display all records in a table, and display a range of records in a chart. As an added challenge, I wanted to add some basic diagnostics to the app as well.</p>
+<h2>Research</h2>
+<p>Before typing out the first cli cmd, I needed to do some research. I know what blood pressure is, but what each number is called - I had no idea. I <em>thought</em> I knew what normal blood pressure was suppose to be, but come to find out I didn't. There was a lot I didn't know and if I was going to be making an app to track this stuff, I kinda want it to accurate and use the correct terms. To see all my notes, you can take a look at the <code>README.MD</code> on the projects <a href="https://github.com/unisys12/bp-log">repo</a>. But to say I learned a lot is an understatement!</p>
+<h2>Base Setup</h2>
+<p>Now that all the research is out of the way and I have an idea of what I want to track and display, it's time to write some code.</p>
+<ul>
+<li>Install Laravel w/Livewire Starter Kit &amp; Laravel Auth</li>
+<li>Create our Migrations, Models, Factories and Seeders that will hold our records
+<ul>
+<li><code>php artisan make:model Records -mfs</code></li>
+</ul>
+</li>
+</ul>
+<p><code>database/migrations/create_records_table.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>User</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Migrations<span class="token punctuation">\</span>Migration</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Schema<span class="token punctuation">\</span>Blueprint</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Support<span class="token punctuation">\</span>Facades<span class="token punctuation">\</span>Schema</span><span class="token punctuation">;</span>
+
+<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token keyword">class</span> <span class="token class-name-definition class-name">extends</span> <span class="token class-name">Migration</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Run the migrations.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">up</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name static-context">Schema</span><span class="token operator">::</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'records'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token class-name type-declaration">Blueprint</span> <span class="token variable">$table</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span> <span class="token punctuation">{</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">id</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">foreignIdFor</span><span class="token punctuation">(</span><span class="token class-name static-context">User</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">constrained</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">integer</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'weight'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">integer</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'systolic'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">integer</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'diastolic'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">integer</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'pulse'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">date</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'date'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">time</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'time'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token keyword type-declaration">string</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'notes'</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">nullable</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$table</span><span class="token operator">-></span><span class="token function">timestamps</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</span></code></pre>
+<p><code>database/factories/RecordFactory.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Factories</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Eloquent<span class="token punctuation">\</span>Factories<span class="token punctuation">\</span>Factory</span><span class="token punctuation">;</span>
+
+<span class="token comment">/**
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory&lt;\App\Models\Record>
+ */</span>
+<span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name-definition class-name">RecordFactory</span> <span class="token keyword">extends</span> <span class="token class-name">Factory</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Define the model's default state.
+     *
+     * @return array&lt;string, mixed>
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">definition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">array</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">[</span>
+            <span class="token string single-quoted-string">'date'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'time'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'weight'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">numberBetween</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'systolic'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">numberBetween</span><span class="token punctuation">(</span><span class="token number">90</span><span class="token punctuation">,</span> <span class="token number">180</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'diastolic'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">numberBetween</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">120</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'pulse'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">numberBetween</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token string single-quoted-string">'notes'</span> <span class="token operator">=></span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">faker</span><span class="token operator">-></span><span class="token function">sentence</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p><code>database/seeders/DatabaseSeeder.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">Database<span class="token punctuation">\</span>Seeders</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>User</span><span class="token punctuation">;</span>
+<span class="token comment">// use Illuminate\Database\Console\Seeds\WithoutModelEvents;</span>
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>Record</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Database<span class="token punctuation">\</span>Seeder</span><span class="token punctuation">;</span>
+
+<span class="token keyword">final</span> <span class="token keyword">class</span> <span class="token class-name-definition class-name">DatabaseSeeder</span> <span class="token keyword">extends</span> <span class="token class-name">Seeder</span>
+<span class="token punctuation">{</span>
+    <span class="token comment">/**
+     * Seed the application's database.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">void</span>
+    <span class="token punctuation">{</span>
+        <span class="token class-name static-context">User</span><span class="token operator">::</span><span class="token function">factory</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">has</span><span class="token punctuation">(</span><span class="token class-name static-context">Record</span><span class="token operator">::</span><span class="token function">factory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">count</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<ul>
+<li>Add the follow HasMany relationship method to the Users model
+<code>app/Models/User.php</code></li>
+</ul>
+<pre class="language-php"><code class="language-php"><span class="token comment">/**
+ * Get the user's records
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">records</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token class-name return-type">HasMany</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">hasMany</span><span class="token punctuation">(</span><span class="token class-name static-context">Record</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>And do the same, but the inverse, in the Record Model
+<code>app/Models/Record.php</code></li>
+</ul>
+<pre class="language-php"><code class="language-php"><span class="token comment">/**
+ * Get the records for the user.
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">belongsTo</span><span class="token punctuation">(</span><span class="token class-name static-context">User</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<ul>
+<li>With this in place, we should be able to our open migrations, followed by our seeder.</li>
+</ul>
+<p><code>php artisan migrate</code> &amp; <code>php artisan db:seed</code></p>
+<h2>Building out the Frontend</h2>
+<p>With that, our database is populated and we now have something to work with when building our views.</p>
+<ul>
+<li>First order of business is change our layout to use the <em>header</em> nav, instead of the default <em>sidebar</em>. This will give us more screen real estate for our charts. But we are also storing quite a bit in our tables as well.</li>
+</ul>
+<p><code>resources/views/components/layouts/app.php</code></p>
+<pre class="language-diff-html"><code class="language-diff-html"><span class="token deleted-sign deleted language-html"><span class="token prefix deleted">-</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app.sidebar</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$title ?? null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+</span><span class="token inserted-sign inserted language-html"><span class="token prefix inserted">+</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app.header</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$title ?? null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+</span><span class="token unchanged language-html"><span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>main</span><span class="token punctuation">></span></span>
+<span class="token prefix unchanged"> </span>       {{ $slot }}
+<span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>main</span><span class="token punctuation">></span></span>
+<span class="token prefix unchanged"> </span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layouts.app.header</span><span class="token punctuation">></span></span>
+</span></code></pre>
+<p><em>We will be coming back to edit <code>app.header</code> in just a moment.</em></p>
+<ul>
+<li>Next, we need to create a controller for our views and routes. This is optional, since we are using Livewire. We could just leverage Livewire for everything, but I didn't want to do that. I want to use Livewire where it makes sense. I do not require that this app have a SPA type of navigation or feel. I just want it to work, at the moment. I will most likely go back, during a refactor, and convert this to a Invokable Controller later.</li>
+</ul>
+<p><code>php artisan make:controller RecordController --resource</code></p>
+<p><code>routes/web.php</code></p>
+<pre class="language-diff-php"><code class="language-diff-php">Route::middleware(['auth'])->group(function () {
+<span class="token unchanged language-php"><span class="token prefix unchanged"> </span>   <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">redirect</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'settings/profile'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span>
+<span class="token unchanged language-php"><span class="token prefix unchanged"> </span>   <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings/profile'</span><span class="token punctuation">,</span> <span class="token class-name static-context">Profile</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings.profile'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix unchanged"> </span>   <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings/password'</span><span class="token punctuation">,</span> <span class="token class-name static-context">Password</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings.password'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token prefix unchanged"> </span>   <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings/appearance'</span><span class="token punctuation">,</span> <span class="token class-name static-context">Appearance</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">name</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings.appearance'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span>
+<span class="token inserted-sign inserted language-php"><span class="token prefix inserted">+</span>    <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">resource</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'records'</span><span class="token punctuation">,</span> <span class="token class-name static-context">RecordController</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span>});</code></pre>
+<p>And in the index method of our controller, we will grab all the records for the currently authenticated user and order them by descending date.</p>
+<pre class="language-php"><code class="language-php"><span class="token comment">/**
+ * Display a listing of the resource.
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">index</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+    <span class="token variable">$records</span> <span class="token operator">=</span> <span class="token class-name static-context">Record</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'user_id'</span><span class="token punctuation">,</span> <span class="token class-name static-context">Auth</span><span class="token operator">::</span><span class="token function">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token property">id</span><span class="token punctuation">)</span>
+        <span class="token operator">-></span><span class="token function">orderBy</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'date'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'desc'</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'record.index'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'records'</span> <span class="token operator">=></span> <span class="token variable">$records</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+<p>Now, we create a new view directory to hold our view file</p>
+<p><code>resources/views/records/index.blade.php</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Records')<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-dashboard-heading</span>
+    <span class="token attr-name">:heading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Records')<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:subheading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Display of all records')<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>flex h-full w-full flex-1 flex-col gap-4 rounded-xl<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>records<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>overflow-x-auto<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>min-w-full divide-y-2 divide-gray-200 dark:divide-gray-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>thead</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>ltr:text-left rtl:text-right<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>*:font-medium *:text-gray-900 dark:*:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>id<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>user<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>weight<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>systolic<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>diastolic<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>pulse<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>date<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>time<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>th</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap capitalize<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>notes<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>th</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>thead</span><span class="token punctuation">></span></span>
+
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tbody</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>divide-y divide-gray-200 dark:divide-gray-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                @foreach ($records as $record)
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->id }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->user->name }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->weight }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->systolic }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->diastolic }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->pulse }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->date->format('Y-m-d') }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->time->format('H:i a') }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ $record->notes }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+                        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>px-3 py-2 whitespace-nowrap text-sm text-gray-900 dark:text-white<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>a</span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ route('records.edit', $record->id) }}<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-blue-500 hover:text-blue-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Edit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>a</span><span class="token punctuation">></span></span>
+                            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>{{ route('records.destroy', $record->id) }}<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>POST<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>inline<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+                                @csrf
+                                @method('DELETE')
+                                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>text-red-500 hover:text-red-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Delete<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+                            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span>
+                    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+                @endforeach
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tbody</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layouts.app</span><span class="token punctuation">></span></span></code></pre>
+<ul>
+<li>To view this table, we need to add a link to our header nav so that we can access it. Make to add the same link further down the page on between lines <code>106-113</code> or there about.</li>
+</ul>
+<pre class="language-diff-html"><code class="language-diff-html"><span class="token deleted-arrow deleted language-html"><span class="token prefix deleted"><</span>flux:navbar class="-mb-px max-lg:hidden">
+</span><span class="token unchanged language-html"><span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>navbar.item</span>
+<span class="token prefix unchanged"> </span>     <span class="token attr-name">icon</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>layout-grid<span class="token punctuation">"</span></span>
+<span class="token prefix unchanged"> </span>     <span class="token attr-name">:href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>route('dashboard')<span class="token punctuation">"</span></span>
+<span class="token prefix unchanged"> </span>     <span class="token attr-name">:current</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>request()->routeIs('dashboard')<span class="token punctuation">"</span></span>
+<span class="token prefix unchanged"> </span>     <span class="token attr-name"><span class="token namespace">wire:</span>navigate</span><span class="token punctuation">></span></span>
+<span class="token prefix unchanged"> </span>       {{ __('Dashboard') }}
+<span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>navbar.item</span><span class="token punctuation">></span></span>
+</span><span class="token inserted-sign inserted language-html"><span class="token prefix inserted">+</span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>navlist.item</span>
+<span class="token prefix inserted">+</span>        <span class="token attr-name">icon</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>book-open<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>        <span class="token attr-name">:href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>route('records.index')<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>        <span class="token attr-name">:current</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>request()->routeIs('records.index')<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>        <span class="token attr-name"><span class="token namespace">wire:</span>navigate</span><span class="token punctuation">></span></span>
+<span class="token prefix inserted">+</span>        {{ __('Records') }}
+<span class="token prefix inserted">+</span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>navlist.item</span><span class="token punctuation">></span></span>
+</span><span class="token deleted-arrow deleted language-html"><span class="token prefix deleted"><</span>/flux:navbar>
+</span></code></pre>
+<h2>Charting our Records</h2>
+<p>Now that we can see all our records in a table, lets do what we came here to do. Look at them in chart or graph!</p>
+<p><code>php artisan make:livewire BloodPressureChart</code></p>
+<p>We first need to setup the backend of our component, so that we have something to pass to the frontend.</p>
+<p><code>app/Livewire/BloodPressureChart.php</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Livewire</span><span class="token punctuation">;</span>
+
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Enums<span class="token punctuation">\</span>BloodPressure</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Models<span class="token punctuation">\</span>Record</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Livewire<span class="token punctuation">\</span>Component</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">App<span class="token punctuation">\</span>Enums<span class="token punctuation">\</span>PulsePressure</span><span class="token punctuation">;</span>
+<span class="token keyword">use</span> <span class="token package">Illuminate<span class="token punctuation">\</span>Support<span class="token punctuation">\</span>Facades<span class="token punctuation">\</span>Auth</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">BloodPressureChart</span> <span class="token keyword">extends</span> <span class="token class-name">Component</span>
+<span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token variable">$bloodPressureData</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">mount</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">bloodPressureData</span> <span class="token operator">=</span> <span class="token class-name static-context">Record</span><span class="token operator">::</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'user_id'</span><span class="token punctuation">,</span> <span class="token class-name static-context">Auth</span><span class="token operator">::</span><span class="token function">user</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-></span><span class="token property">id</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">orderBy</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'date'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'desc'</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">take</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token operator">-></span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token variable">$record</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> <span class="token punctuation">[</span>
+                    <span class="token string single-quoted-string">'systolic'</span> <span class="token operator">=></span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">systolic</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'diastolic'</span> <span class="token operator">=></span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">diastolic</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'date'</span> <span class="token operator">=></span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">date</span><span class="token operator">-></span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'Y-m-d'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'blood_pressure_status'</span> <span class="token operator">=></span> <span class="token class-name static-context">BloodPressure</span><span class="token operator">::</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token variable">$record</span><span class="token operator">-></span><span class="token property">systolic</span><span class="token punctuation">,</span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">diastolic</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'pulse_pressure'</span> <span class="token operator">=></span> <span class="token class-name static-context">BloodPressure</span><span class="token operator">::</span><span class="token function">pulsePressure</span><span class="token punctuation">(</span><span class="token variable">$record</span><span class="token operator">-></span><span class="token property">systolic</span><span class="token punctuation">,</span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">diastolic</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    <span class="token string single-quoted-string">'pulse_pressure_status'</span> <span class="token operator">=></span> <span class="token class-name static-context">PulsePressure</span><span class="token operator">::</span><span class="token function">status</span><span class="token punctuation">(</span>
+                        <span class="token class-name static-context">BloodPressure</span><span class="token operator">::</span><span class="token function">pulsePressure</span><span class="token punctuation">(</span><span class="token variable">$record</span><span class="token operator">-></span><span class="token property">systolic</span><span class="token punctuation">,</span> <span class="token variable">$record</span><span class="token operator">-></span><span class="token property">diastolic</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">render</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'livewire.blood-pressure-chart'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>We are doing much like we did with our controller action, but this time we are only grabbing the most recent 10 records, mapping over them and returning an array that contains a mix of data.</p>
+<ul>
+<li><strong>systolic</strong> - the top number of the blood pressure reading that was recorded</li>
+<li><strong>diastolic</strong> - the bottom number of the blood pressure reading that was recorded</li>
+<li><strong>date</strong> - the date when the blood pressure reading was recorded</li>
+<li><strong>blood_pressure_status</strong> - the category or classification of the blood pressure reading that was recorded</li>
+<li><strong>pulse_pressure</strong> - the pulse pressure, calculated from the blood pressure reading that was recorded</li>
+<li><strong>pulse_pressure_status</strong> - the pulse pressure classification, determined from the pulse pressure reading that was calculated previously</li>
+</ul>
+<p>First, let's actually get a chart that shows the basic info - Systolic, Diastolic and Date. At the moment, I want to try and display both Systolic and Diastolic in the same line chart. Sys on the left and Dia on the right.</p>
+<p><code>resources/views/livewire/blood-pressure-chart.php</code></p>
+<pre class="language-html"><code class="language-html">@assets
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+@endassets
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>canvas</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>bpChart<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>canvas</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+
+@script
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script"><span class="token language-javascript">
+<span class="token keyword">const</span> bpctx <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">'bpChart'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> bpdata <span class="token operator">=</span> $wire<span class="token punctuation">.</span>bloodPressureData<span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> bpchart <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Chart</span><span class="token punctuation">(</span>bpctx<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'line'</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">data</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">labels</span><span class="token operator">:</span> bpdata<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">item</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>date<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">datasets</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+            <span class="token punctuation">{</span>
+                <span class="token literal-property property">label</span><span class="token operator">:</span> <span class="token string">'Systolic'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">data</span><span class="token operator">:</span> bpdata<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">item</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>systolic<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">tension</span><span class="token operator">:</span> <span class="token number">0.1</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'rgba(255, 99, 132, 1)'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(255, 99, 132, 0.2)'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">yAxisID</span><span class="token operator">:</span> <span class="token string">'y'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token punctuation">{</span>
+                <span class="token literal-property property">label</span><span class="token operator">:</span> <span class="token string">'Diastolic'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">data</span><span class="token operator">:</span> bpdata<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">item</span> <span class="token operator">=></span> item<span class="token punctuation">.</span>diastolic<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">tension</span><span class="token operator">:</span> <span class="token number">0.1</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">borderColor</span><span class="token operator">:</span> <span class="token string">'rgba(54, 162, 235, 1)'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">backgroundColor</span><span class="token operator">:</span> <span class="token string">'rgba(54, 162, 235, 0.2)'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">fill</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">yAxisID</span><span class="token operator">:</span> <span class="token string">'y1'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">responsive</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">legend</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'Blood Pressure Chart'</span><span class="token punctuation">,</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">scales</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">y</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'linear'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">position</span><span class="token operator">:</span> <span class="token string">'left'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'Blood Pressure (mmHg)'</span><span class="token punctuation">,</span>
+                    <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'rgba(255, 99, 132, 0.7)'</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">y1</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'linear'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">position</span><span class="token operator">:</span> <span class="token string">'right'</span><span class="token punctuation">,</span>
+                <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                    <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+                    <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'Diastolic Pressure (mmHg)'</span><span class="token punctuation">,</span>
+                    <span class="token literal-property property">color</span><span class="token operator">:</span> <span class="token string">'rgba(54, 162, 235, 0.7)'</span><span class="token punctuation">,</span>
+                <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+@endscript</code></pre>
+<p>There's actually something cool going on here I want to point out. Notice that we are writing Javascript, right? Well, take notice to the third line in the <code>@script</code> block in the code-block above. See the line <code>const bpdata = $wire.bloodPressureData;</code>. We are passing the data that we queried, using Eloquent, in the backend part of the component and passing it to the frontend. Right into the hands of Javascript! This is all thanks to Livewire using AlpineJS under the hood.</p>
+<blockquote>
+<p>I have decide that I will make a separate post on the chart itself. <em>Stay Tuned!</em></p>
+</blockquote>
+<p>Next we need to actually add our component to the dashboard...</p>
+<p><code>resources/views/dashboard.blade.php</code></p>
+<pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Dashboard')<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-dashboard-heading</span>
+    <span class="token attr-name">:heading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Dashboard')<span class="token punctuation">"</span></span>
+    <span class="token attr-name">:subheading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('')<span class="token punctuation">"</span></span>
+    <span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>flex h-full w-full flex-1 flex-col gap-4 rounded-xl<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>relative h-full flex-1 overflow-hidden rounded-xl border border-neutral-200 dark:border-neutral-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+            @livewire('blood-pressure-chart')
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>x-layouts.app</span><span class="token punctuation">></span></span></code></pre>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/v1747164163/blog/sys_dia_mif5qu.jpg" alt="Blood Pressure Chart"></p>
+<p>Now, when I hover over what ChartJS calls a <strong>tick</strong> <em>(that's the dots on the chart that denote a point of time on where the x and y axis intersect. Or in layman's terms, a point of data.)</em>, I would like to display the classification of the blood pressure reading. To do that, we need to modify our options object attached to our chart by adding a <code>tooltip</code> property to the <code>plugins</code> property.</p>
+<pre class="language-diff-js"><code class="language-diff-js">options: {
+<span class="token unchanged language-js"><span class="token prefix unchanged"> </span> <span class="token literal-property property">responsive</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span> <span class="token literal-property property">plugins</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>     <span class="token literal-property property">legend</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>         <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>     <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>     <span class="token literal-property property">title</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix unchanged"> </span>         <span class="token literal-property property">display</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>         <span class="token literal-property property">text</span><span class="token operator">:</span> <span class="token string">'Blood Pressure Chart'</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span>     <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</span><span class="token inserted-sign inserted language-js"><span class="token prefix inserted">+</span>      <span class="token literal-property property">tooltip</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>          <span class="token literal-property property">callbacks</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>              <span class="token literal-property property">footer</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">ctx</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">{</span>
+<span class="token prefix inserted">+</span>                  <span class="token keyword">return</span> bpdata<span class="token punctuation">[</span>ctx<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>dataIndex<span class="token punctuation">]</span><span class="token punctuation">.</span>blood_pressure_status<span class="token punctuation">;</span>
+<span class="token prefix inserted">+</span>              <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token prefix inserted">+</span>          <span class="token punctuation">}</span>
+<span class="token prefix inserted">+</span>      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</span><span class="token unchanged language-js"><span class="token prefix unchanged"> </span>   <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token prefix unchanged"> </span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</span></code></pre>
+<p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/v1747072485/blog/systolic_example_uxepvm.webp" alt="Tool tip displaying status"></p>
+<h2>Status &amp; Classification</h2>
+<p>To determine classification of the blood pressure reading, you may have noticed that I am passing the readings to a class <code>BloodPressure</code> and using the method <code>status</code> <em>(should be refactored to classification)</em>. That class is an Enum using an Enumeration Method called status. It looks like this:</p>
+<p><code>app/Enums/BloodPressure</code></p>
+<pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Enums</span><span class="token punctuation">;</span>
+
+<span class="token keyword">enum</span> <span class="token class-name-definition class-name">BloodPressure</span><span class="token punctuation">:</span> <span class="token keyword type-declaration">string</span>
+<span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token constant">Hypotension</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'Hypotension'</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Normal</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'normal'</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">Elevated</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'Elevated'</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">HypertensionStage1</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'Hypertension Stage 1'</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">HypertensionStage2</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'Hypertension Stage 2'</span><span class="token punctuation">;</span>
+    <span class="token keyword">case</span> <span class="token constant">HypertensiveCrisis</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'Hypertensive Crisis'</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">function</span> <span class="token function-definition function">status</span><span class="token punctuation">(</span><span class="token variable">$systolic</span><span class="token punctuation">,</span> <span class="token variable">$diastolic</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">string</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token keyword">match</span> <span class="token punctuation">(</span><span class="token constant boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+            <span class="token variable">$systolic</span> <span class="token operator">&lt;</span> <span class="token number">90</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$systolic</span> <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">&lt;</span> <span class="token number">60</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">></span> <span class="token number">0</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">Hypotension</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token variable">$systolic</span> <span class="token operator">&lt;</span> <span class="token number">120</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$systolic</span> <span class="token operator">></span> <span class="token number">90</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">&lt;</span> <span class="token number">80</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">></span> <span class="token number">60</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">Normal</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token variable">$systolic</span> <span class="token operator">>=</span> <span class="token number">120</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$systolic</span> <span class="token operator">&lt;=</span> <span class="token number">129</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">&lt;</span> <span class="token number">80</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">Elevated</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token comment">/**
+             * Had to move this condition here because it was
+             * conflicting with the Hypertension Stage 1 condition.
+             */</span>
+            <span class="token variable">$systolic</span> <span class="token operator">></span> <span class="token number">180</span> <span class="token operator">||</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">></span> <span class="token number">120</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">HypertensiveCrisis</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token variable">$systolic</span> <span class="token operator">>=</span> <span class="token number">130</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$systolic</span> <span class="token operator">&lt;=</span> <span class="token number">139</span> <span class="token operator">||</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">>=</span> <span class="token number">80</span> <span class="token operator">&amp;&amp;</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">&lt;=</span> <span class="token number">89</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">HypertensionStage1</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token variable">$systolic</span> <span class="token operator">>=</span> <span class="token number">140</span> <span class="token operator">||</span>
+                <span class="token variable">$diastolic</span> <span class="token operator">>=</span> <span class="token number">90</span>
+            <span class="token operator">=></span> <span class="token keyword static-context">self</span><span class="token operator">::</span><span class="token constant">HypertensionStage2</span><span class="token operator">-></span><span class="token property">value</span><span class="token punctuation">,</span>
+
+            <span class="token keyword">default</span> <span class="token operator">=></span> <span class="token string single-quoted-string">'Awaiting valid reading...'</span><span class="token punctuation">,</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Calculate the pulse pressure based on systolic and diastolic values.
+     *
+     * - A normal pulse pressure is typically around 40 mmHg.
+     * - A pulse pressure of less than 40 mmHg may indicate aortic stenosis or other heart conditions.
+     * - A pulse pressure of 60 mmHg or more is considered high and may indicate an increased risk of cardiovascular disease.
+     *
+     * @param int $systolic Systolic blood pressure value.
+     * @param int $diastolic Diastolic blood pressure value.
+     * @return int Pulse pressure value.
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">function</span> <span class="token function-definition function">pulsePressure</span><span class="token punctuation">(</span><span class="token variable">$systolic</span><span class="token punctuation">,</span> <span class="token variable">$diastolic</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token keyword return-type">int</span>
+    <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token variable">$systolic</span> <span class="token operator">-</span> <span class="token variable">$diastolic</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span></code></pre>
+<p>I have also decided that this alone is worth a post itself. I have already discussed this topic <a href="/posts/using-enums-livewire-forms">here</a>, but I ran into an interesting issue in writing tests for this class and fill like it would make a good post.</p>
+<h2>Future Plans</h2>
+<p>Notice that I am not covering the full CRUD operations at this time. The reason is because I don't honestly care about them at the moment. It's more important for me to get to a heart of this app as quickly as possible. That way I can determine if it's viable for me to put hours and hours into it. Anyway!</p>
+<blockquote>
+<p>Part Two coming soon!</p>
+</blockquote>
+
+          
+            <figure>
+              <img src="/assets/imgs/signature.svg" alt="sig">
+            </figure>
+          
+        </article>
+      </div>
+    </main>
+    <footer>
+    <div>
+        <span>&copy; 2025 Phillip Jackson</span>
+    </div>
+    <nav class="">
+        <a href="https://codepen.io/unisys12">
+            <img src="/assets/imgs/codepen.svg" class="icon" id="codepen" alt="codepen" width="50px" height="50px" />
+        </a>
+        <a href="https://twitter.com/unisys12">
+            <img src="/assets/imgs/twitter.svg" class="icon" id="twitter" alt="twitter" width="50px" height="50px" />
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100081839772235">
+            <img src="/assets/imgs/facebook.svg" class="icon" id="facebook" alt="facebook" width="50px" height="50px" />
+        </a>
+        <a href="https://github.com/unisys12">
+            <img src="/assets/imgs/github.svg" class="icon" id="github" alt="github" width="50px" height="50px" />
+        </a>
+        <a href="https://gitlab.com/unisys12">
+            <img src="/assets/imgs/gitlab.svg" class="icon" id="gitlab" alt="gitlab" width="50px" height="50px" />
+        </a>
+    </nav>
+</footer>
+  </body>
+</html>
