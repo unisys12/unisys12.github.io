@@ -9,7 +9,7 @@ image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,
 image_alt: "A simple header image"
 ---
 
-# Animated Card Part 1
+# Animated Card
 
 I was browsing the web the other night, looking for a weekend get-away spot for the wife and I, and I ran across this site. [Land Trust of North Alabama](https://landtrustnal.org/). There are quit a few things happening on this site that I found very interesting, but what I want to focus on right now is near the bottom on their home page. There you will find a selection of images, displayed in a somewhat random way, all linking back to specific post from their Instagram account. As a self-proclaimed _back-end guy_ myself, the posts being displayed is not what caught my eye. That's a simple API who's response gets aggregated and then consumed on the frontend. What made stop and play with whole section was the animations on each image block _(we will call them cards, or a card, from here on)_.
 
