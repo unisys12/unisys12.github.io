@@ -90,11 +90,11 @@ We will be starting off by keeping the initial html and basically wiping all the
 
 _css_ _final code_
 
-```css
+```diff-css
 .container {
   display: grid;
-  grid-template-columns: minmax(200px, 1fr); // [!code --]
-  grid-template-columns: repeat(2, 1fr); // [!code ++]
+-  grid-template-columns: minmax(200px, 1fr);
++  grid-template-columns: repeat(2, 1fr);
   place-items: center;
 }
 
