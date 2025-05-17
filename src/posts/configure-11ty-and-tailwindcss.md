@@ -86,7 +86,7 @@ module.exports = (config) => {
       ouput: "_site",
     },
   };
-})
+}
 ```
 
 For now, I think that's about it for the 11ty config. We will have a few other things to add later, but for now, let's move on.
