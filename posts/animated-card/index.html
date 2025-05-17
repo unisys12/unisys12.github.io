@@ -123,43 +123,43 @@
 <p>There are a few things in the above prototype that will not work in the real world, but since I did this on CodePen, it is what it is. Things like using px in the transform of figcaption on hover and having to set a negative margin on the img container just to properly align the image with the figcaption text. There are also some things I need to fix/solve, such as an issue when hovering over the displayed text. It causes stuttering.</p>
 <p>We will be starting off by keeping the initial html and basically wiping all the css, since we will be working in the browser with VSCode. I tested it before hand and it all works perfectly. But I just feel like I could do a better job of execution. So, let's see what I ended up with!</p>
 <p><em>css</em> <em>final code</em></p>
-<pre class="language-css"><code class="language-css"><span class="token selector">.container</span> <span class="token punctuation">{</span>
-  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
-  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">minmax</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span> // [!code --]
-  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>2<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span> // [!code ++]
-  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+<pre class="language-diff-css"><code class="language-diff-css">.container {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span>
+</span><span class="token deleted-sign deleted language-css"><span class="token prefix deleted">-</span>  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">minmax</span><span class="token punctuation">(</span>200px<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token inserted-sign inserted language-css"><span class="token prefix inserted">+</span>  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token function">repeat</span><span class="token punctuation">(</span>2<span class="token punctuation">,</span> 1fr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</span><span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+</span>}
 
-<span class="token selector">.card</span> <span class="token punctuation">{</span>
-  <span class="token property">max-width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> // [!code --]
-  <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span> <span class="token comment">/* set display to style contents */</span> // [!code ++]
-  <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span> <span class="token comment">/* centers vertically and horizontally, but it can't */</span> // [!code ++]
-  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> subgrid<span class="token punctuation">;</span> <span class="token comment">/* setting to subgrid allows us to center text perfectly within the parent */</span> // [!code ++]
-<span class="token punctuation">}</span>
+.card {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">max-width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> // [!code --]
+<span class="token prefix unchanged"> </span> <span class="token property">display</span><span class="token punctuation">:</span> grid<span class="token punctuation">;</span> <span class="token comment">/* set display to style contents */</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">place-items</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span> <span class="token comment">/* centers vertically and horizontally, but it can't */</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> subgrid<span class="token punctuation">;</span> <span class="token comment">/* setting to subgrid allows us to center text perfectly within the parent */</span> // [!code ++]
+</span>}
 
-<span class="token selector">figcaption</span> <span class="token punctuation">{</span>
-  <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
-  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> <span class="token comment">/* makes the text fit within the image */</span> // [!code ++]
-  <span class="token property">text-wrap</span><span class="token punctuation">:</span> justify<span class="token punctuation">;</span> <span class="token comment">/* balance leaves space on the edges */</span> // [!code ++]
-  <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment">/* hides figcation until hover. very sus! */</span> // [!code ++]
-  <span class="token property">opacity</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> <span class="token comment">/* set default opacity to 0 to hide text */</span>
-  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.4s linear<span class="token punctuation">;</span> // [!code ++]
-<span class="token punctuation">}</span>
+figcaption {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">text-align</span><span class="token punctuation">:</span> center<span class="token punctuation">;</span>
+<span class="token prefix unchanged"> </span> <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> <span class="token comment">/* makes the text fit within the image */</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">text-wrap</span><span class="token punctuation">:</span> justify<span class="token punctuation">;</span> <span class="token comment">/* balance leaves space on the edges */</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">display</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span> <span class="token comment">/* hides figcation until hover. very sus! */</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span> <span class="token comment">/* set default opacity to 0 to hide text */</span>
+<span class="token prefix unchanged"> </span> <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.4s linear<span class="token punctuation">;</span> // [!code ++]
+</span>}
 
-<span class="token comment">/* show the text in the figcaption */</span>
-<span class="token selector">.card_bg_img:hover + figcaption</span> <span class="token punctuation">{</span>
-  <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span> // [!code ++]
-  <span class="token property">opacity</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
+/* show the text in the figcaption */
+.card_bg_img:hover + figcaption {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">display</span><span class="token punctuation">:</span> block<span class="token punctuation">;</span> // [!code ++]
+<span class="token prefix unchanged"> </span> <span class="token property">opacity</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+</span>}
 
-<span class="token selector">.card_bg_img > img</span> <span class="token punctuation">{</span>
-  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">,</span> transform 2s 0.2s<span class="token punctuation">;</span> // [!code --]
-  <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">;</span> // [!code ++]
-<span class="token punctuation">}</span>
+.card_bg_img > img {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">,</span> transform 2s 0.2s<span class="token punctuation">;</span> // [!code --]
+<span class="token prefix unchanged"> </span> <span class="token property">transition</span><span class="token punctuation">:</span> opacity 0.3s ease-in-out<span class="token punctuation">;</span> // [!code ++]
+</span>}
 
-<span class="token selector">.card_bg_img:hover > img</span> <span class="token punctuation">{</span>
-  <span class="token property">opacity</span><span class="token punctuation">:</span> 0.2<span class="token punctuation">;</span>
-<span class="token punctuation">}</span></code></pre>
+.card_bg_img:hover > img {
+<span class="token unchanged language-css"><span class="token prefix unchanged"> </span> <span class="token property">opacity</span><span class="token punctuation">:</span> 0.2<span class="token punctuation">;</span>
+</span>}</code></pre>
 <h2>.container</h2>
 <p>Breaking this down a bit, we can see that I actually declared the template columns in this one. I believe cause of using <code>minmax</code> in my previous attempt was from me <em>keyboard thrashing</em>. This happens you just change values with little thought behind them, just to see what sticks as fast as possible. Although the code did work, just looking at it you could see it was not ideal. This time around, I actually set my container columns with <code>grid-template-columns: repeat(2, 1fr);</code>. I did experiment with adding more cards to the container and then adjusting the track list count <em>(first param of the repeat method)</em> accordingly and it worked just as expected. Bear in mind, this is not mobile ready, so... shame on me!</p>
 <h2>.card</h2>

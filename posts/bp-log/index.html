@@ -76,7 +76,7 @@
 </ul>
 </li>
 </ul>
-<p><code>database/migrations/create_records_table.php</code></p>
+<p><em><code>database/migrations/create_records_table.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -108,7 +108,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 </span></code></pre>
-<p><code>database/factories/RecordFactory.php</code></p>
+<p><em><code>database/factories/RecordFactory.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -141,7 +141,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span></code></pre>
-<p><code>database/seeders/DatabaseSeeder.php</code></p>
+<p><em><code>database/seeders/DatabaseSeeder.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -167,9 +167,9 @@
 <span class="token punctuation">}</span>
 </span></code></pre>
 <ul>
-<li>Add the follow HasMany relationship method to the Users model
-<code>app/Models/User.php</code></li>
+<li>Add the follow HasMany relationship method to the Users model</li>
 </ul>
+<p><em><code>app/Models/User.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token comment">/**
  * Get the user's records
  */</span>
@@ -178,9 +178,9 @@
     <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token function">hasMany</span><span class="token punctuation">(</span><span class="token class-name static-context">Record</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
 <ul>
-<li>And do the same, but the inverse, in the Record Model
-<code>app/Models/Record.php</code></li>
+<li>And do the same, but the inverse, in the Record Model</li>
 </ul>
+<p><em><code>app/Models/Record.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token comment">/**
  * Get the records for the user.
  */</span>
@@ -197,7 +197,7 @@
 <ul>
 <li>First order of business is change our layout to use the <em>header</em> nav, instead of the default <em>sidebar</em>. This will give us more screen real estate for our charts. But we are also storing quite a bit in our tables as well.</li>
 </ul>
-<p><code>resources/views/components/layouts/app.php</code></p>
+<p><em><code>resources/views/components/layouts/app.php</code></em></p>
 <pre class="language-diff-html"><code class="language-diff-html"><span class="token deleted-sign deleted language-html"><span class="token prefix deleted">-</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app.sidebar</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$title ?? null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 </span><span class="token inserted-sign inserted language-html"><span class="token prefix inserted">+</span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app.header</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$title ?? null<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
 </span><span class="token unchanged language-html"><span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>main</span><span class="token punctuation">></span></span>
@@ -210,7 +210,7 @@
 <li>Next, we need to create a controller for our views and routes. This is optional, since we are using Livewire. We could just leverage Livewire for everything, but I didn't want to do that. I want to use Livewire where it makes sense. I do not require that this app have a SPA type of navigation or feel. I just want it to work, at the moment. I will most likely go back, during a refactor, and convert this to a Invokable Controller later.</li>
 </ul>
 <p><code>php artisan make:controller RecordController --resource</code></p>
-<p><code>routes/web.php</code></p>
+<p><em><code>routes/web.php</code></em></p>
 <pre class="language-diff-php"><code class="language-diff-php">Route::middleware(['auth'])->group(function () {
 <span class="token unchanged language-php"><span class="token prefix unchanged"> </span>   <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">redirect</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'settings'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'settings/profile'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </span>
@@ -221,6 +221,7 @@
 <span class="token inserted-sign inserted language-php"><span class="token prefix inserted">+</span>    <span class="token class-name static-context">Route</span><span class="token operator">::</span><span class="token function">resource</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'records'</span><span class="token punctuation">,</span> <span class="token class-name static-context">RecordController</span><span class="token operator">::</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </span>});</code></pre>
 <p>And in the index method of our controller, we will grab all the records for the currently authenticated user and order them by descending date.</p>
+<p><em><code>app/Http/Controllers/RecordController.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token comment">/**
  * Display a listing of the resource.
  */</span>
@@ -231,7 +232,7 @@
     <span class="token keyword">return</span> <span class="token function">view</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'record.index'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string single-quoted-string">'records'</span> <span class="token operator">=></span> <span class="token variable">$records</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span></code></pre>
 <p>Now, we create a new view directory to hold our view file</p>
-<p><code>resources/views/records/index.blade.php</code></p>
+<p><em><code>resources/views/records/index.blade.php</code></em></p>
 <pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Records')<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-dashboard-heading</span>
     <span class="token attr-name">:heading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Records')<span class="token punctuation">"</span></span>
@@ -291,20 +292,20 @@
 <span class="token prefix unchanged"> </span>     <span class="token attr-name"><span class="token namespace">wire:</span>navigate</span><span class="token punctuation">></span></span>
 <span class="token prefix unchanged"> </span>       {{ __('Dashboard') }}
 <span class="token prefix unchanged"> </span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>navbar.item</span><span class="token punctuation">></span></span>
-</span><span class="token inserted-sign inserted language-html"><span class="token prefix inserted">+</span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>navlist.item</span>
-<span class="token prefix inserted">+</span>        <span class="token attr-name">icon</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>book-open<span class="token punctuation">"</span></span>
-<span class="token prefix inserted">+</span>        <span class="token attr-name">:href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>route('records.index')<span class="token punctuation">"</span></span>
-<span class="token prefix inserted">+</span>        <span class="token attr-name">:current</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>request()->routeIs('records.index')<span class="token punctuation">"</span></span>
-<span class="token prefix inserted">+</span>        <span class="token attr-name"><span class="token namespace">wire:</span>navigate</span><span class="token punctuation">></span></span>
-<span class="token prefix inserted">+</span>        {{ __('Records') }}
-<span class="token prefix inserted">+</span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>navlist.item</span><span class="token punctuation">></span></span>
+</span><span class="token inserted-sign inserted language-html"><span class="token prefix inserted">+</span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flux:</span>navbar.item</span>
+<span class="token prefix inserted">+</span>       <span class="token attr-name">icon</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>book-open<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>       <span class="token attr-name">:href</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>route('records.index')<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>       <span class="token attr-name">:current</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>request()->routeIs('records.index')<span class="token punctuation">"</span></span>
+<span class="token prefix inserted">+</span>       <span class="token attr-name"><span class="token namespace">wire:</span>navigate</span><span class="token punctuation">></span></span>
+<span class="token prefix inserted">+</span>       {{ __('Records') }}
+<span class="token prefix inserted">+</span>   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flux:</span>navbar.item</span><span class="token punctuation">></span></span>
 </span><span class="token deleted-arrow deleted language-html"><span class="token prefix deleted"><</span>/flux:navbar>
 </span></code></pre>
 <h2>Charting our Records</h2>
 <p>Now that we can see all our records in a table, lets do what we came here to do. Look at them in chart or graph!</p>
 <p><code>php artisan make:livewire BloodPressureChart</code></p>
 <p>We first need to setup the backend of our component, so that we have something to pass to the frontend.</p>
-<p><code>app/Livewire/BloodPressureChart.php</code></p>
+<p><em><code>app/Livewire/BloodPressureChart.php</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">namespace</span> <span class="token package">App<span class="token punctuation">\</span>Livewire</span><span class="token punctuation">;</span>
@@ -356,7 +357,7 @@
 <li><strong>pulse_pressure_status</strong> - the pulse pressure classification, determined from the pulse pressure reading that was calculated previously</li>
 </ul>
 <p>First, let's actually get a chart that shows the basic info - Systolic, Diastolic and Date. At the moment, I want to try and display both Systolic and Diastolic in the same line chart. Sys on the left and Dia on the right.</p>
-<p><code>resources/views/livewire/blood-pressure-chart.php</code></p>
+<p><em><code>resources/views/livewire/blood-pressure-chart.php</code></em></p>
 <pre class="language-html"><code class="language-html">@assets
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token script"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 @endassets
@@ -437,7 +438,7 @@
 <p>I have decide that I will make a separate post on the chart itself. <em>Stay Tuned!</em></p>
 </blockquote>
 <p>Next we need to actually add our component to the dashboard...</p>
-<p><code>resources/views/dashboard.blade.php</code></p>
+<p><em><code>resources/views/dashboard.blade.php</code></em></p>
 <pre class="language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-layouts.app</span> <span class="token attr-name">:title</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Dashboard')<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>x-dashboard-heading</span>
     <span class="token attr-name">:heading</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>__('Dashboard')<span class="token punctuation">"</span></span>
@@ -474,7 +475,7 @@
 <p><img src="https://res.cloudinary.com/dtm8qhbwk/image/upload/v1747072485/blog/systolic_example_uxepvm.webp" alt="Tool tip displaying status"></p>
 <h2>Status &amp; Classification</h2>
 <p>To determine classification of the blood pressure reading, you may have noticed that I am passing the readings to a class <code>BloodPressure</code> and using the method <code>status</code> <em>(should be refactored to classification)</em>. That class is an Enum using an Enumeration Method called status. It looks like this:</p>
-<p><code>app/Enums/BloodPressure</code></p>
+<p><em><code>app/Enums/BloodPressure</code></em></p>
 <pre class="language-php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 
 <span class="token keyword">declare</span><span class="token punctuation">(</span>strict_types<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -554,7 +555,7 @@
 <h2>Future Plans</h2>
 <p>Notice that I am not covering the full CRUD operations at this time. The reason is because I don't honestly care about them at the moment. It's more important for me to get to a heart of this app as quickly as possible. That way I can determine if it's viable for me to put hours and hours into it. Anyway!</p>
 <blockquote>
-<p>Part Two coming soon!</p>
+<p><a href="/posts/bp-log-part-two">BP Log Part </a></p>
 </blockquote>
 
           
