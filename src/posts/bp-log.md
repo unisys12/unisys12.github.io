@@ -41,7 +41,7 @@ Now that all the research is out of the way and I have an idea of what I want to
 - Create our Migrations, Models, Factories and Seeders that will hold our records
   - `php artisan make:model Records -mfs`
 
-`database/migrations/create_records_table.php`
+_`database/migrations/create_records_table.php`_
 
 ```php
 <?php
@@ -76,7 +76,7 @@ return new class extends Migration
 };
 ```
 
-`database/factories/RecordFactory.php`
+_`database/factories/RecordFactory.php`_
 
 ```php
 <?php
@@ -112,7 +112,7 @@ final class RecordFactory extends Factory
 }
 ```
 
-`database/seeders/DatabaseSeeder.php`
+_`database/seeders/DatabaseSeeder.php`_
 
 ```php
 <?php
@@ -141,7 +141,8 @@ final class DatabaseSeeder extends Seeder
 ```
 
 - Add the follow HasMany relationship method to the Users model
-  `app/Models/User.php`
+
+_`app/Models/User.php`_
 
 ```php
 /**
@@ -154,7 +155,8 @@ public function records(): HasMany
 ```
 
 - And do the same, but the inverse, in the Record Model
-  `app/Models/Record.php`
+
+_`app/Models/Record.php`_
 
 ```php
 /**
@@ -175,7 +177,7 @@ With that, our database is populated and we now have something to work with when
 
 - First order of business is change our layout to use the _header_ nav, instead of the default _sidebar_. This will give us more screen real estate for our charts. But we are also storing quite a bit in our tables as well.
 
-`resources/views/components/layouts/app.php`
+_`resources/views/components/layouts/app.php`_
 
 ```diff-html
 - <x-layouts.app.sidebar :title="$title ?? null">
@@ -191,7 +193,7 @@ _We will be coming back to edit `app.header` in just a moment._
 
 `php artisan make:controller RecordController --resource`
 
-`routes/web.php`
+_`routes/web.php`_
 ```diff-php
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -206,6 +208,7 @@ Route::middleware(['auth'])->group(function () {
 
 And in the index method of our controller, we will grab all the records for the currently authenticated user and order them by descending date.
 
+_`app/Http/Controllers/RecordController.php`_
 ```php
 /**
  * Display a listing of the resource.
@@ -220,7 +223,7 @@ public function index()
 
 Now, we create a new view directory to hold our view file
 
-`resources/views/records/index.blade.php`
+_`resources/views/records/index.blade.php`_
 
 ```html
 <x-layouts.app :title="__('Records')">
@@ -284,13 +287,13 @@ Now, we create a new view directory to hold our view file
       wire:navigate>
         {{ __('Dashboard') }}
     </flux:navbar.item>
-+    <flux:navlist.item
-+        icon="book-open"
-+        :href="route('records.index')"
-+        :current="request()->routeIs('records.index')"
-+        wire:navigate>
-+        {{ __('Records') }}
-+    </flux:navlist.item>
++   <flux:navbar.item
++       icon="book-open"
++       :href="route('records.index')"
++       :current="request()->routeIs('records.index')"
++       wire:navigate>
++       {{ __('Records') }}
++   </flux:navbar.item>
 </flux:navbar>
 ```
 
@@ -301,7 +304,7 @@ Now that we can see all our records in a table, lets do what we came here to do.
 
 We first need to setup the backend of our component, so that we have something to pass to the frontend.
 
-`app/Livewire/BloodPressureChart.php`
+_`app/Livewire/BloodPressureChart.php`_
 ```php
 <?php
 
@@ -355,7 +358,7 @@ We are doing much like we did with our controller action, but this time we are o
 
 First, let's actually get a chart that shows the basic info - Systolic, Diastolic and Date. At the moment, I want to try and display both Systolic and Diastolic in the same line chart. Sys on the left and Dia on the right.
 
-`resources/views/livewire/blood-pressure-chart.php`
+_`resources/views/livewire/blood-pressure-chart.php`_
 
 ```html
 @assets
@@ -441,7 +444,7 @@ There's actually something cool going on here I want to point out. Notice that w
 
 Next we need to actually add our component to the dashboard...
 
-`resources/views/dashboard.blade.php`
+_`resources/views/dashboard.blade.php`_
 
 ```html
 <x-layouts.app :title="__('Dashboard')">
@@ -488,7 +491,7 @@ options: {
 ## Status & Classification
 To determine classification of the blood pressure reading, you may have noticed that I am passing the readings to a class `BloodPressure` and using the method `status` _(should be refactored to classification)_. That class is an Enum using an Enumeration Method called status. It looks like this:
 
-`app/Enums/BloodPressure`
+_`app/Enums/BloodPressure`_
 
 ```php
 <?php
@@ -572,4 +575,4 @@ I have also decided that this alone is worth a post itself. I have already discu
 ## Future Plans
 Notice that I am not covering the full CRUD operations at this time. The reason is because I don't honestly care about them at the moment. It's more important for me to get to a heart of this app as quickly as possible. That way I can determine if it's viable for me to put hours and hours into it. Anyway!
 
-> Part Two coming soon!
+ > [BP Log Part ](/posts/bp-log-part-two)
