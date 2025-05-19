@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Blood Pressure Log Part 1
 description: "Found out my blood pressure is high, so I have to start tracking it. So I built an app to do that."
-publishDate: 2025-05-13
+date: 2025-05-13
 tags:
   [
     "blog",

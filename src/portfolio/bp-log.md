@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: "Blood Pressure Log"
 description: "Was told my blood pressure was high, so I decided to make a tracking app instead of downloading one."
-publishDate: 2025-05-12
+date: 2025-05-12
 tags: ["portfolio", "php", "laravel", "seeding", "database"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,w_200,g_face/v1747072485/blog/diastolic_example_ajqvwd.webp"
 image_alt: "A simple header image"

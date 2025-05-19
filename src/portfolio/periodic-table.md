@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Periodic Table
 description: "This is short description of the project"
-publishDate: 2024-07-11
+date: 2024-07-11
 tags: ["portfolio", "css", "11ty", "challenge"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1635373637/blog/stock/pexels-markus-spiske-2061168_coxasy.jpg"
 image_alt: "A simple header image"
@@ -119,8 +119,8 @@ module.exports.hexToRGB = (hex, alpha) => {
   gap: var(--gap);
 }
 
-/* 
-- Blocks indicate which electron sublevel is being filled. 
+/*
+- Blocks indicate which electron sublevel is being filled.
 - Blocks are used to group elements together
 */
 section[class*="block-"] {
@@ -130,10 +130,10 @@ section[class*="block-"] {
   gap: var(--gap);
 }
 
-/* 
+/*
 - A period is represented as a row in the table
-- The period number of an element indicates how many of its energy levels house electrons 
-- Moving down the table, periods are longer because it takes more electrons to fill the larger 
+- The period number of an element indicates how many of its energy levels house electrons
+- Moving down the table, periods are longer because it takes more electrons to fill the larger
     and more complex outer levels
 */
 .period-1 {

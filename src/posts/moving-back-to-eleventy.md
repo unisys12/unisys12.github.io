@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: "Back to 11ty"
 description: "Moving my personal blog back to Eleventy"
-publishDate: 2025-05-11
+date: 2025-05-11
 tags: ["blog", "11ty", "ssg", "jamstack", "astro"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp"
 image_alt: "A simple header image"
@@ -200,7 +200,7 @@ layout: "layouts/blog.njk"
         <a href="{{ post.url }}">{{ post.data.title }}</a>
       </h2>
       <p>{{ post.data.description }}</p>
-      <small>{{ post.data.publishDate | formatDate }}</small>
+      <small>{{ post.data.date | formatDate }}</small>
     </hgroup>
     <section class="cloud">
       {% for tag in post.data.tags %}

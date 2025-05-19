@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: "Gooses Guide - Part One"
 description: "Recreating and improving a really old project."
-publishDate: 2024-11-06
+date: 2024-11-06
 tags: ["blog", "laravel", "flat files", "php"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813611/blog/stock/vincentiu-solomon-ln5drpv_ImI-unsplash_ihdhru.jpg"
 image_alt: "A simple header image"

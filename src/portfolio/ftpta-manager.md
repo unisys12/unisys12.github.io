@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: "FTPTA Manager"
 description: "Building a project for my wife, without her permission."
-publishDate: 2024-07-11
+date: 2024-07-11
 tags:
   [
     "portfolio",

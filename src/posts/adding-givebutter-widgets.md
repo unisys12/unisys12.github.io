@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: "Adding Givebutter widgets to a Static Website"
 description: "Working with Dynamic Custom/Third-Party Components in a Static Site"
-publishDate: 2024-07-26
+date: 2024-07-26
 tags: ["blog", "11ty", "ssg", "jamstack", "components", "givebutter"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813611/blog/stock/greg-rakozy-oMpAz-DN-9I-unsplash_qebiip.webp"
 image_alt: "A simple header image"

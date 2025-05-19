@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Making a Laravel Seed Helper
 description: "Working on a project and having to seed just over 15 tables with info and I wanted to see if I could make a helper class to simplify the process a bit."
-publishDate: 2024-11-29
+date: 2024-11-29
 tags: ["blog", "laravel", "helper classes", "tables", "seeders"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp"
 image_alt: "A simple header image"

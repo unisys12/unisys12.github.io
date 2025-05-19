@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Blood Pressure Log Part 2
 description: "Part two of building a blood pressure tracking app using Laravel 12 and Livewire."
-publishDate: 2025-05-15
+date: 2025-05-15
 tags:
   [
     "blog",

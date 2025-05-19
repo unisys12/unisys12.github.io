@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Making a Laravel Table Component
 description: "Working on a project and have a need for several tables. So I wanted to see if I could make a component, using Laravel Blade only, to generate the table for me after passing it the results of a Eloquent query."
-publishDate: 2024-11-27
+date: 2024-11-27
 tags: ["blog", "laravel", "components", "tables", "html"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp"
 image_alt: "A simple header image"

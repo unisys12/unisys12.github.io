@@ -3,7 +3,7 @@ layout: "layouts/blog.njk"
 status: "draft"
 title: Usage of Enums in Livewire Form
 description: "Wanted to test the usability of using native PHP Enums, over database relationships or enums, in forms."
-publishDate: 2024-11-27
+date: 2024-11-27
 tags: ["blog", "laravel", "livewire", "forms", "php", "enums"]
 image: "https://res.cloudinary.com/dtm8qhbwk/image/upload/c_thumb,q_auto,g_face,f_auto,w_200/v1720813596/blog/stock/nasa--hI5dX2ObAs-unsplash_vk2jwn.webp"
 image_alt: "A simple header image"

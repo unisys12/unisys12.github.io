@@ -10,7 +10,7 @@ layout: "layouts/blog.njk"
           <a href="{{ post.url }}">{{ post.data.title }}</a>
         </h2>
         <p>{{ post.data.description }}</p>
-        <small>{{ post.data.publishDate | formatDate }}</small>
+        <small>{{ post.data.date | formatDate }}</small>
       </hgroup>
       <section class="cloud">
         {% for tag in post.data.tags %}
