@@ -575,4 +575,4 @@ I have also decided that this alone is worth a post itself. I have already discu
 ## Future Plans
 Notice that I am not covering the full CRUD operations at this time. The reason is because I don't honestly care about them at the moment. It's more important for me to get to a heart of this app as quickly as possible. That way I can determine if it's viable for me to put hours and hours into it. Anyway!
 
- > [BP Log Part ](/posts/bp-log-part-two)
+ > [Part Two of this series](/posts/bp-log-part-two)
